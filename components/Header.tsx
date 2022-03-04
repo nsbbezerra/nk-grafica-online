@@ -280,6 +280,7 @@ const Header: FC<Props> = ({ title }) => {
                 alignItems="center"
                 gap={2}
                 color={useColorModeValue("white", "blue.800")}
+                fontWeight="bold"
               >
                 <AiOutlineMenu />
                 MENU
