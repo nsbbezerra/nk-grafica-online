@@ -5,7 +5,7 @@ const defaultTheme = extendTheme({
   breakpoints: ["30em", "48em", "52em", "62em", "80em"],
   fonts: {
     body: "Lato, sans-serif",
-    heading: "Oswald, sans-serif",
+    heading: "Lato, sans-serif",
   },
   colors: {
     ...theme.colors,

@@ -159,6 +159,7 @@ const Header: FC<Props> = ({ title }) => {
                 <InputGroup
                   size={"lg"}
                   display={["none", "none", "flex", "flex", "flex"]}
+                  variant="filled"
                 >
                   <Input placeholder="Buscar produtos" />
                   <InputRightElement>

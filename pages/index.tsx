@@ -14,11 +14,14 @@ import {
   useColorModeValue,
   Button,
   Icon,
+  Heading,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
+import Image from "next/image";
 import { Fragment, useState } from "react";
 import { AiOutlineTags } from "react-icons/ai";
 import AccordionApp from "../components/Accordion";
+import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Products from "../components/Products";
 
@@ -79,6 +82,8 @@ const Home: NextPage = () => {
           </Box>
         </Grid>
       </Container>
+
+      <Footer />
 
       <Drawer isOpen={drawer} placement="left" onClose={() => setDrawer(false)}>
         <DrawerOverlay />
