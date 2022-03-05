@@ -5,7 +5,6 @@ import {
   Grid,
   Drawer,
   DrawerBody,
-  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
   DrawerContent,
@@ -14,10 +13,8 @@ import {
   useColorModeValue,
   Button,
   Icon,
-  Heading,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
-import Image from "next/image";
 import { Fragment, useState } from "react";
 import { AiOutlineTags } from "react-icons/ai";
 import AccordionApp from "../components/Accordion";

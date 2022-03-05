@@ -25,6 +25,7 @@ const Products: FC = () => {
       shadow="sm"
       w="100%"
       h="fit-content"
+      position={"relative"}
     >
       <Box w="100%">
         <Image
@@ -40,14 +41,15 @@ const Products: FC = () => {
       </Box>
 
       <Box px={3} py={2}>
-        <Text
-          color={useColorModeValue("blue.500", "blue.200")}
-          fontWeight="semibold"
-          noOfLines={2}
-        >
+        <Text fontWeight="semibold" noOfLines={2}>
           Cartão de visita 4x1 - 9x5cm 1000 Unidades
         </Text>
-        <UnorderedList fontSize={"sm"} mt={2} textDecor="none">
+        <UnorderedList
+          fontSize={"sm"}
+          mt={2}
+          textDecor="none"
+          color={useColorModeValue("gray.700", "gray.200")}
+        >
           <ListItem>Lorem ipsum dolor sit amet</ListItem>
           <ListItem>Consectetur adipiscing elit</ListItem>
           <ListItem>Integer molestie lorem at massa</ListItem>

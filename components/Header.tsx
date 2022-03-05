@@ -16,15 +16,30 @@ import {
   Link as ChakraLink,
   MenuDivider,
   useColorModeValue,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  Icon,
+  Stack,
+  Grid,
+  Text,
+  Stat,
+  StatLabel,
+  StatNumber,
 } from "@chakra-ui/react";
 import Head from "next/head";
 import Image from "next/image";
-import { FC, Fragment } from "react";
+import { FC, Fragment, useState } from "react";
 import {
   AiFillFacebook,
   AiFillInstagram,
   AiFillLinkedin,
   AiFillTwitterSquare,
+  AiOutlineDelete,
   AiOutlineFileAdd,
   AiOutlineFileText,
   AiOutlineHome,
@@ -36,6 +51,7 @@ import {
   AiOutlinePhone,
   AiOutlineSave,
   AiOutlineSearch,
+  AiOutlineShopping,
   AiOutlineShoppingCart,
   AiOutlineUser,
   AiOutlineWhatsApp,
@@ -48,6 +64,8 @@ type Props = {
 };
 
 const Header: FC<Props> = ({ title }) => {
+  const [cart, setCart] = useState<boolean>(false);
+
   return (
     <Fragment>
       <Head>
@@ -142,7 +160,6 @@ const Header: FC<Props> = ({ title }) => {
                 <InputGroup
                   size={"lg"}
                   display={["none", "none", "flex", "flex", "flex"]}
-                  variant="filled"
                 >
                   <Input placeholder="Buscar produtos" />
                   <InputRightElement>
@@ -196,6 +213,7 @@ const Header: FC<Props> = ({ title }) => {
                     variant={"link"}
                     size="lg"
                     fontSize={"3xl"}
+                    onClick={() => setCart(true)}
                   />
                   <Badge colorScheme={"cyan"}>1</Badge>
                 </HStack>
@@ -276,6 +294,74 @@ const Header: FC<Props> = ({ title }) => {
           </Container>
         </Box>
       </Box>
+
+      <Drawer
+        isOpen={cart}
+        placement="right"
+        onClose={() => setCart(false)}
+        size="sm"
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton color={useColorModeValue("white", "blue.800")} />
+          <DrawerHeader
+            bg={useColorModeValue("blue.500", "blue.200")}
+            color={useColorModeValue("white", "blue.800")}
+          >
+            <Icon as={AiOutlineShoppingCart} mr={3} />
+            Carrinho
+          </DrawerHeader>
+
+          <DrawerBody py={4}>
+            <Stack spacing={5}>
+              <Grid templateColumns={"100px 1fr"} gap={5}>
+                <Box w="100%" h="fit-content" rounded="md" overflow={"hidden"}>
+                  <Image
+                    src={
+                      "https://img.freepik.com/vetores-gratis/modelo-de-cartao-de-visita-preto_23-2147497818.jpg"
+                    }
+                    alt="NK Gráfica Online - Cartões de Visita"
+                    width={300}
+                    height={250}
+                    layout="responsive"
+                    objectFit="cover"
+                  />
+                </Box>
+                <Box>
+                  <Text>Cartão de visita 4x1 - 9x5cm 1000 Unidades</Text>
+
+                  <Flex justify={"space-between"}>
+                    <HStack color={"blue.500"}>
+                      <Text>1x</Text>
+                      <Text fontWeight={"bold"}>R$ 30,00</Text>
+                    </HStack>
+
+                    <Button
+                      leftIcon={<AiOutlineDelete />}
+                      colorScheme="red"
+                      size="xs"
+                      variant="outline"
+                    >
+                      Remover
+                    </Button>
+                  </Flex>
+                </Box>
+              </Grid>
+            </Stack>
+          </DrawerBody>
+
+          <DrawerFooter>
+            <Button
+              leftIcon={<AiOutlineShopping />}
+              isFullWidth
+              colorScheme={"blue"}
+              size="lg"
+            >
+              Finalizar Compra
+            </Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
     </Fragment>
   );
 };
