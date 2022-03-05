@@ -15,8 +15,6 @@ import {
   MenuItem,
   Link as ChakraLink,
   MenuDivider,
-  useColorMode,
-  Tooltip,
   useColorModeValue,
 } from "@chakra-ui/react";
 import Head from "next/head";
@@ -30,7 +28,6 @@ import {
   AiOutlineFileAdd,
   AiOutlineFileText,
   AiOutlineHome,
-  AiOutlineInfo,
   AiOutlineInfoCircle,
   AiOutlineLogin,
   AiOutlineLogout,
@@ -44,14 +41,13 @@ import {
   AiOutlineWhatsApp,
 } from "react-icons/ai";
 import { MdKeyboardArrowDown } from "react-icons/md";
-import { FaSun, FaMoon } from "react-icons/fa";
+import Link from "next/link";
 
 type Props = {
   title: string;
 };
 
 const Header: FC<Props> = ({ title }) => {
-  const { toggleColorMode, colorMode } = useColorMode();
   return (
     <Fragment>
       <Head>
@@ -96,19 +92,6 @@ const Header: FC<Props> = ({ title }) => {
                 </Button>
               </HStack>
               <HStack spacing={-2}>
-                <Tooltip
-                  label={colorMode === "light" ? "Modo Escuro" : "Modo Claro"}
-                  hasArrow
-                >
-                  <IconButton
-                    aria-label="instagram"
-                    icon={colorMode === "light" ? <FaMoon /> : <FaSun />}
-                    variant="link"
-                    colorScheme={"blue"}
-                    size="lg"
-                    onClick={toggleColorMode}
-                  />
-                </Tooltip>
                 <IconButton
                   aria-label="instagram"
                   icon={<AiFillInstagram />}
@@ -227,15 +210,18 @@ const Header: FC<Props> = ({ title }) => {
               spacing={10}
               display={["none", "flex", "flex", "flex", "flex"]}
             >
-              <ChakraLink
-                display={"flex"}
-                alignItems="center"
-                gap={2}
-                color={useColorModeValue("white", "blue.800")}
-              >
-                <AiOutlineHome />
-                Início
-              </ChakraLink>
+              <Link href={"/"} passHref>
+                <ChakraLink
+                  display={"flex"}
+                  alignItems="center"
+                  gap={2}
+                  color={useColorModeValue("white", "blue.800")}
+                  _focus={{ outline: "none" }}
+                >
+                  <AiOutlineHome />
+                  Início
+                </ChakraLink>
+              </Link>
               <ChakraLink
                 display={"flex"}
                 alignItems="center"

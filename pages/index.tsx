@@ -30,7 +30,7 @@ const Home: NextPage = () => {
 
   return (
     <Fragment>
-      <Header title="NK Gráfica Online | Cartões de visita, panfletos, flyers, adesivos, lonas, blocos, sacolas e etc.." />
+      <Header title="NK Gráfica Online | Cartões de visita, panfletos, flyers, adesivos, lonas, blocos, sacolas e etc..." />
 
       <Container maxW={"7xl"} mt={10}>
         <Center>

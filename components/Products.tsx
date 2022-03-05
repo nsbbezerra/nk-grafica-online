@@ -14,6 +14,7 @@ import {
 import Image from "next/image";
 import { FC } from "react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
+import Link from "next/link";
 
 const Products: FC = () => {
   const Card = () => (
@@ -53,18 +54,22 @@ const Products: FC = () => {
           <ListItem>Facilisis in pretium nisl aliquet</ListItem>
         </UnorderedList>
         <Flex justify={"space-between"} align="center" w="100%" mt={2} gap={3}>
-          <Stat size={"md"}>
+          <Stat size={"md"} color="blue.600">
             <StatLabel>Compre por:</StatLabel>
             <StatNumber fontSize={"md"}>R$ 100,00</StatNumber>
           </Stat>
 
-          <Button
-            colorScheme={"blue"}
-            leftIcon={<AiOutlineShoppingCart />}
-            variant="outline"
-          >
-            Comprar
-          </Button>
+          <Link href={"/produto"} passHref>
+            <a>
+              <Button
+                colorScheme={"blue"}
+                leftIcon={<AiOutlineShoppingCart />}
+                variant="outline"
+              >
+                Comprar
+              </Button>
+            </a>
+          </Link>
         </Flex>
       </Box>
     </Box>

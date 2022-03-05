@@ -22,7 +22,7 @@ export default class MyDocument extends Document {
         </Head>
         <body>
           <Main />
-          <ColorModeScript initialColorMode="system" />
+          <ColorModeScript initialColorMode="light" />
           <NextScript />
         </body>
       </Html>
