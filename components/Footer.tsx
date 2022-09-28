@@ -133,16 +133,6 @@ export default function Footer() {
             </div>
             <div className="w-16">
               <Image
-                src={"/img/stripe.svg"}
-                alt="NK Gráfica online banner"
-                layout="responsive"
-                width={512}
-                height={214}
-                objectFit="cover"
-              />
-            </div>
-            <div className="w-16">
-              <Image
                 src={"/img/boleto.svg"}
                 alt="NK Gráfica online banner"
                 layout="responsive"
@@ -151,9 +141,19 @@ export default function Footer() {
                 objectFit="cover"
               />
             </div>
+            <div className="w-16">
+              <Image
+                src={"/img/stripe.svg"}
+                alt="NK Gráfica online banner"
+                layout="responsive"
+                width={512}
+                height={214}
+                objectFit="cover"
+              />
+            </div>
           </div>
         </div>
-        <div className="col-span-2 text-white">
+        <div className="col-span-2 text-white text-sm">
           <span className="block">
             NK Informática e Gráfica - CNPJ: 40.526.622/0001-72 - Rua 34 Qd 15
             Lt 14 Nº 173, Loteamento Canavieiras, CEP: 77.710-000, Pedro Afonso
