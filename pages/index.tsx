@@ -241,7 +241,7 @@ const Home: NextPage = () => {
           <div className="card">
             <div className="w-full">
               <Image
-                src={"/img/banner.png"}
+                src={"/img/banner.jpg"}
                 alt="NK Gráfica online banner"
                 layout="responsive"
                 width={1920}
@@ -260,7 +260,7 @@ const Home: NextPage = () => {
           <div className="card">
             <div className="w-full">
               <Image
-                src={"/img/banner-two.png"}
+                src={"/img/banners-pic.jpg"}
                 alt="NK Gráfica online banner"
                 layout="responsive"
                 width={1920}
@@ -279,7 +279,7 @@ const Home: NextPage = () => {
           <div className="card">
             <div className="w-full">
               <Image
-                src={"/img/banner.png"}
+                src={"/img/banner.jpg"}
                 alt="NK Gráfica online banner"
                 layout="responsive"
                 width={1920}

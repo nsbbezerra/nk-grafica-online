@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Plus, ShoppingCart } from "phosphor-react";
+import { ShoppingCart } from "phosphor-react";
 import Button from "./Buttom";
 
 const Card = () => {

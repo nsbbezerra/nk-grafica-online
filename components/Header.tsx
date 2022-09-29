@@ -18,6 +18,7 @@ import DarkTheme from "./DarkTheme";
 import { useTheme } from "next-themes";
 import * as Popover from "@radix-ui/react-popover";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function Header() {
   const { theme } = useTheme();
@@ -88,6 +89,28 @@ export default function Header() {
     </div>
   );
 
+  const MenuItems = () => (
+    <div className="flex flex-col lg:flex-row lg:items-center lg:gap-3 gap-3">
+      <Link href={"/"} passHref>
+        <a className="flex items-center lg:h-12 gap-1 hover:underline cursor-pointer px-2">
+          <House />
+          Início
+        </a>
+      </Link>
+      <a className="flex items-center lg:h-12 gap-1 hover:underline cursor-pointer px-2">
+        <Storefront />A Empresa
+      </a>
+      <a className="flex items-center lg:h-12 gap-1 hover:underline cursor-pointer px-2">
+        <Phone />
+        Contato
+      </a>
+      <a className="flex items-center lg:h-12 gap-1 hover:underline cursor-pointer px-2">
+        <Question />
+        Como Comprar?
+      </a>
+    </div>
+  );
+
   return (
     <>
       <header className="w-full relative bg-gradient-to-tr from-sky-50 to-blue-200 dark:from-zinc-800 dark:to-gray-900">
@@ -130,186 +153,56 @@ export default function Header() {
                 <Popover.Portal>
                   <Popover.Content className="Content">
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3">
-                      <a className="flex items-center gap-3 dark:hover:bg-zinc-800 p-2 rounded-md cursor-pointer hover:bg-sky-50">
-                        <div className="w-10 h-10 rounded-full overflow-hidden">
-                          <Image
-                            src={
-                              "https://img.freepik.com/psd-gratuitas/modelo-de-modelo-de-cartao-de-visita-isometrico_1051-3064.jpg?w=2000"
-                            }
-                            alt="NK Gráfica online banner"
-                            layout="responsive"
-                            width={600}
-                            height={600}
-                            objectFit="cover"
-                          />
-                        </div>
-                        <span>Cartões de visita</span>
-                      </a>
-                      <a className="flex items-center gap-3 dark:hover:bg-zinc-800 p-2 rounded-md cursor-pointer hover:bg-sky-50">
-                        <div className="w-10 h-10 rounded-full overflow-hidden">
-                          <Image
-                            src={
-                              "https://img.freepik.com/psd-gratuitas/modelo-de-modelo-de-cartao-de-visita-isometrico_1051-3064.jpg?w=2000"
-                            }
-                            alt="NK Gráfica online banner"
-                            layout="responsive"
-                            width={600}
-                            height={600}
-                            objectFit="cover"
-                          />
-                        </div>
-                        <span>Cartões de visita</span>
-                      </a>
-                      <a className="flex items-center gap-3 dark:hover:bg-zinc-800 p-2 rounded-md cursor-pointer hover:bg-sky-50">
-                        <div className="w-10 h-10 rounded-full overflow-hidden">
-                          <Image
-                            src={
-                              "https://img.freepik.com/psd-gratuitas/modelo-de-modelo-de-cartao-de-visita-isometrico_1051-3064.jpg?w=2000"
-                            }
-                            alt="NK Gráfica online banner"
-                            layout="responsive"
-                            width={600}
-                            height={600}
-                            objectFit="cover"
-                          />
-                        </div>
-                        <span>Cartões de visita</span>
-                      </a>
-                      <a className="flex items-center gap-3 dark:hover:bg-zinc-800 p-2 rounded-md cursor-pointer hover:bg-sky-50">
-                        <div className="w-10 h-10 rounded-full overflow-hidden">
-                          <Image
-                            src={
-                              "https://img.freepik.com/psd-gratuitas/modelo-de-modelo-de-cartao-de-visita-isometrico_1051-3064.jpg?w=2000"
-                            }
-                            alt="NK Gráfica online banner"
-                            layout="responsive"
-                            width={600}
-                            height={600}
-                            objectFit="cover"
-                          />
-                        </div>
-                        <span>Cartões de visita</span>
-                      </a>
-                      <a className="flex items-center gap-3 dark:hover:bg-zinc-800 p-2 rounded-md cursor-pointer hover:bg-sky-50">
-                        <div className="w-10 h-10 rounded-full overflow-hidden">
-                          <Image
-                            src={
-                              "https://img.freepik.com/psd-gratuitas/modelo-de-modelo-de-cartao-de-visita-isometrico_1051-3064.jpg?w=2000"
-                            }
-                            alt="NK Gráfica online banner"
-                            layout="responsive"
-                            width={600}
-                            height={600}
-                            objectFit="cover"
-                          />
-                        </div>
-                        <span>Cartões de visita</span>
-                      </a>
-                      <a className="flex items-center gap-3 dark:hover:bg-zinc-800 p-2 rounded-md cursor-pointer hover:bg-sky-50">
-                        <div className="w-10 h-10 rounded-full overflow-hidden">
-                          <Image
-                            src={
-                              "https://img.freepik.com/psd-gratuitas/modelo-de-modelo-de-cartao-de-visita-isometrico_1051-3064.jpg?w=2000"
-                            }
-                            alt="NK Gráfica online banner"
-                            layout="responsive"
-                            width={600}
-                            height={600}
-                            objectFit="cover"
-                          />
-                        </div>
-                        <span>Cartões de visita</span>
-                      </a>
-                      <a className="flex items-center gap-3 dark:hover:bg-zinc-800 p-2 rounded-md cursor-pointer hover:bg-sky-50">
-                        <div className="w-10 h-10 rounded-full overflow-hidden">
-                          <Image
-                            src={
-                              "https://img.freepik.com/psd-gratuitas/modelo-de-modelo-de-cartao-de-visita-isometrico_1051-3064.jpg?w=2000"
-                            }
-                            alt="NK Gráfica online banner"
-                            layout="responsive"
-                            width={600}
-                            height={600}
-                            objectFit="cover"
-                          />
-                        </div>
-                        <span>Cartões de visita</span>
-                      </a>
-                      <a className="flex items-center gap-3 dark:hover:bg-zinc-800 p-2 rounded-md cursor-pointer hover:bg-sky-50">
-                        <div className="w-10 h-10 rounded-full overflow-hidden">
-                          <Image
-                            src={
-                              "https://img.freepik.com/psd-gratuitas/modelo-de-modelo-de-cartao-de-visita-isometrico_1051-3064.jpg?w=2000"
-                            }
-                            alt="NK Gráfica online banner"
-                            layout="responsive"
-                            width={600}
-                            height={600}
-                            objectFit="cover"
-                          />
-                        </div>
-                        <span>Cartões de visita</span>
-                      </a>
-                      <a className="flex items-center gap-3 dark:hover:bg-zinc-800 p-2 rounded-md cursor-pointer hover:bg-sky-50">
-                        <div className="w-10 h-10 rounded-full overflow-hidden">
-                          <Image
-                            src={
-                              "https://img.freepik.com/psd-gratuitas/modelo-de-modelo-de-cartao-de-visita-isometrico_1051-3064.jpg?w=2000"
-                            }
-                            alt="NK Gráfica online banner"
-                            layout="responsive"
-                            width={600}
-                            height={600}
-                            objectFit="cover"
-                          />
-                        </div>
-                        <span>Cartões de visita</span>
-                      </a>
-                      <a className="flex items-center gap-3 dark:hover:bg-zinc-800 p-2 rounded-md cursor-pointer hover:bg-sky-50">
-                        <div className="w-10 h-10 rounded-full overflow-hidden">
-                          <Image
-                            src={
-                              "https://img.freepik.com/psd-gratuitas/modelo-de-modelo-de-cartao-de-visita-isometrico_1051-3064.jpg?w=2000"
-                            }
-                            alt="NK Gráfica online banner"
-                            layout="responsive"
-                            width={600}
-                            height={600}
-                            objectFit="cover"
-                          />
-                        </div>
-                        <span>Cartões de visita</span>
-                      </a>
-                      <a className="flex items-center gap-3 dark:hover:bg-zinc-800 p-2 rounded-md cursor-pointer hover:bg-sky-50">
-                        <div className="w-10 h-10 rounded-full overflow-hidden">
-                          <Image
-                            src={
-                              "https://img.freepik.com/psd-gratuitas/modelo-de-modelo-de-cartao-de-visita-isometrico_1051-3064.jpg?w=2000"
-                            }
-                            alt="NK Gráfica online banner"
-                            layout="responsive"
-                            width={600}
-                            height={600}
-                            objectFit="cover"
-                          />
-                        </div>
-                        <span>Cartões de visita</span>
-                      </a>
-                      <a className="flex items-center gap-3 dark:hover:bg-zinc-800 p-2 rounded-md cursor-pointer hover:bg-sky-50">
-                        <div className="w-10 h-10 rounded-full overflow-hidden">
-                          <Image
-                            src={
-                              "https://img.freepik.com/psd-gratuitas/modelo-de-modelo-de-cartao-de-visita-isometrico_1051-3064.jpg?w=2000"
-                            }
-                            alt="NK Gráfica online banner"
-                            layout="responsive"
-                            width={600}
-                            height={600}
-                            objectFit="cover"
-                          />
-                        </div>
-                        <span>Cartões de visita</span>
-                      </a>
+                      <Link href={"/produtos"} passHref>
+                        <a className="grid grid-cols-[40px_1fr] gap-3 dark:hover:bg-zinc-800 p-2 rounded-md cursor-pointer hover:bg-sky-50 relative w-full items-center">
+                          <div className="w-[40px] h-[40px] rounded-full overflow-hidden">
+                            <Image
+                              src={
+                                "https://img.freepik.com/psd-gratuitas/modelo-de-modelo-de-cartao-de-visita-isometrico_1051-3064.jpg?w=2000"
+                              }
+                              alt="NK Gráfica online banner"
+                              layout="responsive"
+                              width={600}
+                              height={600}
+                              objectFit="cover"
+                            />
+                          </div>
+                          <div className="block relative">
+                            <span className="text-base font-semibold block">
+                              Cartões de visita
+                            </span>
+                            <span className="text-xs block text-zinc-500">
+                              Cartões de visita Cartões de visita Cartões de
+                              visita Cartões de visita
+                            </span>
+                          </div>
+                        </a>
+                      </Link>
+                      <Link href={"/produtos"} passHref>
+                        <a className="grid grid-cols-[40px_1fr] gap-3 dark:hover:bg-zinc-800 p-2 rounded-md cursor-pointer hover:bg-sky-50 relative w-full items-center">
+                          <div className="w-[40px] h-[40px] rounded-full overflow-hidden">
+                            <Image
+                              src={
+                                "https://img.freepik.com/psd-gratuitas/modelo-de-modelo-de-cartao-de-visita-isometrico_1051-3064.jpg?w=2000"
+                              }
+                              alt="NK Gráfica online banner"
+                              layout="responsive"
+                              width={600}
+                              height={600}
+                              objectFit="cover"
+                            />
+                          </div>
+                          <div className="block relative">
+                            <span className="text-base font-semibold block">
+                              Cartões de visita
+                            </span>
+                            <span className="text-xs block text-zinc-500">
+                              Cartões de visita Cartões de visita Cartões de
+                              visita Cartões de visita
+                            </span>
+                          </div>
+                        </a>
+                      </Link>
                     </div>
                     <Popover.Arrow className="Arrow" />
                   </Popover.Content>
@@ -317,21 +210,9 @@ export default function Header() {
               </Popover.Root>
             </div>
 
-            <a className="hidden lg:flex items-center h-12 gap-1 hover:underline cursor-pointer px-2">
-              <House />
-              Início
-            </a>
-            <a className="hidden lg:flex items-center h-12 gap-1 hover:underline cursor-pointer px-2">
-              <Storefront />A Empresa
-            </a>
-            <a className="hidden lg:flex items-center h-12 gap-1 hover:underline cursor-pointer px-2">
-              <Phone />
-              Contato
-            </a>
-            <a className="hidden lg:flex items-center h-12 gap-1 hover:underline cursor-pointer px-2">
-              <Question />
-              Como Comprar?
-            </a>
+            <div className="hidden lg:block">
+              <MenuItems />
+            </div>
           </div>
 
           <div className="hidden sm:flex">
@@ -358,12 +239,14 @@ export default function Header() {
             Menu
           </div>
 
-          <div className="p-3 mt-5">
+          <div className="p-3 mt-2">
             <UserActions />
 
-            <div className="w-full border-b mt-10 border-b-sky-700 dark:border-b-sky-300" />
+            <div className="w-full border-b mt-5 mb-5 border-b-sky-700 dark:border-b-sky-300" />
 
-            <div className="w-full rounded-md overflow-hidden items-center flex mt-10 mb-10 h-12">
+            <MenuItems />
+
+            <div className="w-full rounded-md overflow-hidden items-center flex mt-5 mb-5 h-12">
               <button className="flex items-center gap-3 w-full border border-sky-700 h-full rounded-l-md px-3 text-sky-700 font-bold hover:bg-sky-50 select-none dark:border-sky-300 dark:text-sky-300 dark:hover:bg-zinc-800">
                 <ShoppingCart /> Meu Carrinho
               </button>
