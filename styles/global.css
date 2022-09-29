@@ -112,4 +112,12 @@
   .Container {
     @apply relative flex flex-col items-center justify-center;
   }
+
+  .CheckBox {
+    @apply flex items-center justify-center w-6 h-6 bg-white border border-sky-700 dark:border-sky-300 rounded-md opacity-95 focus:opacity-100;
+  }
+
+  .CheckboxIndicator {
+    @apply text-sky-700;
+  }
 }

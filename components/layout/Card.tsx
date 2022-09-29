@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ShoppingCart } from "phosphor-react";
 import Button from "./Buttom";
 
@@ -39,10 +40,13 @@ const Card = () => {
             R$ 20,00
           </span>
         </div>
-        <Button isFullSize buttonSize="sm">
-          <ShoppingCart />
-          Comprar
-        </Button>
+
+        <Link href={"/produto"} passHref>
+          <Button isFullSize buttonSize="sm">
+            <ShoppingCart />
+            Comprar
+          </Button>
+        </Link>
       </div>
     </div>
   );
