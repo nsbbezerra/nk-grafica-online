@@ -47,7 +47,7 @@ export default function Button({
       : "" || (scheme === "error" && variant === "outline")
       ? "buttom-red-outline"
       : ""
-  }`;
+  } ${isFullSize ? "buttom-full" : "buttom-fit"}`;
   const smClass = `buttom-sm ${
     isDisabled || isLoading ? "buttom-disabled" : ""
   } ${
@@ -68,7 +68,7 @@ export default function Button({
       : "" || (scheme === "error" && variant === "outline")
       ? "buttom-red-outline"
       : ""
-  }`;
+  } ${isFullSize ? "buttom-full" : "buttom-fit"}`;
   const mdClass = `buttom-md ${
     isDisabled || isLoading ? "buttom-disabled" : ""
   } ${
@@ -89,7 +89,7 @@ export default function Button({
       : "" || (scheme === "error" && variant === "outline")
       ? "buttom-red-outline"
       : ""
-  }`;
+  } ${isFullSize ? "buttom-full" : "buttom-fit"}`;
   const lgClass = `buttom-lg ${
     isDisabled || isLoading ? "buttom-disabled" : ""
   } ${
@@ -110,7 +110,7 @@ export default function Button({
       : "" || (scheme === "error" && variant === "outline")
       ? "buttom-red-outline"
       : ""
-  }`;
+  } ${isFullSize ? "buttom-full" : "buttom-fit"}`;
 
   return (
     <button

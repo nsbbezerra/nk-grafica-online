@@ -17,9 +17,12 @@ import {
 import DarkTheme from "./DarkTheme";
 import { useTheme } from "next-themes";
 import * as Popover from "@radix-ui/react-popover";
+import { useState } from "react";
 
 export default function Header() {
   const { theme } = useTheme();
+
+  const [open, setOpen] = useState<boolean>(false);
 
   const handleImage = () => {
     if (theme === "light") {
@@ -47,30 +50,52 @@ export default function Header() {
     }
   };
 
+  const UserActions = () => (
+    <div className="flex items-center flex-col gap-3 lg:flex-row">
+      <div className="w-12 h-12 border border-sky-700 rounded-full text-2xl flex items-center justify-center text-sky-700 dark:border-sky-300 dark:text-sky-300">
+        <User />
+      </div>
+      <div className="flex flex-col items-center lg:items-start">
+        <span className="block">Bem vindo!</span>
+        <div className="flex gap-2">
+          <a className="text-sky-700 font-bold hover:underline cursor-pointer dark:text-sky-300">
+            Entre
+          </a>
+          <span>ou</span>
+          <a className="text-sky-700 font-bold hover:underline cursor-pointer dark:text-sky-300">
+            Cadastre-se
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+
+  const SocialActions = () => (
+    <div className="flex justify-center items-center gap-2 h-10">
+      <a href="#" className="icon-buttom-xs buttom-blue-outline">
+        <WhatsappLogo />
+      </a>
+      <a href="#" className="icon-buttom-xs buttom-blue-outline">
+        <FacebookLogo />
+      </a>
+      <a href="#" className="icon-buttom-xs buttom-blue-outline">
+        <InstagramLogo />
+      </a>
+      <a href="#" className="icon-buttom-xs buttom-blue-outline">
+        <LinkedinLogo />
+      </a>
+      <DarkTheme />
+    </div>
+  );
+
   return (
     <>
-      <header className="w-full relative bg-gradient-to-tr from-sky-50 to-blue-200 dark:from-zinc-800 dark:to-zinc-900">
-        <div className="h-36 container mx-auto max-w-5xl px-10 xl:px-0 flex items-center justify-between">
-          <div className="relative w-72">{handleImage()}</div>
+      <header className="w-full relative bg-gradient-to-tr from-sky-50 to-blue-200 dark:from-zinc-800 dark:to-gray-900">
+        <div className="h-28 md:h-36 container mx-auto max-w-5xl px-10 xl:px-0 flex items-center justify-between">
+          <div className="relative w-48 sm:w-60 md:w-72">{handleImage()}</div>
 
           <div className="hidden lg:flex items-center gap-10">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 border border-sky-700 rounded-full text-2xl flex items-center justify-center text-sky-700 dark:border-sky-300 dark:text-sky-300">
-                <User />
-              </div>
-              <div>
-                <span className="block">Bem vindo!</span>
-                <div className="flex gap-2">
-                  <a className="text-sky-700 font-bold hover:underline cursor-pointer dark:text-sky-300">
-                    Entre
-                  </a>
-                  <span>ou</span>
-                  <a className="text-sky-700 font-bold hover:underline cursor-pointer dark:text-sky-300">
-                    Cadastre-se
-                  </a>
-                </div>
-              </div>
-            </div>
+            <UserActions />
 
             <div className="relative">
               <button className="w-12 h-12 border border-sky-700 rounded-full text-2xl flex items-center justify-center text-sky-700 hover:bg-sky-50 dark:hover:bg-sky-200 dark:hover:text-zinc-800 dark:border-sky-300 dark:text-sky-300">
@@ -83,7 +108,10 @@ export default function Header() {
             </div>
           </div>
 
-          <button className="icon-buttom-lg buttom-blue-outline lg:hidden">
+          <button
+            className="icon-buttom-lg buttom-blue-outline lg:hidden"
+            onClick={() => setOpen(!open)}
+          >
             <List />
           </button>
         </div>
@@ -306,23 +334,48 @@ export default function Header() {
             </a>
           </div>
 
-          <div className="hidden sm:flex justify-end items-center gap-2 h-10">
-            <a href="#" className="icon-buttom-xs buttom-blue-outline">
-              <WhatsappLogo />
-            </a>
-            <a href="#" className="icon-buttom-xs buttom-blue-outline">
-              <FacebookLogo />
-            </a>
-            <a href="#" className="icon-buttom-xs buttom-blue-outline">
-              <InstagramLogo />
-            </a>
-            <a href="#" className="icon-buttom-xs buttom-blue-outline">
-              <LinkedinLogo />
-            </a>
-            <DarkTheme />
+          <div className="hidden sm:flex">
+            <SocialActions />
           </div>
         </div>
       </div>
+
+      <nav
+        className={`fixed top-0 bottom-0 left-0 right-0 bg-zinc-900 z-20 bg-opacity-30 ${
+          open ? "ml-0 block" : "-ml-[100%] hidden"
+        }`}
+      >
+        <div className="bg-white dark:bg-zinc-900 dark:bg-opacity-95 dark:backdrop-blur-sm bg-opacity-80 backdrop-blur-sm w-[70vw] h-[100%] shadow-2xl relative max-w-xs">
+          <button
+            className="bg-zinc-300 w-7 h-7 flex items-center justify-center absolute right-2 top-2 rounded-full dark:bg-zinc-900"
+            onClick={() => setOpen(!open)}
+          >
+            <X />
+          </button>
+
+          <div className="flex p-2 text-sky-700 gap-3 font-bold items-center text-xl border-b border-b-sky-700 bg-sky-50 dark:bg-zinc-800 dark:text-sky-300 dark:border-b-sky-300">
+            <List />
+            Menu
+          </div>
+
+          <div className="p-3 mt-5">
+            <UserActions />
+
+            <div className="w-full border-b mt-10 border-b-sky-700 dark:border-b-sky-300" />
+
+            <div className="w-full rounded-md overflow-hidden items-center flex mt-10 mb-10 h-12">
+              <button className="flex items-center gap-3 w-full border border-sky-700 h-full rounded-l-md px-3 text-sky-700 font-bold hover:bg-sky-50 select-none dark:border-sky-300 dark:text-sky-300 dark:hover:bg-zinc-800">
+                <ShoppingCart /> Meu Carrinho
+              </button>
+              <span className="bg-sky-700 h-full w-16 text-white font-bold flex items-center justify-center dark:bg-sky-300 dark:text-zinc-800">
+                12
+              </span>
+            </div>
+
+            <SocialActions />
+          </div>
+        </div>
+      </nav>
     </>
   );
 }

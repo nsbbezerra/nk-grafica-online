@@ -79,15 +79,15 @@
   }
 
   .card {
-    @apply rounded-md p-2 bg-zinc-50 transition-all delay-75 dark:bg-zinc-900 hover:shadow-lg h-fit mb-5;
+    @apply rounded-md p-2 bg-zinc-50 transition-all delay-75 dark:bg-zinc-900 hover:shadow-lg h-fit mb-2 md:mb-5;
   }
 
   .grid-cards {
-    @apply columns-1 sm:columns-2 lg:columns-4 xl:columns-4 gap-5 mt-5;
+    @apply columns-2 md:columns-4 gap-2 lg:gap-5 mt-5;
   }
 
   .Content {
-    @apply w-[90vw] ml-[5vw] py-4 px-4 mx-auto z-50 transition-all bg-white rounded-md shadow-lg border bg-opacity-95 backdrop-blur-sm dark:bg-zinc-900 dark:bg-opacity-90 dark:backdrop-blur-sm dark:border-zinc-700 relative max-h-[90vh] overflow-auto focus:outline-none;
+    @apply w-[90vw] ml-[5vw] py-4 px-4 mx-auto z-50 transition-all bg-white rounded-md shadow-lg border bg-opacity-95 backdrop-blur-sm dark:bg-zinc-900 dark:bg-opacity-90 dark:backdrop-blur-sm dark:border-zinc-700 relative max-h-[75vh] overflow-auto focus:outline-none;
   }
 
   .Content[data-state="open"] {
