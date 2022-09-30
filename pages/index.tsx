@@ -20,7 +20,7 @@ const Home: NextPage = () => {
       <Header />
       <Panel />
 
-      <div className="hidden lg:block pt-16 container mx-auto max-w-6xl px-10 xl:px-0">
+      <div className="hidden lg:block pt-16 container mx-auto max-w-6xl px-5 xl:px-0">
         <Swiper
           slidesPerView={6}
           spaceBetween={30}
@@ -222,7 +222,7 @@ const Home: NextPage = () => {
         </Swiper>
       </div>
 
-      <section className="container mx-auto pt-10 lg:pt-5 px-10 xl:px-0 max-w-6xl">
+      <section className="container mx-auto pt-10 lg:pt-5 px-5 xl:px-0 max-w-6xl">
         <div className="flex items-center gap-3 text-xl sm:text-2xl md:text-3xl w-fit font-extrabold border-b-2 border-b-sky-700 dark:border-b-sky-300 pr-3">
           <Trophy className="text-sky-700 dark:text-sky-300" />
           <span>Os mais vendidos</span>
@@ -231,7 +231,7 @@ const Home: NextPage = () => {
         <Card />
       </section>
 
-      <section className="container mx-auto pt-16 px-10 xl:px-0 max-w-6xl">
+      <section className="container mx-auto pt-16 px-5 xl:px-0 max-w-6xl">
         <div className="flex items-center gap-3 text-xl sm:text-2xl md:text-3xl w-fit font-extrabold border-b-2 border-b-sky-700 dark:border-b-sky-300 pr-3">
           <Medal className="text-sky-700 dark:text-sky-300" />
           <span>Destaques</span>

@@ -42,7 +42,7 @@ const Card = () => {
         </div>
 
         <Link href={"/produto"} passHref>
-          <Button isFullSize buttonSize="sm">
+          <Button isFullSize>
             <ShoppingCart />
             Comprar
           </Button>

@@ -41,7 +41,7 @@ const Produto: NextPage = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mt-10 justify-items-center">
-          <div className="w-full overflow-hidden rounded-md h-fit max-w-xs">
+          <div className="w-full overflow-hidden rounded-md h-fit max-w-sm">
             <Image
               src={
                 "https://img.freepik.com/psd-gratuitas/modelo-de-maquete-de-cartao-de-visita-moderno-com-design-elegante_1361-3395.jpg?w=2000"
@@ -90,7 +90,7 @@ const Produto: NextPage = () => {
                     Largura (Metros){" "}
                     <span className="text-red-600 dark:text-red-300">*</span>
                   </label>
-                  <select className="border dark:border-zinc-700 dark:bg-zinc-900 h-12 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300">
+                  <select className="border bg-transparent dark:border-zinc-700 dark:bg-zinc-900 h-12 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300">
                     <option>0.62</option>
                     <option>0.72</option>
                     <option>0.82</option>
@@ -133,21 +133,24 @@ const Produto: NextPage = () => {
                   </Button>
                 </div>
 
-                <span className="text-2xl font-bold order-1 sm:order-2">
-                  R$ 40,00
-                </span>
+                <div className="order-1 sm:order-2 flex flex-col">
+                  <strong className="text-2xl font-bold">R$ 40,00</strong>
+                  <span className="text-sm text-red-600 dark:text-red-300">
+                    Valor mínimo R$ 40,00
+                  </span>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="border-b mt-5 mb-5" />
+        <div className="border-b my-10 dark:border-b-zinc-700" />
 
-        <div className="flex items-center gap-3 text-xl sm:text-2xl md:text-3xl w-fit font-extrabold border-b-2 border-b-sky-700 dark:border-b-sky-300 pr-3">
+        <div className="flex items-center gap-3 text-xl sm:text-2xl md:text-3xl w-fit font-extrabold border-b-2 border-b-sky-700 dark:border-b-sky-300 pr-3 mb-10">
           <span>DETALHES DO PRODUTO</span>
         </div>
 
-        <p className="mt-3">
+        <p className="mt-3 text-justify">
           Eleições 2022 é com a GSE Gráfica Online! Somente aqui você encontra
           os melhores materiais gráficos para utilizar durante toda a campanha
           eleitoral, como Adesivo Parachoque, Adesivo Perfurado, Adesivo para
@@ -162,7 +165,9 @@ const Produto: NextPage = () => {
           nas Eleições 2022!
         </p>
 
-        <div className="border-b mt-5 mb-5" />
+        <div className="flex items-center gap-3 text-xl sm:text-2xl md:text-3xl w-fit font-extrabold border-b-2 border-b-sky-700 dark:border-b-sky-300 pr-3 mb-10 mt-10">
+          <span>COMENTÁRIOS</span>
+        </div>
 
         <div className="grid grid-cols-1 gap-3 divide-y mb-5">
           <div className="grid grid-cols-1 sm:grid-cols-[150px_120px_1fr] gap-5 items-start pt-3">
