@@ -32,7 +32,7 @@ const Home: NextPage<IndexProps> = ({ products, categories }) => {
           }}
           modules={[Pagination]}
         >
-          {categories.map((cat) => (
+          {categories?.map((cat) => (
             <SwiperSlide key={cat.id}>
               <a className="w-36 h-36 mb-10 flex justify-center items-center flex-col cursor-pointer hover:scale-105 transition-all delay-100">
                 <div className="w-24 h-24 rounded-full overflow-hidden ring-4 ring-white dark:ring-zinc-800 shadow-lg">
