@@ -51,42 +51,51 @@ const MinhasCompras: NextPage = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-5">
+              {/** CARD DE COMPRAS */}
               <div className="rounded-md border dark:border-zinc-700 bg-white dark:bg-zinc-900">
-                <div className="border-b dark:border-b-zinc-700 py-3 px-5">
-                  28 de Setembro de 2022
+                <div className="border-b dark:border-b-zinc-700 py-3 px-3 gap-2 flex sm:items-center justify-between flex-col sm:flex-row">
+                  <span>28 de Setembro de 2022</span>
+                  <span className="text-sm py-1 px-2 bg-yellow-500 rounded-md w-fit text-white dark:text-zinc-800 dark:bg-yellow-300 flex items-center gap-2">
+                    <Hourglass />
+                    Aguardando pagamento
+                  </span>
                 </div>
-                <div className="grid grid-cols-1 divide-y">
-                  <div className="p-3 grid grid-cols-1 sm:grid-cols-[1fr_150px] gap-5 relative">
-                    <div className="flex gap-5">
-                      <div className="w-[80px] h-fit rounded-md overflow-hidden">
-                        <Image
-                          src={
-                            "https://img.freepik.com/psd-gratuitas/modelo-de-maquete-de-cartao-de-visita-moderno-com-design-elegante_1361-3395.jpg?w=2000"
-                          }
-                          alt="NK Gráfica online cartão de visita"
-                          width={300}
-                          height={300}
-                          layout="responsive"
-                          objectFit="cover"
-                        />
-                      </div>
+                <div className="grid grid-cols-1">
+                  <div className="grid grid-cols-1 sm:grid-cols-[1fr_170px] relative">
+                    <div className="grid grid-cols-1 divide-y dark:divide-zinc-700 sm:border-r dark:border-r-zinc-700">
+                      {/** ITENS */}
 
-                      <div>
-                        <span className="text-sm py-1 px-2 bg-green-500 rounded-md block w-fit mb-2 text-white dark:text-zinc-800 dark:bg-green-300">
-                          Pagamento em processamento
-                        </span>
-                        <strong className="text-sm mb-2 block">
-                          Detalhes do produto:
-                        </strong>
+                      <div className="flex gap-5 p-3">
+                        <div className="w-[80px] h-fit rounded-md overflow-hidden">
+                          <Image
+                            src={
+                              "https://img.freepik.com/psd-gratuitas/modelo-de-maquete-de-cartao-de-visita-moderno-com-design-elegante_1361-3395.jpg?w=2000"
+                            }
+                            alt="NK Gráfica online cartão de visita"
+                            width={300}
+                            height={300}
+                            layout="responsive"
+                            objectFit="cover"
+                          />
+                        </div>
 
-                        <a className="block hover:underline cursor-pointer text-sm">
-                          Cartão de visita 1000 unidades
-                        </a>
-                        <span className="text-sm">Quatidade: 1</span>
+                        <div>
+                          <strong className="text-sm mb-1 block">
+                            Detalhes do produto:
+                          </strong>
+
+                          <a className="block hover:underline cursor-pointer text-sm">
+                            Cartão de visita 1000 unidades
+                          </a>
+                          <span className="text-sm block">
+                            Dimensões: 1.20mt x 1.30mt
+                          </span>
+                          <span className="text-sm block">Quatidade: 1</span>
+                        </div>
                       </div>
                     </div>
 
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2 p-3">
                       <Button isFullSize buttonSize="sm">
                         <MagnifyingGlassPlus /> Ver detalhes
                       </Button>
@@ -95,90 +104,69 @@ const MinhasCompras: NextPage = () => {
                       </Button>
                     </div>
                   </div>
-                </div>
-                {/** STEPS */}
-                <div className="p-3 border-t dark:border-t-zinc-700">
-                  <div className="grid grid-cols-1 sm:grid-cols-5 gap-2 w-full items-start">
-                    <div className="w-full flex items-center justify-start gap-2">
-                      <span className="steps-complete">
-                        <Check />
-                      </span>
-                      <div className="flex items-start flex-col">
-                        <span className="text-sm">Pagamento</span>
+
+                  <div className="border-t dark:border-t-zinc-700">
+                    <dl>
+                      <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt className="text-sm font-bold">Envio</dt>
+                        <dd className="mt-1 text-sm sm:col-span-2 sm:mt-0">
+                          A expressão Lorem ipsum em design gráfico e editoração
+                          é um texto padrão em latim utilizado na produção
+                          gráfica para preencher os espaços de texto em
+                          publicações para testar e ajustar aspectos visuais
+                          antes de utilizar conteúdo real.
+                        </dd>
                       </div>
-                    </div>
-                    <div className="w-full flex items-center justify-start gap-2">
-                      <span className="steps-wait">
-                        <Hourglass />
-                      </span>
-                      <div className="flex items-start flex-col">
-                        <span className="text-sm">Design</span>
-                      </div>
-                    </div>
-                    <div className="w-full flex items-center justify-start gap-2">
-                      <span className="steps-disabled">
-                        <Hourglass />
-                      </span>
-                      <div className="flex items-start flex-col">
-                        <span className="text-sm">Produção</span>
-                      </div>
-                    </div>
-                    <div className="w-full flex items-center justify-start gap-2">
-                      <span className="steps-disabled">
-                        <Hourglass />
-                      </span>
-                      <div className="flex items-start flex-col">
-                        <span className="text-sm">Envio</span>
-                      </div>
-                    </div>
-                    <div className="w-full flex items-center justify-start gap-2">
-                      <span className="steps-disabled">
-                        <Hourglass />
-                      </span>
-                      <div className="flex items-start flex-col">
-                        <span className="text-sm">Concluído</span>
-                      </div>
-                    </div>
+                    </dl>
                   </div>
                 </div>
               </div>
 
+              {/** CARD DE COMPRAS */}
               <div className="rounded-md border dark:border-zinc-700 bg-white dark:bg-zinc-900">
-                <div className="border-b dark:border-b-zinc-700 py-3 px-5">
-                  28 de Setembro de 2022
+                <div className="border-b dark:border-b-zinc-700 py-3 px-3 gap-2 flex sm:items-center justify-between flex-col sm:flex-row">
+                  <span>28 de Setembro de 2022</span>
+                  <span className="text-sm py-1 px-2 bg-yellow-500 rounded-md w-fit text-white dark:text-zinc-800 dark:bg-yellow-300 flex items-center gap-2">
+                    <Hourglass />
+                    Aguardando pagamento
+                  </span>
                 </div>
-                <div className="grid grid-cols-1 divide-y">
-                  <div className="p-3 grid grid-cols-1 sm:grid-cols-[1fr_150px] gap-5 relative">
-                    <div className="flex gap-5">
-                      <div className="w-[80px] h-fit rounded-md overflow-hidden">
-                        <Image
-                          src={
-                            "https://img.freepik.com/psd-gratuitas/modelo-de-maquete-de-cartao-de-visita-moderno-com-design-elegante_1361-3395.jpg?w=2000"
-                          }
-                          alt="NK Gráfica online cartão de visita"
-                          width={300}
-                          height={300}
-                          layout="responsive"
-                          objectFit="cover"
-                        />
-                      </div>
+                <div className="grid grid-cols-1">
+                  <div className="grid grid-cols-1 sm:grid-cols-[1fr_170px] relative">
+                    <div className="grid grid-cols-1 divide-y dark:divide-zinc-700 sm:border-r dark:border-r-zinc-700">
+                      {/** ITENS */}
 
-                      <div>
-                        <span className="text-sm py-1 px-2 bg-green-500 rounded-md block w-fit mb-2 text-white dark:text-zinc-800 dark:bg-green-300">
-                          Pagamento em processamento
-                        </span>
-                        <strong className="text-sm mb-2 block">
-                          Detalhes do produto:
-                        </strong>
+                      <div className="flex gap-5 p-3">
+                        <div className="w-[80px] h-fit rounded-md overflow-hidden">
+                          <Image
+                            src={
+                              "https://img.freepik.com/psd-gratuitas/modelo-de-maquete-de-cartao-de-visita-moderno-com-design-elegante_1361-3395.jpg?w=2000"
+                            }
+                            alt="NK Gráfica online cartão de visita"
+                            width={300}
+                            height={300}
+                            layout="responsive"
+                            objectFit="cover"
+                          />
+                        </div>
 
-                        <a className="block hover:underline cursor-pointer text-sm">
-                          Cartão de visita 1000 unidades
-                        </a>
-                        <span className="text-sm">Quatidade: 1</span>
+                        <div>
+                          <strong className="text-sm mb-1 block">
+                            Detalhes do produto:
+                          </strong>
+
+                          <a className="block hover:underline cursor-pointer text-sm">
+                            Cartão de visita 1000 unidades
+                          </a>
+                          <span className="text-sm block">
+                            Dimensões: 1.20mt x 1.30mt
+                          </span>
+                          <span className="text-sm block">Quatidade: 1</span>
+                        </div>
                       </div>
                     </div>
 
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2 p-3">
                       <Button isFullSize buttonSize="sm">
                         <MagnifyingGlassPlus /> Ver detalhes
                       </Button>
@@ -187,90 +175,69 @@ const MinhasCompras: NextPage = () => {
                       </Button>
                     </div>
                   </div>
-                </div>
-                {/** STEPS */}
-                <div className="p-3 border-t dark:border-t-zinc-700">
-                  <div className="grid grid-cols-1 sm:grid-cols-5 gap-2 w-full items-start">
-                    <div className="w-full flex items-center justify-start gap-2">
-                      <span className="steps-complete">
-                        <Check />
-                      </span>
-                      <div className="flex items-start flex-col">
-                        <span className="text-sm">Pagamento</span>
+
+                  <div className="border-t dark:border-t-zinc-700">
+                    <dl>
+                      <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt className="text-sm font-bold">Envio</dt>
+                        <dd className="mt-1 text-sm sm:col-span-2 sm:mt-0">
+                          A expressão Lorem ipsum em design gráfico e editoração
+                          é um texto padrão em latim utilizado na produção
+                          gráfica para preencher os espaços de texto em
+                          publicações para testar e ajustar aspectos visuais
+                          antes de utilizar conteúdo real.
+                        </dd>
                       </div>
-                    </div>
-                    <div className="w-full flex items-center justify-start gap-2">
-                      <span className="steps-wait">
-                        <Hourglass />
-                      </span>
-                      <div className="flex items-start flex-col">
-                        <span className="text-sm">Design</span>
-                      </div>
-                    </div>
-                    <div className="w-full flex items-center justify-start gap-2">
-                      <span className="steps-disabled">
-                        <Hourglass />
-                      </span>
-                      <div className="flex items-start flex-col">
-                        <span className="text-sm">Produção</span>
-                      </div>
-                    </div>
-                    <div className="w-full flex items-center justify-start gap-2">
-                      <span className="steps-disabled">
-                        <Hourglass />
-                      </span>
-                      <div className="flex items-start flex-col">
-                        <span className="text-sm">Envio</span>
-                      </div>
-                    </div>
-                    <div className="w-full flex items-center justify-start gap-2">
-                      <span className="steps-disabled">
-                        <Hourglass />
-                      </span>
-                      <div className="flex items-start flex-col">
-                        <span className="text-sm">Concluído</span>
-                      </div>
-                    </div>
+                    </dl>
                   </div>
                 </div>
               </div>
 
+              {/** CARD DE COMPRAS */}
               <div className="rounded-md border dark:border-zinc-700 bg-white dark:bg-zinc-900">
-                <div className="border-b dark:border-b-zinc-700 py-3 px-5">
-                  28 de Setembro de 2022
+                <div className="border-b dark:border-b-zinc-700 py-3 px-3 gap-2 flex sm:items-center justify-between flex-col sm:flex-row">
+                  <span>28 de Setembro de 2022</span>
+                  <span className="text-sm py-1 px-2 bg-yellow-500 rounded-md w-fit text-white dark:text-zinc-800 dark:bg-yellow-300 flex items-center gap-2">
+                    <Hourglass />
+                    Aguardando pagamento
+                  </span>
                 </div>
-                <div className="grid grid-cols-1 divide-y">
-                  <div className="p-3 grid grid-cols-1 sm:grid-cols-[1fr_150px] gap-5 relative">
-                    <div className="flex gap-5">
-                      <div className="w-[80px] h-fit rounded-md overflow-hidden">
-                        <Image
-                          src={
-                            "https://img.freepik.com/psd-gratuitas/modelo-de-maquete-de-cartao-de-visita-moderno-com-design-elegante_1361-3395.jpg?w=2000"
-                          }
-                          alt="NK Gráfica online cartão de visita"
-                          width={300}
-                          height={300}
-                          layout="responsive"
-                          objectFit="cover"
-                        />
-                      </div>
+                <div className="grid grid-cols-1">
+                  <div className="grid grid-cols-1 sm:grid-cols-[1fr_170px] relative">
+                    <div className="grid grid-cols-1 divide-y dark:divide-zinc-700 sm:border-r dark:border-r-zinc-700">
+                      {/** ITENS */}
 
-                      <div>
-                        <span className="text-sm py-1 px-2 bg-green-500 rounded-md block w-fit mb-2 text-white dark:text-zinc-800 dark:bg-green-300">
-                          Pagamento em processamento
-                        </span>
-                        <strong className="text-sm mb-2 block">
-                          Detalhes do produto:
-                        </strong>
+                      <div className="flex gap-5 p-3">
+                        <div className="w-[80px] h-fit rounded-md overflow-hidden">
+                          <Image
+                            src={
+                              "https://img.freepik.com/psd-gratuitas/modelo-de-maquete-de-cartao-de-visita-moderno-com-design-elegante_1361-3395.jpg?w=2000"
+                            }
+                            alt="NK Gráfica online cartão de visita"
+                            width={300}
+                            height={300}
+                            layout="responsive"
+                            objectFit="cover"
+                          />
+                        </div>
 
-                        <a className="block hover:underline cursor-pointer text-sm">
-                          Cartão de visita 1000 unidades
-                        </a>
-                        <span className="text-sm">Quatidade: 1</span>
+                        <div>
+                          <strong className="text-sm mb-1 block">
+                            Detalhes do produto:
+                          </strong>
+
+                          <a className="block hover:underline cursor-pointer text-sm">
+                            Cartão de visita 1000 unidades
+                          </a>
+                          <span className="text-sm block">
+                            Dimensões: 1.20mt x 1.30mt
+                          </span>
+                          <span className="text-sm block">Quatidade: 1</span>
+                        </div>
                       </div>
                     </div>
 
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2 p-3">
                       <Button isFullSize buttonSize="sm">
                         <MagnifyingGlassPlus /> Ver detalhes
                       </Button>
@@ -279,50 +246,20 @@ const MinhasCompras: NextPage = () => {
                       </Button>
                     </div>
                   </div>
-                </div>
-                {/** STEPS */}
-                <div className="p-3 border-t dark:border-t-zinc-700">
-                  <div className="grid grid-cols-1 sm:grid-cols-5 gap-2 w-full items-start">
-                    <div className="w-full flex items-center justify-start gap-2">
-                      <span className="steps-complete">
-                        <Check />
-                      </span>
-                      <div className="flex items-start flex-col">
-                        <span className="text-sm">Pagamento</span>
+
+                  <div className="border-t dark:border-t-zinc-700">
+                    <dl>
+                      <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt className="text-sm font-bold">Envio</dt>
+                        <dd className="mt-1 text-sm sm:col-span-2 sm:mt-0">
+                          A expressão Lorem ipsum em design gráfico e editoração
+                          é um texto padrão em latim utilizado na produção
+                          gráfica para preencher os espaços de texto em
+                          publicações para testar e ajustar aspectos visuais
+                          antes de utilizar conteúdo real.
+                        </dd>
                       </div>
-                    </div>
-                    <div className="w-full flex items-center justify-start gap-2">
-                      <span className="steps-wait">
-                        <Hourglass />
-                      </span>
-                      <div className="flex items-start flex-col">
-                        <span className="text-sm">Design</span>
-                      </div>
-                    </div>
-                    <div className="w-full flex items-center justify-start gap-2">
-                      <span className="steps-disabled">
-                        <Hourglass />
-                      </span>
-                      <div className="flex items-start flex-col">
-                        <span className="text-sm">Produção</span>
-                      </div>
-                    </div>
-                    <div className="w-full flex items-center justify-start gap-2">
-                      <span className="steps-disabled">
-                        <Hourglass />
-                      </span>
-                      <div className="flex items-start flex-col">
-                        <span className="text-sm">Envio</span>
-                      </div>
-                    </div>
-                    <div className="w-full flex items-center justify-start gap-2">
-                      <span className="steps-disabled">
-                        <Hourglass />
-                      </span>
-                      <div className="flex items-start flex-col">
-                        <span className="text-sm">Concluído</span>
-                      </div>
-                    </div>
+                    </dl>
                   </div>
                 </div>
               </div>
