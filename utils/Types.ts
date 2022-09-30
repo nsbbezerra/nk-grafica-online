@@ -22,7 +22,7 @@ interface Products {
 }
 
 interface ProductProps {
-  products: Products[];
+  products?: Products[];
 }
 
 type ThumbnailProps = {
@@ -38,12 +38,12 @@ interface Categories {
 }
 
 interface CategoriesProps {
-  categories: Categories[];
+  categories?: Categories[];
 }
 
 interface IndexProps {
-  products: Products[];
-  categories: Categories[];
+  products?: Products[];
+  categories?: Categories[];
 }
 
 export type { ProductProps, CategoriesProps, IndexProps };

@@ -27,7 +27,7 @@ const Products: NextPage = () => {
         </div>
 
         <div className="mt-10">
-          <Card />
+          <Card products={[]} />
         </div>
       </div>
 
