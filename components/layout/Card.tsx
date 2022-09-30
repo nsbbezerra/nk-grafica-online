@@ -16,7 +16,7 @@ const Card: FC<ProductProps> = ({ products }) => {
 
   return (
     <div className="grid-cards">
-      {products.map((prod) => (
+      {products?.map((prod) => (
         <div className="card" key={prod.id}>
           <div className="w-full">
             <Image
