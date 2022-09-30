@@ -28,6 +28,7 @@ export default function Header() {
 
   const [open, setOpen] = useState<boolean>(false);
   const [cart, setCart] = useState<boolean>(false);
+  const [isLogged, setIsLogged] = useState<boolean>(true);
 
   const handleImage = () => {
     if (theme === "light") {
@@ -56,21 +57,37 @@ export default function Header() {
   };
 
   const UserActions = () => (
-    <div className="flex items-center flex-col gap-3 lg:flex-row">
+    <div className="flex items-center flex-col gap-3 lg:flex-row lg:w-80">
       <div className="w-12 h-12 border border-sky-700 rounded-full text-2xl flex items-center justify-center text-sky-700 dark:border-sky-300 dark:text-sky-300">
         <User />
       </div>
       <div className="flex flex-col items-center lg:items-start">
         <span className="block">Bem vindo!</span>
-        <div className="flex gap-2">
-          <a className="text-sky-700 font-bold hover:underline cursor-pointer dark:text-sky-300">
-            Entre
-          </a>
-          <span>ou</span>
-          <a className="text-sky-700 font-bold hover:underline cursor-pointer dark:text-sky-300">
-            Cadastre-se
-          </a>
-        </div>
+        {!isLogged ? (
+          <div className="flex gap-2">
+            <a className="text-sky-700 font-bold hover:underline cursor-pointer dark:text-sky-300">
+              Entre
+            </a>
+            <span>ou</span>
+            <a className="text-sky-700 font-bold hover:underline cursor-pointer dark:text-sky-300">
+              Cadastre-se
+            </a>
+          </div>
+        ) : (
+          <div className="flex sm:gap-2 sm:flex-row flex-col items-center">
+            <Link href={"/minhaconta/meusdados"} passHref>
+              <a className="text-sky-700 font-bold hover:underline cursor-pointer dark:text-sky-300">
+                Meus dados
+              </a>
+            </Link>
+            <span className="hidden sm:block">-</span>
+            <Link href={"/minhaconta/minhascompras"} passHref>
+              <a className="text-sky-700 font-bold hover:underline cursor-pointer dark:text-sky-300">
+                Minhas compras
+              </a>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -121,7 +138,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="w-full relative bg-gradient-to-tr from-sky-50 to-blue-200 dark:from-zinc-800 dark:to-gray-900">
+      <header className="w-full relative bg-gradient-to-tr from-white to-blue-200 dark:from-transparent dark:to-gray-900">
         <div className="h-28 md:h-36 container mx-auto max-w-5xl px-10 xl:px-0 flex items-center justify-between gap-3">
           <div className="relative w-48 sm:w-60 md:w-72">{handleImage()}</div>
 
@@ -157,7 +174,7 @@ export default function Header() {
         </div>
       </header>
 
-      <div className="h-12 sticky top-0 z-10 bg-white bg-opacity-90 backdrop-blur-sm shadow-md dark:bg-zinc-900 dark:bg-opacity-90 dark:backdrop-blur-sm">
+      <div className="h-12 sticky top-0 z-10 bg-white bg-opacity-90 backdrop-blur-sm shadow-sm dark:bg-zinc-900 dark:bg-opacity-90 dark:backdrop-blur-sm">
         <div className="container mx-auto max-w-6xl px-10 xl:px-0 flex items-center justify-between h-full">
           <div className="flex items-center gap-4">
             <div className="Container">

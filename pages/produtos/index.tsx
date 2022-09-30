@@ -14,7 +14,7 @@ const Products: NextPage = () => {
       <Header />
 
       <div className="container mx-auto px-5 xl:px-0 max-w-6xl mt-10">
-        <div className="bg-zinc-50 dark:bg-zinc-900 flex py-2 px-4 items-center gap-3 rounded-md text-sm md:text-base">
+        <div className="bg-white dark:bg-zinc-900 flex py-2 px-4 items-center gap-3 rounded-md text-sm md:text-base">
           <Link href={"/"} passHref>
             <a className="hover:underline cursor-pointer">
               <House />
@@ -31,7 +31,7 @@ const Products: NextPage = () => {
         </div>
       </div>
 
-      <Footer />
+      <Footer space={true} />
     </Fragment>
   );
 };

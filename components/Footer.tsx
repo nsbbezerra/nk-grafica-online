@@ -15,9 +15,17 @@ import {
   WhatsappLogo,
 } from "phosphor-react";
 
-export default function Footer() {
+interface Props {
+  space: boolean;
+}
+
+export default function Footer({ space }: Props) {
   return (
-    <footer className="bg-gray-900 dark:bg-zinc-900 py-10 mt-10">
+    <footer
+      className={`bg-gray-900 dark:bg-zinc-900 py-10 ${
+        space ? "mt-10" : "mt-0"
+      }`}
+    >
       <div className="container mx-auto max-w-6xl px-10 xl:px-0 grid grid-cols-1 md:grid-cols-3 gap-10 pb-10 border-b border-b-zinc-700">
         <div>
           <div className="flex items-center gap-3 text-xl font-extrabold text-sky-300">

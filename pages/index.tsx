@@ -298,7 +298,7 @@ const Home: NextPage = () => {
         </div>
       </section>
 
-      <Footer />
+      <Footer space={true} />
     </Fragment>
   );
 };

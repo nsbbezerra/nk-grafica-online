@@ -22,7 +22,7 @@ const Produto: NextPage = () => {
       <HeadApp title="Cartão de visita | NK Gráfica Online" />
       <Header />
       <div className="container mx-auto px-5 xl:px-0 max-w-6xl mt-10">
-        <div className="bg-zinc-50 dark:bg-zinc-900 flex py-2 px-4 items-center gap-3 rounded-md text-sm md:text-base">
+        <div className="bg-white dark:bg-zinc-900 flex py-2 px-4 items-center gap-3 rounded-md text-sm md:text-base">
           <Link href={"/"} passHref>
             <a className="hover:underline cursor-pointer">
               <House />
@@ -90,7 +90,7 @@ const Produto: NextPage = () => {
                     Largura (Metros){" "}
                     <span className="text-red-600 dark:text-red-300">*</span>
                   </label>
-                  <select className="border bg-transparent dark:border-zinc-700 dark:bg-zinc-900 h-12 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300">
+                  <select className="border bg-white dark:border-zinc-700 dark:bg-zinc-900 h-12 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300">
                     <option>0.62</option>
                     <option>0.72</option>
                     <option>0.82</option>
@@ -169,7 +169,7 @@ const Produto: NextPage = () => {
           <span>COMENTÁRIOS</span>
         </div>
 
-        <div className="grid grid-cols-1 gap-3 divide-y mb-5">
+        <div className="grid grid-cols-1 gap-3 divide-y mb-5 dark:divide-zinc-700">
           <div className="grid grid-cols-1 sm:grid-cols-[150px_120px_1fr] gap-5 items-start pt-3">
             <div>
               <strong className="block">Daniel</strong>
@@ -243,7 +243,7 @@ const Produto: NextPage = () => {
         </Button>
       </div>
 
-      <Footer />
+      <Footer space={true} />
     </Fragment>
   );
 };

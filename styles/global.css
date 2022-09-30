@@ -5,6 +5,10 @@
 @tailwind utilities;
 
 @layer components {
+  body {
+    @apply bg-zinc-50 dark:bg-inherit;
+  }
+
   .buttom-xs {
     @apply px-2 h-7 text-xs text-white rounded-lg flex items-center justify-center gap-2 select-none;
   }
@@ -79,7 +83,7 @@
   }
 
   .card {
-    @apply rounded-md p-2 bg-zinc-50 transition-all delay-75 dark:bg-zinc-900 hover:shadow-lg h-fit mb-2 md:mb-5;
+    @apply rounded-md p-2 bg-white transition-all delay-75 dark:bg-zinc-900 hover:shadow-lg h-fit mb-2 md:mb-5;
   }
 
   .grid-cards {
@@ -119,5 +123,17 @@
 
   .CheckboxIndicator {
     @apply text-sky-700;
+  }
+
+  .steps-wait {
+    @apply w-5 h-5 bg-yellow-50 ring-1 ring-yellow-500 flex items-center justify-center text-yellow-500 font-bold rounded-full dark:bg-opacity-20 select-none;
+  }
+
+  .steps-complete {
+    @apply w-5 h-5 bg-green-50 ring-1 ring-green-600 flex items-center justify-center text-green-600 font-bold rounded-full dark:bg-opacity-20 select-none;
+  }
+
+  .steps-disabled {
+    @apply w-5 h-5 bg-zinc-50 ring-1 ring-zinc-500 flex items-center justify-center text-zinc-500 font-bold rounded-full dark:bg-opacity-20 select-none;
   }
 }
