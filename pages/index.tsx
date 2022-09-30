@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import type { GetStaticProps, NextPage } from "next";
 import { Fragment } from "react";
 import HeadApp from "../components/Head";
 import Header from "../components/Header";
@@ -12,8 +12,11 @@ import { Pagination } from "swiper";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import Footer from "../components/Footer";
+import { clientQuery } from "../lib/urql";
+import { FIND_INDEX_PAGE } from "../graphql/products";
+import { IndexProps } from "../utils/Types";
 
-const Home: NextPage = () => {
+const Home: NextPage<IndexProps> = ({ products, categories }) => {
   return (
     <Fragment>
       <HeadApp title="NK Gráfica Online | Impressões digitais e offset" />
@@ -29,196 +32,25 @@ const Home: NextPage = () => {
           }}
           modules={[Pagination]}
         >
-          <SwiperSlide>
-            <a className="w-36 h-36 mb-10 flex justify-center items-center flex-col cursor-pointer hover:underline">
-              <div className="w-24 h-24 rounded-full overflow-hidden ring-4 ring-sky-100 dark:ring-zinc-800">
-                <Image
-                  src={
-                    "https://img.freepik.com/psd-gratuitas/modelo-de-modelo-de-cartao-de-visita-isometrico_1051-3064.jpg?w=2000"
-                  }
-                  alt="NK Gráfica online banner"
-                  layout="responsive"
-                  width={600}
-                  height={600}
-                  objectFit="cover"
-                />
-              </div>
-              <span className="text-sm text-sky-700 dark:text-zinc-400 text-center mt-3">
-                Cartão de visita
-              </span>
-            </a>
-          </SwiperSlide>
-          <SwiperSlide>
-            <a className="w-36 h-36 mb-10 flex justify-center items-center flex-col cursor-pointer hover:underline">
-              <div className="w-24 h-24 rounded-full overflow-hidden ring-4 ring-sky-100 dark:ring-zinc-800">
-                <Image
-                  src={
-                    "https://img.freepik.com/psd-gratuitas/modelo-de-modelo-de-cartao-de-visita-isometrico_1051-3064.jpg?w=2000"
-                  }
-                  alt="NK Gráfica online banner"
-                  layout="responsive"
-                  width={600}
-                  height={600}
-                  objectFit="cover"
-                />
-              </div>
-              <span className="text-sm text-sky-700 dark:text-zinc-400 text-center mt-3">
-                Cartão de visita
-              </span>
-            </a>
-          </SwiperSlide>
-          <SwiperSlide>
-            <a className="w-36 h-36 mb-10 flex justify-center items-center flex-col cursor-pointer hover:underline">
-              <div className="w-24 h-24 rounded-full overflow-hidden ring-4 ring-sky-100 dark:ring-zinc-800">
-                <Image
-                  src={
-                    "https://img.freepik.com/psd-gratuitas/modelo-de-modelo-de-cartao-de-visita-isometrico_1051-3064.jpg?w=2000"
-                  }
-                  alt="NK Gráfica online banner"
-                  layout="responsive"
-                  width={600}
-                  height={600}
-                  objectFit="cover"
-                />
-              </div>
-              <span className="text-sm text-sky-700 dark:text-zinc-400 text-center mt-3">
-                Cartão de visita
-              </span>
-            </a>
-          </SwiperSlide>
-          <SwiperSlide>
-            <a className="w-36 h-36 mb-10 flex justify-center items-center flex-col cursor-pointer hover:underline">
-              <div className="w-24 h-24 rounded-full overflow-hidden ring-4 ring-sky-100 dark:ring-zinc-800">
-                <Image
-                  src={
-                    "https://img.freepik.com/psd-gratuitas/modelo-de-modelo-de-cartao-de-visita-isometrico_1051-3064.jpg?w=2000"
-                  }
-                  alt="NK Gráfica online banner"
-                  layout="responsive"
-                  width={600}
-                  height={600}
-                  objectFit="cover"
-                />
-              </div>
-              <span className="text-sm text-sky-700 dark:text-zinc-400 text-center mt-3">
-                Cartão de visita
-              </span>
-            </a>
-          </SwiperSlide>
-          <SwiperSlide>
-            <a className="w-36 h-36 mb-10 flex justify-center items-center flex-col cursor-pointer hover:underline">
-              <div className="w-24 h-24 rounded-full overflow-hidden ring-4 ring-sky-100 dark:ring-zinc-800">
-                <Image
-                  src={
-                    "https://img.freepik.com/psd-gratuitas/modelo-de-modelo-de-cartao-de-visita-isometrico_1051-3064.jpg?w=2000"
-                  }
-                  alt="NK Gráfica online banner"
-                  layout="responsive"
-                  width={600}
-                  height={600}
-                  objectFit="cover"
-                />
-              </div>
-              <span className="text-sm text-sky-700 dark:text-zinc-400 text-center mt-3">
-                Cartão de visita
-              </span>
-            </a>
-          </SwiperSlide>
-          <SwiperSlide>
-            <a className="w-36 h-36 mb-10 flex justify-center items-center flex-col cursor-pointer hover:underline">
-              <div className="w-24 h-24 rounded-full overflow-hidden ring-4 ring-sky-100 dark:ring-zinc-800">
-                <Image
-                  src={
-                    "https://img.freepik.com/psd-gratuitas/modelo-de-modelo-de-cartao-de-visita-isometrico_1051-3064.jpg?w=2000"
-                  }
-                  alt="NK Gráfica online banner"
-                  layout="responsive"
-                  width={600}
-                  height={600}
-                  objectFit="cover"
-                />
-              </div>
-              <span className="text-sm text-sky-700 dark:text-zinc-400 text-center mt-3">
-                Cartão de visita
-              </span>
-            </a>
-          </SwiperSlide>
-          <SwiperSlide>
-            <a className="w-36 h-36 mb-10 flex justify-center items-center flex-col cursor-pointer hover:underline">
-              <div className="w-24 h-24 rounded-full overflow-hidden ring-4 ring-sky-100 dark:ring-zinc-800">
-                <Image
-                  src={
-                    "https://img.freepik.com/psd-gratuitas/modelo-de-modelo-de-cartao-de-visita-isometrico_1051-3064.jpg?w=2000"
-                  }
-                  alt="NK Gráfica online banner"
-                  layout="responsive"
-                  width={600}
-                  height={600}
-                  objectFit="cover"
-                />
-              </div>
-              <span className="text-sm text-sky-700 dark:text-zinc-400 text-center mt-3">
-                Cartão de visita
-              </span>
-            </a>
-          </SwiperSlide>
-          <SwiperSlide>
-            <a className="w-36 h-36 mb-10 flex justify-center items-center flex-col cursor-pointer hover:underline">
-              <div className="w-24 h-24 rounded-full overflow-hidden ring-4 ring-sky-100 dark:ring-zinc-800">
-                <Image
-                  src={
-                    "https://img.freepik.com/psd-gratuitas/modelo-de-modelo-de-cartao-de-visita-isometrico_1051-3064.jpg?w=2000"
-                  }
-                  alt="NK Gráfica online banner"
-                  layout="responsive"
-                  width={600}
-                  height={600}
-                  objectFit="cover"
-                />
-              </div>
-              <span className="text-sm text-sky-700 dark:text-zinc-400 text-center mt-3">
-                Cartão de visita
-              </span>
-            </a>
-          </SwiperSlide>
-          <SwiperSlide>
-            <a className="w-36 h-36 mb-10 flex justify-center items-center flex-col cursor-pointer hover:underline">
-              <div className="w-24 h-24 rounded-full overflow-hidden ring-4 ring-sky-100 dark:ring-zinc-800">
-                <Image
-                  src={
-                    "https://img.freepik.com/psd-gratuitas/modelo-de-modelo-de-cartao-de-visita-isometrico_1051-3064.jpg?w=2000"
-                  }
-                  alt="NK Gráfica online banner"
-                  layout="responsive"
-                  width={600}
-                  height={600}
-                  objectFit="cover"
-                />
-              </div>
-              <span className="text-sm text-sky-700 dark:text-zinc-400 text-center mt-3">
-                Cartão de visita
-              </span>
-            </a>
-          </SwiperSlide>
-          <SwiperSlide>
-            <a className="w-36 h-36 mb-10 flex justify-center items-center flex-col cursor-pointer hover:underline">
-              <div className="w-24 h-24 rounded-full overflow-hidden ring-4 ring-sky-100 dark:ring-zinc-800">
-                <Image
-                  src={
-                    "https://img.freepik.com/psd-gratuitas/modelo-de-modelo-de-cartao-de-visita-isometrico_1051-3064.jpg?w=2000"
-                  }
-                  alt="NK Gráfica online banner"
-                  layout="responsive"
-                  width={600}
-                  height={600}
-                  objectFit="cover"
-                />
-              </div>
-              <span className="text-sm text-sky-700 dark:text-zinc-400 text-center mt-3">
-                Cartão de visita
-              </span>
-            </a>
-          </SwiperSlide>
+          {categories.map((cat) => (
+            <SwiperSlide key={cat.id}>
+              <a className="w-36 h-36 mb-10 flex justify-center items-center flex-col cursor-pointer hover:scale-105 transition-all delay-100">
+                <div className="w-24 h-24 rounded-full overflow-hidden ring-4 ring-white dark:ring-zinc-800 shadow-lg">
+                  <Image
+                    src={cat.thumbnail.url}
+                    alt="NK Gráfica online banner"
+                    layout="responsive"
+                    width={600}
+                    height={600}
+                    objectFit="cover"
+                  />
+                </div>
+                <span className="text-sm text-sky-700 dark:text-zinc-400 text-center mt-3">
+                  {cat.name}
+                </span>
+              </a>
+            </SwiperSlide>
+          ))}
         </Swiper>
       </div>
 
@@ -228,7 +60,7 @@ const Home: NextPage = () => {
           <span>Os mais vendidos</span>
         </div>
 
-        <Card />
+        <Card products={products} />
       </section>
 
       <section className="container mx-auto pt-16 px-5 xl:px-0 max-w-6xl">
@@ -304,3 +136,15 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+export const getStaticProps: GetStaticProps = async () => {
+  const { data } = await clientQuery.query(FIND_INDEX_PAGE, {}).toPromise();
+
+  return {
+    props: {
+      products: data.products || [],
+      categories: data.categories || [],
+    },
+    revalidate: 30,
+  };
+};

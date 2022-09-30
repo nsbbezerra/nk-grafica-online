@@ -83,11 +83,11 @@
   }
 
   .card {
-    @apply rounded-md p-2 bg-white transition-all delay-75 dark:bg-zinc-900 hover:shadow-lg h-fit mb-2 md:mb-5;
+    @apply shadow rounded-md p-2 bg-white transition-all delay-75 dark:bg-zinc-900 hover:shadow-lg h-fit mb-2 md:mb-5;
   }
 
   .grid-cards {
-    @apply columns-2 md:columns-4 gap-2 lg:gap-5 mt-5;
+    @apply grid grid-cols-2 md:grid-cols-4 gap-2 lg:gap-5 mt-5;
   }
 
   .Content {
@@ -135,5 +135,9 @@
 
   .steps-disabled {
     @apply w-5 h-5 bg-zinc-50 ring-1 ring-zinc-500 flex items-center justify-center text-zinc-500 font-bold rounded-full dark:bg-opacity-20 select-none;
+  }
+
+  .inner-html {
+    @apply text-sm mt-1;
   }
 }
