@@ -37,7 +37,7 @@ const Card: FC<ProductProps> = ({ products }) => {
               </div>
 
               <div className="p-2">
-                <span className="text-sm sm:text-base block font-bold">
+                <span className="text-sm sm:text-base md:text-lg block font-bold">
                   {prod.name}
                 </span>
 
