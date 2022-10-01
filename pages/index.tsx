@@ -1,5 +1,5 @@
 import type { GetStaticProps, NextPage } from "next";
-import { Fragment } from "react";
+import { Fragment, useContext, useEffect } from "react";
 import HeadApp from "../components/Head";
 import Header from "../components/Header";
 import Panel from "../components/Panel";
@@ -15,8 +15,15 @@ import Footer from "../components/Footer";
 import { clientQuery } from "../lib/urql";
 import { FIND_INDEX_PAGE } from "../graphql/products";
 import { IndexProps } from "../utils/Types";
+import CategoriesContext from "../context/categories";
 
 const Home: NextPage<IndexProps> = ({ products, categories }) => {
+  const { setCategories } = useContext(CategoriesContext);
+
+  useEffect(() => {
+    setCategories(categories || []);
+  }, [categories, setCategories]);
+
   return (
     <Fragment>
       <HeadApp title="NK Gráfica Online | Impressões digitais e offset" />

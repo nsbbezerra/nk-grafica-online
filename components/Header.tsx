@@ -19,12 +19,14 @@ import {
 import DarkTheme from "./DarkTheme";
 import { useTheme } from "next-themes";
 import * as Popover from "@radix-ui/react-popover";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Link from "next/link";
 import Button from "./layout/Buttom";
+import CategoriesContext from "../context/categories";
 
 export default function Header() {
   const { theme } = useTheme();
+  const { categories } = useContext(CategoriesContext);
 
   const [open, setOpen] = useState<boolean>(false);
   const [cart, setCart] = useState<boolean>(false);
@@ -187,31 +189,36 @@ export default function Header() {
                 <Popover.Portal>
                   <Popover.Content className="Content">
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3">
-                      <Link href={"/produtos"} passHref>
-                        <a className="grid grid-cols-[40px_1fr] gap-3 dark:hover:bg-zinc-700 p-2 rounded-md cursor-pointer hover:bg-sky-50 relative w-full items-center">
-                          <div className="w-[40px] h-[40px] rounded-full overflow-hidden">
-                            <Image
-                              src={
-                                "https://img.freepik.com/psd-gratuitas/modelo-de-modelo-de-cartao-de-visita-isometrico_1051-3064.jpg?w=2000"
-                              }
-                              alt="NK Gráfica online banner"
-                              layout="responsive"
-                              width={600}
-                              height={600}
-                              objectFit="cover"
-                            />
-                          </div>
-                          <div className="block relative">
-                            <span className="text-base font-semibold block">
-                              Cartões de visita
-                            </span>
-                            <span className="text-xs block text-zinc-500 dark:text-zinc-400">
-                              Cartões de visita Cartões de visita Cartões de
-                              visita Cartões de visita
-                            </span>
-                          </div>
-                        </a>
-                      </Link>
+                      {categories.length === 0 ? (
+                        ""
+                      ) : (
+                        <>
+                          {categories.map((cat) => (
+                            <Link href={"/produtos"} passHref key={cat.id}>
+                              <a className="grid grid-cols-[40px_1fr] gap-3 dark:hover:bg-zinc-700 p-2 rounded-md cursor-pointer hover:bg-sky-100 relative w-full items-center">
+                                <div className="w-[40px] h-[40px] rounded-full overflow-hidden">
+                                  <Image
+                                    src={cat.thumbnail.url}
+                                    alt="NK Gráfica online banner"
+                                    layout="responsive"
+                                    width={600}
+                                    height={600}
+                                    objectFit="cover"
+                                  />
+                                </div>
+                                <div className="block relative">
+                                  <span className="text-base font-semibold block">
+                                    {cat.name}
+                                  </span>
+                                  <span className="text-xs block text-zinc-500 dark:text-zinc-400">
+                                    {cat.description}
+                                  </span>
+                                </div>
+                              </a>
+                            </Link>
+                          ))}
+                        </>
+                      )}
                     </div>
                     <Popover.Arrow className="Arrow" />
                   </Popover.Content>

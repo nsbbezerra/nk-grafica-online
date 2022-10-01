@@ -2,7 +2,7 @@ import { gql } from "urql";
 
 const FIND_INDEX_PAGE = gql`
   query FindProducts {
-    products {
+    products(where: { better: true }, last: 8) {
       id
       images {
         id
