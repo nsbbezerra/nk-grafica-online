@@ -52,7 +52,7 @@ const Card: FC<ProductProps> = ({ products }) => {
                   </span>
                 </div>
 
-                <Link href={"/produto"} passHref>
+                <Link href={`/produto/${prod.id}`} passHref>
                   <Button isFullSize>
                     <ShoppingCart />
                     Comprar

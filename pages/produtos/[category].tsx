@@ -26,7 +26,9 @@ interface Props {
 const Products: NextPage<Props> = ({ category, products }) => {
   return (
     <Fragment>
-      <HeadApp title={`${category.name} | NK Gráfica online`} />
+      <HeadApp
+        title={`${category.name} | NK Gráfica Online Impressões digitais e Offset`}
+      />
       <Header />
 
       <div className="container mx-auto px-5 xl:px-0 max-w-6xl mt-10">

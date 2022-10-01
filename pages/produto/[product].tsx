@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -9,17 +9,76 @@ import {
   ShoppingCart,
   Star,
 } from "phosphor-react";
-import { Fragment } from "react";
+import { Fragment, useState, useEffect, useContext } from "react";
 import Footer from "../../components/Footer";
 import HeadApp from "../../components/Head";
 import Header from "../../components/Header";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import Button from "../../components/layout/Buttom";
+import { clientQuery } from "../../lib/urql";
+import {
+  FIND_PRODUCTS_PATH,
+  FIND_PRODUCT_INFORMATION,
+} from "../../graphql/products";
+import { Products } from "../../utils/Types";
+import CartContext from "../../context/cart/cart";
+import { configs } from "../../configs";
 
-const Produto: NextPage = () => {
+interface Props {
+  product: Products;
+}
+
+const Produto: NextPage<Props> = ({ product }) => {
+  const { cart, setCart } = useContext(CartContext);
+  const [quantity, setQuantity] = useState<number>(1);
+  const [price, setPrice] = useState<number>(0);
+  const [design, setDesign] = useState<Checkbox.CheckedState>("indeterminate");
+  const [width, setWidth] = useState<number>(0);
+  const [height, setHeight] = useState<number>(0);
+  const [name, setName] = useState<string>("");
+
+  useEffect(() => {
+    if (design === true) {
+      setPrice(price + configs.design);
+    } else if (design === false) {
+      setPrice(price - configs.design);
+    }
+  }, [design]);
+
+  useEffect(() => {
+    setPrice(quantity * product.price);
+    if (quantity < 1 || isNaN(quantity)) {
+      setPrice(product.price);
+    }
+  }, [quantity]);
+
+  const calcPrice = (price: number) => {
+    let transform = price / 100;
+    return transform.toLocaleString("pt-br", {
+      style: "currency",
+      currency: "BRL",
+    });
+  };
+
+  function addToCart() {
+    setCart([
+      ...cart,
+      {
+        id: product.id,
+        design: design === "indeterminate" ? false : true,
+        name,
+        quantity,
+        total: price,
+        thumbnail: product.images[0].url,
+      },
+    ]);
+  }
+
   return (
     <Fragment>
-      <HeadApp title="Cartão de visita | NK Gráfica Online" />
+      <HeadApp
+        title={`${product.name} | NK Gráfica Online Impressões digitais e Offset`}
+      />
       <Header />
       <div className="container mx-auto px-5 xl:px-0 max-w-6xl mt-10">
         <div className="bg-white dark:bg-zinc-900 flex py-2 px-4 items-center gap-3 rounded-md text-sm md:text-base">
@@ -29,24 +88,16 @@ const Produto: NextPage = () => {
             </a>
           </Link>
           <CaretRight />
-          <Link href={"/produtos"} passHref>
-            <a className="hover:underline cursor-pointer">Cartões de visita</a>
-          </Link>
-          <CaretRight />
-          <Link href={"/produto"} passHref>
-            <a className="hover:underline cursor-pointer">
-              Cartões de visita personalizados
-            </a>
+          <Link href={`/produto/${product.id}`} passHref>
+            <a className="hover:underline cursor-pointer">{product.name}</a>
           </Link>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mt-10 justify-items-center">
           <div className="w-full overflow-hidden rounded-md h-fit max-w-sm">
             <Image
-              src={
-                "https://img.freepik.com/psd-gratuitas/modelo-de-maquete-de-cartao-de-visita-moderno-com-design-elegante_1361-3395.jpg?w=2000"
-              }
-              alt="NK Gráfica online cartão de visita"
+              src={product.images[0].url}
+              alt={`NK Gráfica online ${product.name}`}
               width={300}
               height={300}
               layout="responsive"
@@ -56,10 +107,10 @@ const Produto: NextPage = () => {
 
           <div className="lg:col-span-2">
             <strong className="text-sky-700 text-3xl block dark:text-sky-300">
-              Cartão de visita personalizado
+              {product.name}
             </strong>
             <span className="text-zinc-600 dark:text-zinc-300">
-              A expressão Lorem ipsum em design gráfico e editoração.
+              {product.slug}
             </span>
 
             <div className="mt-5">
@@ -69,7 +120,11 @@ const Produto: NextPage = () => {
                     Descrição{" "}
                     <span className="text-red-600 dark:text-red-300">*</span>
                   </label>
-                  <input className="border dark:border-zinc-700 dark:bg-zinc-900 h-12 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300" />
+                  <input
+                    className="border dark:border-zinc-700 dark:bg-zinc-900 h-12 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
                 </div>
                 <div className="flex flex-col">
                   <label>
@@ -79,41 +134,51 @@ const Produto: NextPage = () => {
                   <input
                     type={"number"}
                     className="border h-12 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300"
-                    defaultValue={1}
+                    value={quantity}
+                    onChange={(e) => setQuantity(parseInt(e.target.value))}
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
-                <div className="flex flex-col">
-                  <label>
-                    Largura (Metros){" "}
-                    <span className="text-red-600 dark:text-red-300">*</span>
-                  </label>
-                  <select className="border bg-white dark:border-zinc-700 dark:bg-zinc-900 h-12 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300">
-                    <option>0.62</option>
-                    <option>0.72</option>
-                    <option>0.82</option>
-                    <option>0.92</option>
-                    <option>1.42</option>
-                  </select>
+              {product.mode === "square_meter" && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+                  <div className="flex flex-col">
+                    <label>
+                      Largura (Metros){" "}
+                      <span className="text-red-600 dark:text-red-300">*</span>
+                    </label>
+                    <select
+                      className="border bg-white dark:border-zinc-700 dark:bg-zinc-900 h-12 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300"
+                      value={width}
+                      onChange={(e) => setWidth(parseInt(e.target.value))}
+                    >
+                      {product.widths.map((wd) => (
+                        <option key={wd}>{wd}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="flex flex-col">
+                    <label>
+                      Comprimento (Metros){" "}
+                      <span className="text-red-600 dark:text-red-300">*</span>
+                    </label>
+                    <input
+                      type={"number"}
+                      className="border h-12 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300"
+                      value={height}
+                      onChange={(e) => setHeight(parseFloat(e.target.value))}
+                    />
+                  </div>
                 </div>
-                <div className="flex flex-col">
-                  <label>
-                    Comprimento (Metros){" "}
-                    <span className="text-red-600 dark:text-red-300">*</span>
-                  </label>
-                  <input
-                    type={"number"}
-                    className="border h-12 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300"
-                    defaultValue={1}
-                  />
-                </div>
-              </div>
+              )}
 
               <div className="bg-sky-100 flex items-center gap-3 h-12 rounded-md mt-5 text-sky-700 px-3 dark:bg-sky-900 dark:text-sky-300 py-1">
                 <div className="w-[40px]">
-                  <Checkbox.Root className="CheckBox">
+                  <Checkbox.Root
+                    className="CheckBox"
+                    checked={design}
+                    onCheckedChange={setDesign}
+                  >
                     <Checkbox.Indicator className="CheckboxIndicator">
                       <Check />
                     </Checkbox.Indicator>
@@ -121,25 +186,32 @@ const Produto: NextPage = () => {
                 </div>
                 <span>
                   Não tenho a arte, quero contratar uma -{" "}
-                  <strong>(Adicional de R$ 40,00)</strong>
+                  <strong>(adicional de {calcPrice(configs.design)})</strong>
                 </span>
               </div>
 
-              <div className="grid sm:grid-cols-[250px_1fr] gap-5 sm:gap-10 mt-5 items-center">
-                <div className="order-2 sm:order-1">
-                  <Button buttonSize="lg">
-                    <ShoppingCart />
-                    Adicionar ao carrinho
-                  </Button>
-                </div>
-
-                <div className="order-1 sm:order-2 flex flex-col">
-                  <strong className="text-2xl font-bold">R$ 40,00</strong>
-                  <span className="text-sm text-red-600 dark:text-red-300">
-                    Valor mínimo R$ 40,00
+              <div className="flex flex-col my-5">
+                <strong className="text-2xl font-bold">
+                  {calcPrice(price)}
+                </strong>
+                {design === true && (
+                  <span className="text-sm text-sky-700 dark:text-sky-300 block">
+                    Contém adicional de arte {calcPrice(configs.design)}
                   </span>
-                </div>
+                )}
+                {!product.limit ? (
+                  ""
+                ) : (
+                  <span className="text-sm text-red-600 dark:text-red-300">
+                    Valor mínimo {calcPrice(product.limit || 0)}
+                  </span>
+                )}
               </div>
+
+              <Button buttonSize="lg" onClick={() => addToCart()}>
+                <ShoppingCart />
+                Adicionar ao carrinho
+              </Button>
             </div>
           </div>
         </div>
@@ -249,3 +321,31 @@ const Produto: NextPage = () => {
 };
 
 export default Produto;
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const response = await clientQuery.query(FIND_PRODUCTS_PATH, {}).toPromise();
+  const data: Products[] = response.data.products;
+  const paths = data.map((prod) => {
+    return { params: { product: prod.id } };
+  });
+
+  return {
+    paths,
+    fallback: "blocking",
+  };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const id = params?.product;
+  const { data } = await clientQuery
+    .query(FIND_PRODUCT_INFORMATION, { id })
+    .toPromise();
+  console.log(data);
+
+  return {
+    props: {
+      product: data.product || {},
+    },
+    revalidate: 60,
+  };
+};

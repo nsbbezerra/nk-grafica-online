@@ -149,6 +149,11 @@ export default function Header() {
     });
   };
 
+  function removeItemCart(id: string) {
+    const result = cartApp.filter((obj) => obj.id !== id);
+    setCartApp(result);
+  }
+
   return (
     <>
       <header className="w-full relative bg-gradient-to-tr from-white to-blue-200 dark:from-transparent dark:to-gray-900">
@@ -331,6 +336,7 @@ export default function Header() {
                             buttonSize="xs"
                             scheme="error"
                             variant="outline"
+                            onClick={() => removeItemCart(car.id)}
                           >
                             <Trash />
                             Remover

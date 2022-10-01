@@ -73,4 +73,44 @@ const FIND_PRODUCTS_BY_CATEGORY = gql`
   }
 `;
 
-export { FIND_INDEX_PAGE, FIND_CATEGORIES_PATH, FIND_PRODUCTS_BY_CATEGORY };
+const FIND_PRODUCTS_PATH = gql`
+  query MyQuery {
+    products {
+      id
+    }
+  }
+`;
+
+const FIND_PRODUCT_INFORMATION = gql`
+  query MyQuery($id: ID!) {
+    product(where: { id: $id }) {
+      id
+      images {
+        id
+        url
+      }
+      description {
+        html
+      }
+      slug
+      name
+      price
+      information {
+        html
+      }
+      widths
+      mode
+      promotional
+      promoRate
+      limit
+    }
+  }
+`;
+
+export {
+  FIND_INDEX_PAGE,
+  FIND_CATEGORIES_PATH,
+  FIND_PRODUCTS_BY_CATEGORY,
+  FIND_PRODUCTS_PATH,
+  FIND_PRODUCT_INFORMATION,
+};

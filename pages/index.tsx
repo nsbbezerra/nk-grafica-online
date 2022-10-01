@@ -27,7 +27,7 @@ const Home: NextPage<IndexProps> = ({ products, categories }) => {
 
   return (
     <Fragment>
-      <HeadApp title="NK Gráfica Online | Impressões digitais e offset" />
+      <HeadApp title="NK Gráfica Online | Impressões digitais e Offset" />
       <Header />
       <Panel />
 

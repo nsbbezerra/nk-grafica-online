@@ -19,6 +19,7 @@ interface Products {
   mode: "square_meter" | "unique";
   promotional: boolean;
   promoRate?: number;
+  limit?: number;
 }
 
 interface ProductProps {
