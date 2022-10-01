@@ -172,8 +172,8 @@ export default function Header() {
                   <ShoppingCart />
                 </button>
 
-                <span className="bg-zinc-900 dark:bg-zinc-700 text-white w-5 h-5 rounded-full text-xs flex items-center justify-center absolute -right-2 top-0">
-                  12
+                <span className="bg-sky-700 dark:bg-sky-300 text-white dark:text-zinc-800 w-5 h-5 rounded-full text-xs flex items-center justify-center absolute -right-2 top-0">
+                  {cartApp.length}
                 </span>
               </div>
               <button
@@ -187,7 +187,7 @@ export default function Header() {
         </div>
       </header>
 
-      <div className="h-12 sticky top-0 z-10 bg-white bg-opacity-90 backdrop-blur-sm shadow-sm dark:bg-zinc-900 dark:bg-opacity-90 dark:backdrop-blur-sm">
+      <div className="h-12 sticky top-0 z-10 bg-white bg-opacity-90 backdrop-blur-sm shadow-sm dark:bg-zinc-800 dark:bg-opacity-90 dark:backdrop-blur-sm border-b border-b-sky-700 dark:border-b-sky-300">
         <div className="container mx-auto max-w-6xl px-10 xl:px-0 flex items-center justify-between h-full">
           <div className="flex items-center gap-4">
             <div className="Container">
@@ -205,7 +205,11 @@ export default function Header() {
                       ) : (
                         <>
                           {categories.map((cat) => (
-                            <Link href={"/produtos"} passHref key={cat.id}>
+                            <Link
+                              href={`/produtos/${cat.id}`}
+                              passHref
+                              key={cat.id}
+                            >
                               <a className="grid grid-cols-[40px_1fr] gap-3 dark:hover:bg-zinc-700 p-2 rounded-md cursor-pointer hover:bg-sky-100 relative w-full items-center">
                                 <div className="w-[40px] h-[40px] rounded-full overflow-hidden">
                                   <Image
@@ -249,7 +253,7 @@ export default function Header() {
           open ? "ml-0 block" : "-ml-[100%] hidden"
         }`}
       >
-        <div className="bg-white dark:bg-zinc-900 dark:bg-opacity-95 dark:backdrop-blur-sm bg-opacity-90 backdrop-blur-sm w-[70vw] h-[100%] shadow-2xl relative max-w-xs pt-5">
+        <div className="bg-white dark:bg-zinc-800 dark:bg-opacity-95 dark:backdrop-blur-sm bg-opacity-90 backdrop-blur-sm w-[70vw] h-[100%] shadow-2xl relative max-w-xs pt-5">
           <button
             className="bg-zinc-300 w-7 h-7 flex items-center justify-center absolute right-2 top-2 rounded-full dark:bg-zinc-900"
             onClick={() => setOpen(!open)}
@@ -276,7 +280,7 @@ export default function Header() {
           cart ? "ml-0 block" : "-ml-[100%] hidden"
         }`}
       >
-        <div className="bg-white dark:bg-zinc-900 dark:bg-opacity-95 dark:backdrop-blur-sm bg-opacity-90 backdrop-blur-sm w-[95vw] h-[100%] shadow-2xl relative max-w-md">
+        <div className="bg-white dark:bg-zinc-800 dark:bg-opacity-95 dark:backdrop-blur-sm bg-opacity-90 backdrop-blur-sm w-[95vw] h-[100%] shadow-2xl relative max-w-md">
           <button
             className="bg-zinc-300 w-7 h-7 flex items-center justify-center absolute right-3 top-3 rounded-full dark:bg-zinc-900"
             onClick={() => setCart(!cart)}
@@ -340,7 +344,7 @@ export default function Header() {
             </div>
           </div>
 
-          <div className="w-full absolute bottom-0 right-0 left-0 px-5 bg-white bg-opacity-80 shadow backdrop-blur-sm dark:bg-zinc-800 dark:bg-opacity-80 dark:backdrop-blur-sm h-[115px] flex flex-col justify-center">
+          <div className="w-full absolute bottom-0 right-0 left-0 px-5 bg-white bg-opacity-80 shadow backdrop-blur-sm dark:bg-zinc-900 dark:bg-opacity-80 dark:backdrop-blur-sm h-[115px] flex flex-col justify-center">
             <div className="flex items-center justify-between mb-3">
               <span className="text-lg font-bold">Total a pagar</span>
               <span className="text-lg font-bold">R$ 0,00</span>

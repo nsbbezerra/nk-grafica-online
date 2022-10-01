@@ -46,4 +46,4 @@ interface IndexProps {
   categories?: Categories[];
 }
 
-export type { ProductProps, CategoriesProps, IndexProps };
+export type { ProductProps, CategoriesProps, IndexProps, Products };

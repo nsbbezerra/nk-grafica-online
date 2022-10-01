@@ -83,7 +83,7 @@
   }
 
   .card {
-    @apply shadow rounded-md p-2 bg-white transition-all delay-75 dark:bg-zinc-800 hover:shadow-lg h-fit mb-2 md:mb-5;
+    @apply shadow rounded-md p-2 bg-white transition-all delay-75 dark:bg-zinc-800 hover:shadow-lg h-fit;
   }
 
   .grid-cards {

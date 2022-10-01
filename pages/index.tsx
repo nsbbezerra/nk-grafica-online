@@ -16,6 +16,7 @@ import { clientQuery } from "../lib/urql";
 import { FIND_INDEX_PAGE } from "../graphql/products";
 import { IndexProps } from "../utils/Types";
 import CategoriesContext from "../context/categories/categories";
+import Link from "next/link";
 
 const Home: NextPage<IndexProps> = ({ products, categories }) => {
   const { setCategories } = useContext(CategoriesContext);
@@ -41,21 +42,23 @@ const Home: NextPage<IndexProps> = ({ products, categories }) => {
         >
           {categories?.map((cat) => (
             <SwiperSlide key={cat.id}>
-              <a className="w-36 h-36 mb-10 flex justify-center items-center flex-col cursor-pointer hover:scale-105 transition-all delay-100">
-                <div className="w-24 h-24 rounded-full overflow-hidden ring-4 ring-white dark:ring-zinc-800 shadow-lg">
-                  <Image
-                    src={cat.thumbnail.url}
-                    alt="NK Gráfica online banner"
-                    layout="responsive"
-                    width={600}
-                    height={600}
-                    objectFit="cover"
-                  />
-                </div>
-                <span className="text-sm text-sky-700 dark:text-zinc-400 text-center mt-3">
-                  {cat.name}
-                </span>
-              </a>
+              <Link href={`/produtos/${cat.id}`} passHref>
+                <a className="w-36 h-36 mb-10 flex justify-center items-center flex-col cursor-pointer hover:scale-105 transition-all delay-100">
+                  <div className="w-24 h-24 rounded-full overflow-hidden ring-4 ring-white dark:ring-zinc-800 shadow-lg">
+                    <Image
+                      src={cat.thumbnail.url}
+                      alt="NK Gráfica online banner"
+                      layout="responsive"
+                      width={600}
+                      height={600}
+                      objectFit="cover"
+                    />
+                  </div>
+                  <span className="text-sm text-sky-700 dark:text-zinc-400 text-center mt-3">
+                    {cat.name}
+                  </span>
+                </a>
+              </Link>
             </SwiperSlide>
           ))}
         </Swiper>
