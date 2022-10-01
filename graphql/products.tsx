@@ -42,6 +42,19 @@ const FIND_CATEGORIES_PATH = gql`
   }
 `;
 
+const FIND_CATEGORIES = gql`
+  query FindCategories {
+    categories {
+      id
+      name
+      slug
+      thumbnail {
+        url
+      }
+    }
+  }
+`;
+
 const FIND_PRODUCTS_BY_CATEGORY = gql`
   query MyQuery($id: ID!) {
     category(where: { id: $id }) {
@@ -113,4 +126,5 @@ export {
   FIND_PRODUCTS_BY_CATEGORY,
   FIND_PRODUCTS_PATH,
   FIND_PRODUCT_INFORMATION,
+  FIND_CATEGORIES,
 };

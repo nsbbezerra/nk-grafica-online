@@ -23,19 +23,41 @@ import {
 import { Products } from "../../utils/Types";
 import CartContext from "../../context/cart/cart";
 import { configs } from "../../configs";
+import Toast from "../../components/layout/Toast";
 
 interface Props {
   product: Products;
+}
+
+interface ToastInfo {
+  title: string;
+  message: string;
+  type: "success" | "info" | "warning" | "error";
 }
 
 const Produto: NextPage<Props> = ({ product }) => {
   const { cart, setCart } = useContext(CartContext);
   const [quantity, setQuantity] = useState<number>(1);
   const [price, setPrice] = useState<number>(0);
-  const [design, setDesign] = useState<Checkbox.CheckedState>("indeterminate");
-  const [width, setWidth] = useState<number>(0);
+  const [design, setDesign] = useState<Checkbox.CheckedState>(false);
+  const [width, setWidth] = useState<string>("0");
   const [height, setHeight] = useState<number>(0);
   const [name, setName] = useState<string>("");
+  const [toast, setToast] = useState<ToastInfo>({
+    title: "",
+    message: "",
+    type: "info",
+  });
+  const [openToast, setOpenToast] = useState<boolean>(false);
+
+  function clear() {
+    setQuantity(1);
+    setPrice(product.price);
+    setDesign(false);
+    setWidth("0");
+    setHeight(0);
+    setName("");
+  }
 
   useEffect(() => {
     if (design === true) {
@@ -46,11 +68,29 @@ const Produto: NextPage<Props> = ({ product }) => {
   }, [design]);
 
   useEffect(() => {
-    setPrice(quantity * product.price);
-    if (quantity < 1 || isNaN(quantity)) {
-      setPrice(product.price);
+    if (product.mode === "unique") {
+      setPrice(quantity * product.price);
+      if (quantity < 1 || isNaN(quantity)) {
+        setPrice(product.price);
+      }
+    } else if (product.mode === "square_meter") {
+      if (width === "0") {
+        setPrice(product.price);
+      } else {
+        let square_meter = parseFloat(width) * height;
+        setPrice(quantity * square_meter * product.price);
+      }
     }
   }, [quantity]);
+
+  useEffect(() => {
+    if (width === "0" || isNaN(height) || height === 0) {
+      setPrice(product.price);
+    } else {
+      let square_meter = parseFloat(width) * height;
+      setPrice(quantity * square_meter * product.price);
+    }
+  }, [width, height]);
 
   const calcPrice = (price: number) => {
     let transform = price / 100;
@@ -61,21 +101,71 @@ const Produto: NextPage<Props> = ({ product }) => {
   };
 
   function addToCart() {
+    if (name === "") {
+      setToast({
+        title: "Atenção",
+        message: "Você precisa inserir uma descrição ao item",
+        type: "info",
+      });
+      setOpenToast(true);
+      return false;
+    }
+    if (
+      product.mode === "square_meter" &&
+      parseInt(width) === 0 &&
+      height === 0
+    ) {
+      setToast({
+        title: "Atenção",
+        message:
+          "Você precisa especificar as dimensões do item, Largura e Comprimento",
+        type: "info",
+      });
+      setOpenToast(true);
+      return false;
+    }
+    const finder = cart.find((obj) => obj.id === product.id);
+    if (finder) {
+      setToast({
+        title: "Atenção",
+        message: "Este produto já foi adicionado ao carrinho.",
+        type: "info",
+      });
+      setOpenToast(true);
+      return false;
+    }
     setCart([
       ...cart,
       {
         id: product.id,
-        design: design === "indeterminate" ? false : true,
+        design: design,
         name,
         quantity,
         total: price,
         thumbnail: product.images[0].url,
+        width: parseFloat(width),
+        height: height,
+        mode: product.mode,
       },
     ]);
+    setToast({
+      title: "Sucesso",
+      message: "Produto adicionado ao carrinho",
+      type: "success",
+    });
+    setOpenToast(true);
+    clear();
   }
 
   return (
     <Fragment>
+      <Toast
+        title={toast.title}
+        message={toast.message}
+        onClose={setOpenToast}
+        open={openToast}
+        scheme={toast.type}
+      />
       <HeadApp
         title={`${product.name} | NK Gráfica Online Impressões digitais e Offset`}
       />
@@ -150,10 +240,13 @@ const Produto: NextPage<Props> = ({ product }) => {
                     <select
                       className="border bg-white dark:border-zinc-700 dark:bg-zinc-900 h-12 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300"
                       value={width}
-                      onChange={(e) => setWidth(parseInt(e.target.value))}
+                      onChange={(e) => setWidth(e.target.value)}
                     >
+                      <option value={"0"}>Selecione uma opção</option>
                       {product.widths.map((wd) => (
-                        <option key={wd}>{wd}</option>
+                        <option key={wd} value={wd}>
+                          {wd}
+                        </option>
                       ))}
                     </select>
                   </div>
@@ -222,20 +315,15 @@ const Produto: NextPage<Props> = ({ product }) => {
           <span>DETALHES DO PRODUTO</span>
         </div>
 
-        <p className="mt-3 text-justify">
-          Eleições 2022 é com a GSE Gráfica Online! Somente aqui você encontra
-          os melhores materiais gráficos para utilizar durante toda a campanha
-          eleitoral, como Adesivo Parachoque, Adesivo Perfurado, Adesivo para
-          Portão, Banner Político, Cartaz, Cartão de Visita, Colinha Política,
-          Panfletos, Pragão Político, Praguinha Política e Santão. Além dos
-          famosos Santinho Político e os Adesivos Perfurados Formatos Especiais,
-          ideais para os eleitores utilizarem no dia da votação, uma vez que é
-          possível utilizar a foto, número e coligação do candidato. Conte com
-          materiais de alta qualidade e que fazem parte das especificações
-          necessárias, garantindo o sucesso na campanha. Aproveite agora mesmo
-          as vantagens e diversas opções para aumentar os lucros das revendas
-          nas Eleições 2022!
-        </p>
+        <div
+          className="description-product"
+          dangerouslySetInnerHTML={{ __html: product.description.html }}
+        />
+
+        <div
+          className="description-product"
+          dangerouslySetInnerHTML={{ __html: product.information.html }}
+        />
 
         <div className="flex items-center gap-3 text-xl sm:text-2xl md:text-3xl w-fit font-extrabold border-b-2 border-b-sky-700 dark:border-b-sky-300 pr-3 mb-10 mt-10">
           <span>COMENTÁRIOS</span>
@@ -340,7 +428,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { data } = await clientQuery
     .query(FIND_PRODUCT_INFORMATION, { id })
     .toPromise();
-  console.log(data);
 
   return {
     props: {

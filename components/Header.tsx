@@ -20,7 +20,7 @@ import {
 import DarkTheme from "./DarkTheme";
 import { useTheme } from "next-themes";
 import * as Popover from "@radix-ui/react-popover";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import Link from "next/link";
 import Button from "./layout/Buttom";
 import CategoriesContext from "../context/categories/categories";
@@ -34,6 +34,7 @@ export default function Header() {
   const [open, setOpen] = useState<boolean>(false);
   const [cart, setCart] = useState<boolean>(false);
   const [isLogged, setIsLogged] = useState<boolean>(true);
+  const [total, setTotal] = useState<number>(0);
 
   const handleImage = () => {
     if (theme === "light") {
@@ -153,6 +154,11 @@ export default function Header() {
     const result = cartApp.filter((obj) => obj.id !== id);
     setCartApp(result);
   }
+
+  useEffect(() => {
+    const sum = cartApp.reduce((a, b) => +a + +b.total, 0);
+    setTotal(sum);
+  }, [cartApp]);
 
   return (
     <>
@@ -353,7 +359,7 @@ export default function Header() {
           <div className="w-full absolute bottom-0 right-0 left-0 px-5 bg-white bg-opacity-80 shadow backdrop-blur-sm dark:bg-zinc-900 dark:bg-opacity-80 dark:backdrop-blur-sm h-[115px] flex flex-col justify-center">
             <div className="flex items-center justify-between mb-3">
               <span className="text-lg font-bold">Total a pagar</span>
-              <span className="text-lg font-bold">R$ 0,00</span>
+              <span className="text-lg font-bold">{calcPrice(total)}</span>
             </div>
 
             <Button isFullSize buttonSize="lg">

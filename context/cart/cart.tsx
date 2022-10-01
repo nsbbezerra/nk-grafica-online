@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 interface Cart {
   id: string;
@@ -8,7 +8,8 @@ interface Cart {
   total: number;
   width?: number;
   height?: number;
-  design: boolean;
+  design: boolean | string;
+  mode: "square_meter" | "unique";
 }
 
 type PropsCartContext = {
