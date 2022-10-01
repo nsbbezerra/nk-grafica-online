@@ -4,15 +4,18 @@ import "swiper/css";
 import { ThemeProvider } from "next-themes";
 import { Provider } from "urql";
 import { clientQuery } from "../lib/urql";
-import CategoriesGlobalContext from "../context";
+import CategoriesGlobalContext from "../context/categories";
+import GlobalCartContext from "../context/cart";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider value={clientQuery}>
       <CategoriesGlobalContext>
-        <ThemeProvider enableSystem={false} attribute="class">
-          <Component {...pageProps} />
-        </ThemeProvider>
+        <GlobalCartContext>
+          <ThemeProvider enableSystem={false} attribute="class">
+            <Component {...pageProps} />
+          </ThemeProvider>
+        </GlobalCartContext>
       </CategoriesGlobalContext>
     </Provider>
   );

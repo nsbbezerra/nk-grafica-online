@@ -15,7 +15,7 @@ import Footer from "../components/Footer";
 import { clientQuery } from "../lib/urql";
 import { FIND_INDEX_PAGE } from "../graphql/products";
 import { IndexProps } from "../utils/Types";
-import CategoriesContext from "../context/categories";
+import CategoriesContext from "../context/categories/categories";
 
 const Home: NextPage<IndexProps> = ({ products, categories }) => {
   const { setCategories } = useContext(CategoriesContext);

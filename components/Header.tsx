@@ -15,6 +15,7 @@ import {
   X,
   Percent,
   Trash,
+  Leaf,
 } from "phosphor-react";
 import DarkTheme from "./DarkTheme";
 import { useTheme } from "next-themes";
@@ -22,11 +23,13 @@ import * as Popover from "@radix-ui/react-popover";
 import { useState, useContext } from "react";
 import Link from "next/link";
 import Button from "./layout/Buttom";
-import CategoriesContext from "../context/categories";
+import CategoriesContext from "../context/categories/categories";
+import CartContext from "../context/cart/cart";
 
 export default function Header() {
   const { theme } = useTheme();
   const { categories } = useContext(CategoriesContext);
+  const { cart: cartApp, setCart: setCartApp } = useContext(CartContext);
 
   const [open, setOpen] = useState<boolean>(false);
   const [cart, setCart] = useState<boolean>(false);
@@ -137,6 +140,14 @@ export default function Header() {
       </a>
     </div>
   );
+
+  const calcPrice = (price: number) => {
+    let transform = price / 100;
+    return transform.toLocaleString("pt-br", {
+      style: "currency",
+      currency: "BRL",
+    });
+  };
 
   return (
     <>
@@ -276,252 +287,63 @@ export default function Header() {
 
           <div className="px-5 pt-3 pb-44 max-h-[100%] overflow-auto">
             <div className="grid grid-cols-1 divide-y dark:divide-zinc-700">
-              <div className="grid grid-cols-[80px_1fr] gap-3 py-3">
-                <div className="w-full h-fit rounded-md overflow-hidden">
-                  <Image
-                    src={
-                      "https://img.freepik.com/psd-gratuitas/modelo-de-maquete-de-cartao-de-visita-moderno-com-design-elegante_1361-3395.jpg?w=2000"
-                    }
-                    alt="NK Gráfica online cartão de visita"
-                    width={300}
-                    height={300}
-                    layout="responsive"
-                    objectFit="cover"
-                  />
+              {cartApp.length === 0 ? (
+                <div className="flex flex-col justify-center items-center gap-2 col-span-4 mt-10">
+                  <Leaf className="text-7xl animate-bounce" />
+                  <span>Nada para mostrar</span>
                 </div>
-                <div>
-                  <div className="flex justify-between font-bold gap-3 items-start text-sm">
-                    <span>Cartão de visita 1000 unidades</span>
-                    <span className="block w-36 text-right">R$ 40,00</span>
-                  </div>
-                  <span className="text-sm">100mt x 200mt</span>
+              ) : (
+                <>
+                  {cartApp.map((car) => (
+                    <div
+                      className="grid grid-cols-[80px_1fr] gap-3 py-3"
+                      key={car.id}
+                    >
+                      <div className="w-full h-fit rounded-md overflow-hidden">
+                        <Image
+                          src={car.thumbnail}
+                          alt="NK Gráfica online cartão de visita"
+                          width={300}
+                          height={300}
+                          layout="responsive"
+                          objectFit="cover"
+                        />
+                      </div>
+                      <div>
+                        <div className="flex justify-between font-bold gap-3 items-start text-sm">
+                          <span>{car.name}</span>
+                          <span className="block w-36 text-right">
+                            {calcPrice(car.total)}
+                          </span>
+                        </div>
+                        <span className="text-sm">
+                          {car.width ? `${car.width}mt x` : ""}
+                          {car.height ? `${car.height}mt` : ""}
+                        </span>
 
-                  <div className="flex justify-between mt-2 gap-3 items-start text-sm">
-                    <span>QTD: 1</span>
-                    <Button buttonSize="xs" scheme="error" variant="outline">
-                      <Trash />
-                      Remover
-                    </Button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-[80px_1fr] gap-3 py-3">
-                <div className="w-full h-fit rounded-md overflow-hidden">
-                  <Image
-                    src={
-                      "https://img.freepik.com/psd-gratuitas/modelo-de-maquete-de-cartao-de-visita-moderno-com-design-elegante_1361-3395.jpg?w=2000"
-                    }
-                    alt="NK Gráfica online cartão de visita"
-                    width={300}
-                    height={300}
-                    layout="responsive"
-                    objectFit="cover"
-                  />
-                </div>
-                <div>
-                  <div className="flex justify-between font-bold gap-3 items-start text-sm">
-                    <span>Cartão de visita 1000 unidades</span>
-                    <span className="block w-36 text-right">R$ 40,00</span>
-                  </div>
-                  <span className="text-sm">100mt x 200mt</span>
-
-                  <div className="flex justify-between mt-2 gap-3 items-start text-sm">
-                    <span>QTD: 1</span>
-                    <Button buttonSize="xs" scheme="error" variant="outline">
-                      <Trash />
-                      Remover
-                    </Button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-[80px_1fr] gap-3 py-3">
-                <div className="w-full h-fit rounded-md overflow-hidden">
-                  <Image
-                    src={
-                      "https://img.freepik.com/psd-gratuitas/modelo-de-maquete-de-cartao-de-visita-moderno-com-design-elegante_1361-3395.jpg?w=2000"
-                    }
-                    alt="NK Gráfica online cartão de visita"
-                    width={300}
-                    height={300}
-                    layout="responsive"
-                    objectFit="cover"
-                  />
-                </div>
-                <div>
-                  <div className="flex justify-between font-bold gap-3 items-start text-sm">
-                    <span>Cartão de visita 1000 unidades</span>
-                    <span className="block w-36 text-right">R$ 40,00</span>
-                  </div>
-                  <span className="text-sm">100mt x 200mt</span>
-
-                  <div className="flex justify-between mt-2 gap-3 items-start text-sm">
-                    <span>QTD: 1</span>
-                    <Button buttonSize="xs" scheme="error" variant="outline">
-                      <Trash />
-                      Remover
-                    </Button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-[80px_1fr] gap-3 py-3">
-                <div className="w-full h-fit rounded-md overflow-hidden">
-                  <Image
-                    src={
-                      "https://img.freepik.com/psd-gratuitas/modelo-de-maquete-de-cartao-de-visita-moderno-com-design-elegante_1361-3395.jpg?w=2000"
-                    }
-                    alt="NK Gráfica online cartão de visita"
-                    width={300}
-                    height={300}
-                    layout="responsive"
-                    objectFit="cover"
-                  />
-                </div>
-                <div>
-                  <div className="flex justify-between font-bold gap-3 items-start text-sm">
-                    <span>Cartão de visita 1000 unidades</span>
-                    <span className="block w-36 text-right">R$ 40,00</span>
-                  </div>
-                  <span className="text-sm">100mt x 200mt</span>
-
-                  <div className="flex justify-between mt-2 gap-3 items-start text-sm">
-                    <span>QTD: 1</span>
-                    <Button buttonSize="xs" scheme="error" variant="outline">
-                      <Trash />
-                      Remover
-                    </Button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-[80px_1fr] gap-3 py-3">
-                <div className="w-full h-fit rounded-md overflow-hidden">
-                  <Image
-                    src={
-                      "https://img.freepik.com/psd-gratuitas/modelo-de-maquete-de-cartao-de-visita-moderno-com-design-elegante_1361-3395.jpg?w=2000"
-                    }
-                    alt="NK Gráfica online cartão de visita"
-                    width={300}
-                    height={300}
-                    layout="responsive"
-                    objectFit="cover"
-                  />
-                </div>
-                <div>
-                  <div className="flex justify-between font-bold gap-3 items-start text-sm">
-                    <span>Cartão de visita 1000 unidades</span>
-                    <span className="block w-36 text-right">R$ 40,00</span>
-                  </div>
-                  <span className="text-sm">100mt x 200mt</span>
-
-                  <div className="flex justify-between mt-2 gap-3 items-start text-sm">
-                    <span>QTD: 1</span>
-                    <Button buttonSize="xs" scheme="error" variant="outline">
-                      <Trash />
-                      Remover
-                    </Button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-[80px_1fr] gap-3 py-3">
-                <div className="w-full h-fit rounded-md overflow-hidden">
-                  <Image
-                    src={
-                      "https://img.freepik.com/psd-gratuitas/modelo-de-maquete-de-cartao-de-visita-moderno-com-design-elegante_1361-3395.jpg?w=2000"
-                    }
-                    alt="NK Gráfica online cartão de visita"
-                    width={300}
-                    height={300}
-                    layout="responsive"
-                    objectFit="cover"
-                  />
-                </div>
-                <div>
-                  <div className="flex justify-between font-bold gap-3 items-start text-sm">
-                    <span>Cartão de visita 1000 unidades</span>
-                    <span className="block w-36 text-right">R$ 40,00</span>
-                  </div>
-                  <span className="text-sm">100mt x 200mt</span>
-
-                  <div className="flex justify-between mt-2 gap-3 items-start text-sm">
-                    <span>QTD: 1</span>
-                    <Button buttonSize="xs" scheme="error" variant="outline">
-                      <Trash />
-                      Remover
-                    </Button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-[80px_1fr] gap-3 py-3">
-                <div className="w-full h-fit rounded-md overflow-hidden">
-                  <Image
-                    src={
-                      "https://img.freepik.com/psd-gratuitas/modelo-de-maquete-de-cartao-de-visita-moderno-com-design-elegante_1361-3395.jpg?w=2000"
-                    }
-                    alt="NK Gráfica online cartão de visita"
-                    width={300}
-                    height={300}
-                    layout="responsive"
-                    objectFit="cover"
-                  />
-                </div>
-                <div>
-                  <div className="flex justify-between font-bold gap-3 items-start text-sm">
-                    <span>Cartão de visita 1000 unidades</span>
-                    <span className="block w-36 text-right">R$ 40,00</span>
-                  </div>
-                  <span className="text-sm">100mt x 200mt</span>
-
-                  <div className="flex justify-between mt-2 gap-3 items-start text-sm">
-                    <span>QTD: 1</span>
-                    <Button buttonSize="xs" scheme="error" variant="outline">
-                      <Trash />
-                      Remover
-                    </Button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-[80px_1fr] gap-3 py-3">
-                <div className="w-full h-fit rounded-md overflow-hidden">
-                  <Image
-                    src={
-                      "https://img.freepik.com/psd-gratuitas/modelo-de-maquete-de-cartao-de-visita-moderno-com-design-elegante_1361-3395.jpg?w=2000"
-                    }
-                    alt="NK Gráfica online cartão de visita"
-                    width={300}
-                    height={300}
-                    layout="responsive"
-                    objectFit="cover"
-                  />
-                </div>
-                <div>
-                  <div className="flex justify-between font-bold gap-3 items-start text-sm">
-                    <span>Cartão de visita 1000 unidades</span>
-                    <span className="block w-36 text-right">R$ 40,00</span>
-                  </div>
-                  <span className="text-sm">100mt x 200mt</span>
-
-                  <div className="flex justify-between mt-2 gap-3 items-start text-sm">
-                    <span>QTD: 1</span>
-                    <Button buttonSize="xs" scheme="error" variant="outline">
-                      <Trash />
-                      Remover
-                    </Button>
-                  </div>
-                </div>
-              </div>
+                        <div className="flex justify-between mt-2 gap-3 items-start text-sm">
+                          <span>QTD: {car.quantity}</span>
+                          <Button
+                            buttonSize="xs"
+                            scheme="error"
+                            variant="outline"
+                          >
+                            <Trash />
+                            Remover
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </>
+              )}
             </div>
           </div>
 
           <div className="w-full absolute bottom-0 right-0 left-0 px-5 bg-white bg-opacity-80 shadow backdrop-blur-sm dark:bg-zinc-800 dark:bg-opacity-80 dark:backdrop-blur-sm h-[115px] flex flex-col justify-center">
             <div className="flex items-center justify-between mb-3">
               <span className="text-lg font-bold">Total a pagar</span>
-              <span className="text-lg font-bold">R$ 40,00</span>
+              <span className="text-lg font-bold">R$ 0,00</span>
             </div>
 
             <Button isFullSize buttonSize="lg">
