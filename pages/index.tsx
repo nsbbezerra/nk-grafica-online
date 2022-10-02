@@ -15,16 +15,9 @@ import Footer from "../components/Footer";
 import { clientQuery } from "../lib/urql";
 import { FIND_INDEX_PAGE } from "../graphql/products";
 import { IndexProps } from "../utils/Types";
-import CategoriesContext from "../context/categories/categories";
 import Link from "next/link";
 
 const Home: NextPage<IndexProps> = ({ products, categories }) => {
-  const { setCategories } = useContext(CategoriesContext);
-
-  useEffect(() => {
-    setCategories(categories || []);
-  }, [categories, setCategories]);
-
   return (
     <Fragment>
       <HeadApp title="NK Gráfica Online | Impressões digitais e Offset" />

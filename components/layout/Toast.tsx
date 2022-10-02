@@ -37,13 +37,13 @@ export default function Toast({
       <div
         className={`w-[80vw] max-w-sm relative p-5 ${
           (scheme === "info" &&
-            "bg-sky-700 text-white bg-opacity-95 backdrop-blur-sm dark:bg-opacity-95 dark:bg-sky-300 dark:backdrop-blur-sm") ||
+            "bg-sky-700 text-white bg-opacity-95 backdrop-blur-sm dark:bg-opacity-95 dark:bg-sky-300 dark:backdrop-blur-sm dark:text-zinc-800") ||
           (scheme === "success" &&
-            "bg-green-700 text-white bg-opacity-95 backdrop-blur-sm dark:bg-opacity-95 dark:bg-green-300 dark:backdrop-blur-sm") ||
+            "bg-green-700 text-white bg-opacity-95 backdrop-blur-sm dark:bg-opacity-95 dark:bg-green-300 dark:backdrop-blur-sm dark:text-zinc-800") ||
           (scheme === "warning" &&
-            "bg-yellow-500 text-white bg-opacity-95 backdrop-blur-sm dark:bg-opacity-95 dark:bg-yellow-300 dark:backdrop-blur-sm") ||
+            "bg-yellow-500 text-white bg-opacity-95 backdrop-blur-sm dark:bg-opacity-95 dark:bg-yellow-300 dark:backdrop-blur-sm dark:text-zinc-800") ||
           (scheme === "error" &&
-            "bg-red-600 text-white bg-opacity-95 backdrop-blur-sm dark:bg-opacity-95 dark:bg-red-300 dark:backdrop-blur-sm")
+            "bg-red-600 text-white bg-opacity-95 backdrop-blur-sm dark:bg-opacity-95 dark:bg-red-300 dark:backdrop-blur-sm dark:text-zinc-800")
         } shadow-xl rounded-md`}
       >
         <strong className="font-bold block mb-1">{title}</strong>

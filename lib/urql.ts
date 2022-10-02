@@ -8,8 +8,8 @@ import {
 
 const url =
   "https://api-sa-east-1.hygraph.com/v2/cl88wsb7n1nv801umfyfyfm35/master";
-const queryKey = process.env.QUERY_KEY || "";
-const mutationKey = process.env.MUTATION_KEY || "";
+const queryKey = process.env.NEXT_PUBLIC_QUERY_KEY || "";
+const mutationKey = process.env.NEXT_PUBLIC_MUTATION_KEY || "";
 const isServerSide = typeof window === "undefined";
 const ssrCache = ssrExchange({ isClient: !isServerSide });
 

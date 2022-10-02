@@ -211,7 +211,7 @@ const Produto: NextPage<Props> = ({ product }) => {
                     <span className="text-red-600 dark:text-red-300">*</span>
                   </label>
                   <input
-                    className="border dark:border-zinc-700 dark:bg-zinc-900 h-12 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300"
+                    className="border dark:border-zinc-700 dark:bg-zinc-900 h-10 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
@@ -223,7 +223,7 @@ const Produto: NextPage<Props> = ({ product }) => {
                   </label>
                   <input
                     type={"number"}
-                    className="border h-12 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300"
+                    className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300"
                     value={quantity}
                     onChange={(e) => setQuantity(parseInt(e.target.value))}
                   />
@@ -238,7 +238,7 @@ const Produto: NextPage<Props> = ({ product }) => {
                       <span className="text-red-600 dark:text-red-300">*</span>
                     </label>
                     <select
-                      className="border bg-white dark:border-zinc-700 dark:bg-zinc-900 h-12 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300"
+                      className="border bg-white dark:border-zinc-700 dark:bg-zinc-900 h-10 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300"
                       value={width}
                       onChange={(e) => setWidth(e.target.value)}
                     >
@@ -257,7 +257,7 @@ const Produto: NextPage<Props> = ({ product }) => {
                     </label>
                     <input
                       type={"number"}
-                      className="border h-12 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300"
+                      className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300"
                       value={height}
                       onChange={(e) => setHeight(parseFloat(e.target.value))}
                     />

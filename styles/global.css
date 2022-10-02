@@ -91,7 +91,7 @@
   }
 
   .Content {
-    @apply w-[90vw] ml-[5vw] py-4 px-4 mx-auto z-50 transition-all bg-white rounded-md shadow-lg border bg-opacity-95 backdrop-blur-sm dark:bg-zinc-900 dark:bg-opacity-90 dark:backdrop-blur-sm dark:border-zinc-700 relative max-h-[75vh] overflow-auto focus:outline-none;
+    @apply w-[300px] ml-5 pt-2 pb-4 px-4 mx-auto z-50 transition-all bg-white rounded-md shadow-lg border bg-opacity-95 backdrop-blur-sm dark:bg-zinc-900 dark:bg-opacity-90 dark:backdrop-blur-sm dark:border-zinc-700 relative max-h-[80vh] overflow-auto focus:outline-none;
   }
 
   .Content[data-state="open"] {
@@ -156,5 +156,38 @@
 
   .description-product li {
     @apply my-2;
+  }
+
+  .overlay {
+    @apply fixed inset-0 w-full h-screen bg-black bg-opacity-60 z-30;
+  }
+
+  .overlay {
+    -webkit-animation: fadeIn 0.3s linear;
+    -moz-animation: fadeIn 0.3s linear;
+    animation: fadeIn 0.3s linear;
+  }
+
+  @-webkit-keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .fadeIn {
+    -webkit-animation-name: fadeIn;
+    animation-name: fadeIn;
   }
 }
