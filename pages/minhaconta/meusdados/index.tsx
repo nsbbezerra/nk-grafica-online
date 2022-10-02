@@ -46,7 +46,7 @@ const MeusDados: NextPage = () => {
               <span>Meus dados</span>
             </div>
 
-            <div className="overflow-hidden bg-white dark:bg-zinc-900 border rounded-md dark:border-zinc-700">
+            <div className="overflow-hidden bg-white dark:bg-zinc-800 shadow rounded-md">
               <div>
                 <dl>
                   <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border-b dark:border-b-zinc-700">
@@ -83,7 +83,7 @@ const MeusDados: NextPage = () => {
                       </div>
                     </dd>
                   </div>
-                  <div className="px-4 py-5 sm:grid sm:grid-cols-1 sm:gap-4 sm:px-6 border-b dark:border-b-zinc-700">
+                  <div className="px-4 py-5 sm:grid sm:grid-cols-1 sm:gap-4 sm:px-6">
                     <dt className="text-sm font-bold">
                       <Button buttonSize="lg">
                         <ArrowClockwise /> Atualizar

@@ -12,7 +12,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <Provider value={clientQuery}>
       <CategoriesGlobalContext>
         <GlobalCartContext>
-          <ThemeProvider enableSystem={false} attribute="class">
+          <ThemeProvider enableSystem={true} attribute="class">
             <Component {...pageProps} />
           </ThemeProvider>
         </GlobalCartContext>

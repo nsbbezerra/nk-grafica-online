@@ -589,7 +589,7 @@ export default function Header() {
                       <div>
                         <div className="flex justify-between font-bold gap-3 items-start text-sm">
                           <span>{car.name}</span>
-                          <span className="block w-36 text-right">
+                          <span className="block w-32 text-right">
                             {calcPrice(car.total)}
                           </span>
                         </div>
@@ -607,7 +607,6 @@ export default function Header() {
                             onClick={() => removeItemCart(car.id)}
                           >
                             <Trash />
-                            Remover
                           </Button>
                         </div>
                       </div>
@@ -624,9 +623,15 @@ export default function Header() {
               <span className="text-lg font-bold">{calcPrice(total)}</span>
             </div>
 
-            <Button isFullSize buttonSize="lg">
-              <ShoppingCart /> Finalizar compra
-            </Button>
+            <Link href={"/carrinho"}>
+              <Button
+                isFullSize
+                buttonSize="lg"
+                isDisabled={cartApp.length === 0}
+              >
+                <ShoppingCart /> Finalizar compra
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

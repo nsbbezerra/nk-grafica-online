@@ -23,7 +23,7 @@ const MinhasCompras: NextPage = () => {
       <Header />
 
       <div className="w-full grid grid-cols-[48px_1fr] md:grid-cols-[250px_1fr] overflow-hidden">
-        <div className="w-full bg-white dark:bg-zinc-900 h-full shadow-lg">
+        <div className="w-full bg-white dark:bg-zinc-800 h-full shadow-lg">
           <div className="flex items-center gap-3 text-xl py-5 px-4 font-bold my-5 text-sky-700 dark:text-sky-300">
             <User className="w-[48px]" />
             <span className="hidden md:block">Minha conta</span>
@@ -52,7 +52,7 @@ const MinhasCompras: NextPage = () => {
 
             <div className="grid grid-cols-1 gap-5">
               {/** CARD DE COMPRAS */}
-              <div className="rounded-md border dark:border-zinc-700 bg-white dark:bg-zinc-900">
+              <div className="rounded-md shadow bg-white dark:bg-zinc-800">
                 <div className="border-b dark:border-b-zinc-700 py-3 px-3 gap-2 flex sm:items-center justify-between flex-col sm:flex-row">
                   <span>28 de Setembro de 2022</span>
                   <span className="text-sm py-1 px-2 bg-yellow-500 rounded-md w-fit text-white dark:text-zinc-800 dark:bg-yellow-300 flex items-center gap-2">
@@ -123,7 +123,7 @@ const MinhasCompras: NextPage = () => {
               </div>
 
               {/** CARD DE COMPRAS */}
-              <div className="rounded-md border dark:border-zinc-700 bg-white dark:bg-zinc-900">
+              <div className="rounded-md shadow bg-white dark:bg-zinc-800">
                 <div className="border-b dark:border-b-zinc-700 py-3 px-3 gap-2 flex sm:items-center justify-between flex-col sm:flex-row">
                   <span>28 de Setembro de 2022</span>
                   <span className="text-sm py-1 px-2 bg-yellow-500 rounded-md w-fit text-white dark:text-zinc-800 dark:bg-yellow-300 flex items-center gap-2">
@@ -194,7 +194,7 @@ const MinhasCompras: NextPage = () => {
               </div>
 
               {/** CARD DE COMPRAS */}
-              <div className="rounded-md border dark:border-zinc-700 bg-white dark:bg-zinc-900">
+              <div className="rounded-md shadow bg-white dark:bg-zinc-800">
                 <div className="border-b dark:border-b-zinc-700 py-3 px-3 gap-2 flex sm:items-center justify-between flex-col sm:flex-row">
                   <span>28 de Setembro de 2022</span>
                   <span className="text-sm py-1 px-2 bg-yellow-500 rounded-md w-fit text-white dark:text-zinc-800 dark:bg-yellow-300 flex items-center gap-2">
