@@ -52,11 +52,10 @@ const Produto: NextPage<Props> = ({ product }) => {
 
   function clear() {
     setQuantity(1);
-    setPrice(product.price);
-    setDesign(false);
     setWidth("0");
     setHeight(0);
     setName("");
+    setPrice(product.price);
   }
 
   useEffect(() => {

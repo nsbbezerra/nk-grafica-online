@@ -36,6 +36,7 @@ import { CREATE_CLIENT, FIND_CLIENT, PUBLISH_CLIENT } from "../graphql/client";
 import Toast from "./layout/Toast";
 import { useQuery } from "urql";
 import { FIND_CATEGORIES } from "../graphql/products";
+import { configs } from "../configs";
 
 interface ToastInfo {
   title: string;
@@ -429,7 +430,11 @@ export default function Header() {
       />
       <header className="w-full relative bg-gradient-to-tr from-white to-blue-200 dark:from-transparent dark:to-gray-900">
         <div className="h-28 md:h-36 container mx-auto max-w-5xl px-10 xl:px-0 flex items-center justify-between gap-3">
-          <div className="relative w-48 sm:w-60 md:w-72">{handleImage()}</div>
+          <Link href={"/"} passHref>
+            <a className="relative w-48 sm:w-60 md:w-72 cursor-pointer">
+              {handleImage()}
+            </a>
+          </Link>
 
           <div className="flex flex-col gap-3 items-end">
             <div className="hidden sm:flex justify-end">
@@ -598,6 +603,13 @@ export default function Header() {
                           {car.height ? `${car.height}mt` : ""}
                         </span>
 
+                        {car.design && (
+                          <div className="text-xs text-sky-700 font-bold dark:text-sky-300">
+                            Contém adicional de arte no valor de{" "}
+                            {calcPrice(configs.design)}
+                          </div>
+                        )}
+
                         <div className="flex justify-between mt-2 gap-3 items-start text-sm">
                           <span>QTD: {car.quantity}</span>
                           <Button
@@ -643,8 +655,8 @@ export default function Header() {
         <Dialog.Portal>
           <Dialog.Overlay className="overlay" />
           <Dialog.Content className="flex items-center justify-center relative">
-            <div className="fixed w-full max-w-sm mx-auto text-center transform -translate-x-1/2 -translate-y-1/2 bg-white bg-opacity-95 backdrop-blur-sm dark:bg-zinc-800 dark:bg-opacity-95 dark:backdrop-blur-sm rounded-md sm:max-w-xl md:max-w-xl lg:max-w-4xl left-1/2 top-1/2 z-40 shadow-2xl max-h-[90vh] overflow-auto dark:shadow-black">
-              <Dialog.Title className="flex items-center justify-between gap-3 px-4 py-2 border-b font-bold dark:border-b-zinc-700 sticky top-0 bg-white bg-opacity-90 backdrop-blur-sm dark:bg-zinc-800 dark:bg-opacity-95 dark:backdrop-blur-sm">
+            <div className="content-modal-register">
+              <Dialog.Title className="header-modal">
                 <div className="flex items-center gap-3 text-lg">
                   <FloppyDisk />
                   Cadastro
@@ -1000,8 +1012,8 @@ export default function Header() {
         <Dialog.Portal>
           <Dialog.Overlay className="overlay" />
           <Dialog.Content className="flex items-center justify-center relative">
-            <div className="fixed w-full max-w-sm mx-auto text-center transform -translate-x-1/2 -translate-y-1/2 bg-white bg-opacity-95 backdrop-blur-sm dark:bg-zinc-800 dark:bg-opacity-95 dark:backdrop-blur-sm rounded-md left-1/2 top-1/2 z-40 shadow-2xl max-h-[80vh] overflow-auto dark:shadow-black">
-              <Dialog.Title className="flex items-center justify-between gap-3 px-4 py-2 border-b font-bold dark:border-b-zinc-700 sticky top-0 bg-white bg-opacity-90 backdrop-blur-sm dark:bg-zinc-800 dark:bg-opacity-95 dark:backdrop-blur-sm">
+            <div className="content-modal-login">
+              <Dialog.Title className="header-modal">
                 <div className="flex items-center gap-3 text-lg">
                   <SignIn />
                   Login
