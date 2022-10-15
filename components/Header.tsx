@@ -468,7 +468,7 @@ export default function Header() {
         </div>
       </header>
 
-      <div className="h-12 sticky top-0 z-10 bg-white bg-opacity-90 backdrop-blur-sm shadow-sm dark:bg-zinc-800 dark:bg-opacity-90 dark:backdrop-blur-sm border-b border-b-sky-700 border-t dark:border-t-sky-300 border-t-sky-700 dark:border-b-sky-300">
+      <div className="h-12 sticky top-0 z-10 bg-white bg-opacity-90 backdrop-blur-sm shadow-md dark:bg-zinc-800 dark:bg-opacity-90 dark:backdrop-blur-sm">
         <div className="container mx-auto max-w-6xl px-10 xl:px-0 flex items-center justify-between h-full">
           <div className="flex items-center gap-4">
             <div className="Container">
