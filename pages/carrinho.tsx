@@ -1,3 +1,4 @@
+import axios from "axios";
 import Image from "next/image";
 import {
   Calculator,
@@ -12,13 +13,43 @@ import Footer from "../components/Footer";
 import HeadApp from "../components/Head";
 import Header from "../components/Header";
 import Button from "../components/layout/Buttom";
+import Toast from "../components/layout/Toast";
 import { configs } from "../configs";
 import CartContext from "../context/cart/cart";
+import { useRouter } from "next/router";
+
+type ClientProps = {
+  id: string;
+  name: string;
+};
+
+interface ToastInfo {
+  title: string;
+  message: string;
+  type: "success" | "info" | "warning" | "error";
+}
 
 export default function MyCart() {
+  const { push } = useRouter();
   const { cart, setCart } = useContext(CartContext);
   const [total, setTotal] = useState<number>(0);
   const [freight, setFreight] = useState<number>(0);
+  const [client, setClient] = useState<ClientProps | null>(null);
+  const [toast, setToast] = useState<ToastInfo>({
+    title: "",
+    message: "",
+    type: "info",
+  });
+  const [openToast, setOpenToast] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    const clientInfo = localStorage.getItem("client");
+    if (clientInfo) {
+      let parsed = JSON.parse(clientInfo);
+      setClient(parsed);
+    }
+  });
 
   function removeItemCart(id: string) {
     const result = cart.filter((obj) => obj.id !== id);
@@ -38,8 +69,72 @@ export default function MyCart() {
     });
   };
 
+  const setCreateOrder = async () => {
+    if (client === null) {
+      setToast({
+        title: "Atenção",
+        message:
+          "Você não fez login, se você já possui conta clique no cabeçalho do site em Login, ou se não tem conta clique em Cadastrar-se",
+        type: "warning",
+      });
+      setOpenToast(true);
+    }
+    let order = {
+      client: client?.id,
+      total: total + freight,
+      payment: "waiting",
+      orderStatus: "payment",
+      shippingValue: freight,
+    };
+    setLoading(true);
+    try {
+      const shipping = {
+        shippingName: "Envio NK Gráfica",
+        shippingTotal: freight,
+      };
+      const { data } = await axios.post("/api/order", {
+        order: JSON.stringify(order),
+        items: JSON.stringify(cart),
+        shipping: JSON.stringify(shipping),
+      });
+      setToast({
+        title: "Sucesso",
+        message: data.message,
+        type: "success",
+      });
+      setOpenToast(true);
+      setLoading(false);
+      push(data.url);
+    } catch (error) {
+      setLoading(false);
+      if (axios.isAxiosError(error) && error.message) {
+        setToast({
+          title: "Atenção",
+          message: error.message,
+          type: "error",
+        });
+        setOpenToast(true);
+      } else {
+        let errorMessage = (error as Error).message;
+        setToast({
+          title: "Atenção",
+          message: errorMessage,
+          type: "error",
+        });
+        setOpenToast(true);
+      }
+    }
+  };
+
   return (
     <Fragment>
+      <Toast
+        title={toast.title}
+        message={toast.message}
+        onClose={setOpenToast}
+        open={openToast}
+        scheme={toast.type}
+      />
       <HeadApp title="NK Gráfica Online | Impressões digitais e Offset" />
       <Header />
       <div className="container max-w-3xl mx-auto px-5 xl:px-0 pt-10">
@@ -72,12 +167,13 @@ export default function MyCart() {
                     />
                   </div>
                   <div>
-                    <div className="flex justify-between font-bold gap-3 items-start text-sm">
-                      <span>{car.name}</span>
+                    <div className="flex justify-between font-bold gap-3 items-start text-sm md:text-base">
+                      <span>{car.productName}</span>
                       <span className="block w-32 text-right">
                         {calcPrice(car.total)}
                       </span>
                     </div>
+                    <span className="text-sm">{car.name}</span>
                     <span className="text-sm">
                       {car.width ? `${car.width}mt x` : ""}
                       {car.height ? `${car.height}mt` : ""}
@@ -125,7 +221,7 @@ export default function MyCart() {
           </div>
         </div>
 
-        <div className="mt-5 rounded-md bg-white py-2 px-5 shadow grid grid-cols-1 divide-y dark:divide-zinc-700 dark:bg-zinc-800 mb-10">
+        <div className="mt-5 rounded-md bg-white py-2 px-5 shadow grid grid-cols-1 divide-y dark:divide-zinc-700 dark:bg-zinc-800 mb-5">
           <div className="flex items-center justify-between py-3">
             <span>Sub Total</span>
             <span>{calcPrice(total)}</span>
@@ -140,7 +236,13 @@ export default function MyCart() {
           </div>
         </div>
 
-        <Button buttonSize="lg" isFullSize isDisabled={cart.length === 0}>
+        <Button
+          buttonSize="lg"
+          isFullSize
+          isDisabled={cart.length === 0}
+          onClick={() => setCreateOrder()}
+          isLoading={loading}
+        >
           <CurrencyDollar />
           Ir para o pagamento
         </Button>

@@ -593,11 +593,12 @@ export default function Header() {
                       </div>
                       <div>
                         <div className="flex justify-between font-bold gap-3 items-start text-sm">
-                          <span>{car.name}</span>
+                          <span>{car.productName}</span>
                           <span className="block w-32 text-right">
                             {calcPrice(car.total)}
                           </span>
                         </div>
+                        <span className="text-sm">{car.name}</span>
                         <span className="text-sm">
                           {car.width ? `${car.width}mt x` : ""}
                           {car.height ? `${car.height}mt` : ""}

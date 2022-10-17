@@ -1,15 +1,17 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 
 interface Cart {
   id: string;
   thumbnail: string;
   name: string;
+  productName: string;
   quantity: number;
   total: number;
   width?: number;
   height?: number;
   design: boolean | string;
   mode: "square_meter" | "unique";
+  unity: number;
 }
 
 type PropsCartContext = {

@@ -139,12 +139,14 @@ const Produto: NextPage<Props> = ({ product }) => {
         id: product.id,
         design: design,
         name,
+        productName: product.name,
         quantity,
         total: price,
         thumbnail: product.images[0].url,
         width: parseFloat(width),
         height: height,
         mode: product.mode,
+        unity: product.price,
       },
     ]);
     setToast({

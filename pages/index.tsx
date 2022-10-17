@@ -1,5 +1,5 @@
 import type { GetStaticProps, NextPage } from "next";
-import { Fragment, useContext, useEffect } from "react";
+import { Fragment } from "react";
 import HeadApp from "../components/Head";
 import Header from "../components/Header";
 import Panel from "../components/Panel";
@@ -7,15 +7,12 @@ import "swiper/css/navigation";
 import { Medal, Trophy } from "phosphor-react";
 import Card from "../components/layout/Card";
 import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import Footer from "../components/Footer";
 import { clientQuery } from "../lib/urql";
 import { FIND_INDEX_PAGE } from "../graphql/products";
 import { IndexProps } from "../utils/Types";
-import Link from "next/link";
 
 const Home: NextPage<IndexProps> = ({ products }) => {
   return (
@@ -113,7 +110,6 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       products: data.products || [],
-      categories: data.categories || [],
     },
     revalidate: 30,
   };

@@ -22,15 +22,6 @@ const FIND_INDEX_PAGE = gql`
       promotional
       promoRate
     }
-    categories {
-      id
-      name
-      description
-      thumbnail {
-        id
-        url
-      }
-    }
   }
 `;
 
@@ -60,7 +51,7 @@ const FIND_PRODUCTS_BY_CATEGORY = gql`
     category(where: { id: $id }) {
       id
       name
-      products {
+      products(where: { active: true }, last: 50) {
         id
         name
         slug
