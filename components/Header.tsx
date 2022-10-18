@@ -313,8 +313,8 @@ export default function Header() {
   };
 
   const UserActions = () => (
-    <div className="flex items-center flex-col gap-3 lg:flex-row lg:w-80">
-      <div className="w-12 h-12 border border-sky-700 rounded-full text-2xl flex items-center justify-center text-sky-700 dark:border-sky-300 dark:text-sky-300">
+    <div className="flex items-center flex-col gap-3 lg:flex-row lg:w-80 z-10">
+      <div className="w-12 h-12 border border-sky-700 rounded-full text-2xl flex items-center justify-center text-sky-700 dark:border-sky-300 dark:text-sky-300 bg-sky-50">
         <User />
       </div>
       <div className="flex flex-col items-center lg:items-start">
@@ -425,7 +425,16 @@ export default function Header() {
         scheme={toast.type}
       />
       <header className="w-full relative bg-gradient-to-tr from-sky-50 to-blue-300 dark:from-transparent dark:to-gray-900">
-        <div className="h-28 md:h-36 container mx-auto max-w-5xl px-10 xl:px-0 flex items-center justify-between gap-3">
+        <div className="absolute top-0 -right-2 -left-2 opacity-70 dark:opacity-30 bottom-0">
+          <Image
+            src={"/img/bg_one.svg"}
+            layout="fill"
+            alt="NK Gráfica Online logo"
+            objectFit="cover"
+            objectPosition={"center"}
+          />
+        </div>
+        <div className="h-32 md:h-36 container mx-auto max-w-5xl px-10 xl:px-0 flex items-center justify-between gap-3">
           <Link href={"/"} passHref>
             <a className="relative w-48 sm:w-60 md:w-72 cursor-pointer">
               {handleImage()}
