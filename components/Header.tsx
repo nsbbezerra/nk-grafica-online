@@ -459,7 +459,7 @@ export default function Header() {
                 </span>
               </div>
               <button
-                className="icon-buttom-lg buttom-blue lg:hidden"
+                className="icon-buttom-lg buttom-blue lg:hidden z-10"
                 onClick={() => setOpen(!open)}
               >
                 <List />
