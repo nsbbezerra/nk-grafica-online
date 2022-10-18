@@ -7,6 +7,13 @@ type ImageProps = {
   url: string;
 };
 
+type ShippingProps = {
+  width: number;
+  height: number;
+  lenght: number;
+  weight: number;
+};
+
 interface Products {
   id: string;
   images: ImageProps[];
@@ -20,6 +27,8 @@ interface Products {
   promotional: boolean;
   promoRate?: number;
   limit?: number;
+  shipping: ShippingProps;
+  shippingOptions: "fast" | "slow";
 }
 
 type ReviewsProps = {
@@ -45,6 +54,8 @@ interface ProductsInfoProps {
   promoRate?: number;
   limit?: number;
   reviews: ReviewsProps[];
+  shipping: ShippingProps;
+  shippingOptions: "fast" | "slow";
 }
 
 interface ProductProps {

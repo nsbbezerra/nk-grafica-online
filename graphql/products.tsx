@@ -68,6 +68,8 @@ const FIND_PRODUCTS_BY_CATEGORY = gql`
         promotional
         mode
         better
+        shipping
+        shippingOptions
         images {
           id
           url
@@ -107,6 +109,8 @@ const FIND_PRODUCT_INFORMATION = gql`
       promotional
       promoRate
       limit
+      shipping
+      shippingOptions
       reviews {
         id
         headline

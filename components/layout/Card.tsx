@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Leaf, ShoppingCart } from "phosphor-react";
+import { Leaf, ShoppingCart, Truck } from "phosphor-react";
 import Button from "./Buttom";
 import { FC } from "react";
 import { ProductProps } from "../../utils/Types";
@@ -25,6 +25,12 @@ const Card: FC<ProductProps> = ({ products }) => {
         <>
           {products?.map((prod) => (
             <div className="card" key={prod.id}>
+              {prod.shippingOptions === "fast" && (
+                <div className="flex items-center gap-2 bg-sky-100 text-sm rounded-md py-1 px-2 text-sky-700 font-semibold w-fit absolute z-[5] dark:bg-zinc-600 dark:text-white right-3 top-3 shadow">
+                  <Truck weight="fill" className="text-base" />
+                  <span>Entrega rápida</span>
+                </div>
+              )}
               <div className="w-full">
                 <Image
                   src={prod.images[0].url}
@@ -36,7 +42,7 @@ const Card: FC<ProductProps> = ({ products }) => {
                 />
               </div>
 
-              <div className="p-2">
+              <div className="p-2 relative">
                 <span className="text-sm sm:text-base md:text-lg block font-bold">
                   {prod.name}
                 </span>
@@ -46,7 +52,7 @@ const Card: FC<ProductProps> = ({ products }) => {
                   dangerouslySetInnerHTML={{ __html: prod.information.html }}
                 />
 
-                <div className="flex items-baseline gap-2 py-3">
+                <div className="flex items-center gap-2 py-3 justify-between">
                   <span className="md:text-xl lg:text-2xl font-extrabold text-sky-700 dark:text-sky-300">
                     {calcPrice(prod.price)}
                   </span>

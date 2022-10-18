@@ -11,6 +11,7 @@ import {
   Pencil,
   ShoppingCart,
   Star,
+  Truck,
   X,
 } from "phosphor-react";
 import { Fragment, useState, useEffect, useContext } from "react";
@@ -187,7 +188,7 @@ const Produto: NextPage<Props> = ({ product }) => {
       />
       <Header />
       <div className="container mx-auto px-5 xl:px-0 max-w-6xl mt-10">
-        <div className="bg-white dark:bg-zinc-900 flex py-2 px-4 items-center gap-3 rounded-md text-sm md:text-base">
+        <div className="bg-white dark:bg-zinc-800 flex py-2 px-4 items-center gap-3 rounded-md text-sm md:text-base shadow">
           <Link href={"/"} passHref>
             <a className="hover:underline cursor-pointer">
               <House />
@@ -200,7 +201,7 @@ const Produto: NextPage<Props> = ({ product }) => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mt-10 justify-items-center">
-          <div className="w-full overflow-hidden rounded-md h-fit max-w-sm">
+          <div className="w-full overflow-hidden rounded-md h-fit max-w-sm shadow bg-white dark:bg-zinc-800">
             <Image
               src={product.images[0].url}
               alt={`NK Gráfica online ${product.name}`}
@@ -211,13 +212,19 @@ const Produto: NextPage<Props> = ({ product }) => {
             />
           </div>
 
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 relative">
             <strong className="text-sky-700 text-3xl block dark:text-sky-300">
               {product.name}
             </strong>
             <span className="text-zinc-600 dark:text-zinc-300">
               {product.slug}
             </span>
+            {product.shippingOptions === "fast" && (
+              <div className="flex items-center gap-2 bg-sky-100 rounded-md py-1 px-2 text-sky-700 font-semibold w-fit z-[5] dark:bg-zinc-600 dark:text-white shadow mt-3">
+                <Truck weight="fill" className="text-lg" />
+                <span>Entrega rápida</span>
+              </div>
+            )}
 
             <div className="mt-5">
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
@@ -281,24 +288,6 @@ const Produto: NextPage<Props> = ({ product }) => {
                 </div>
               )}
 
-              <div className="bg-sky-100 flex items-center gap-3 h-12 rounded-md mt-5 text-sky-700 px-3 dark:bg-sky-900 dark:text-sky-300 py-1">
-                <div className="w-[40px]">
-                  <Checkbox.Root
-                    className="CheckBox"
-                    checked={design}
-                    onCheckedChange={setDesign}
-                  >
-                    <Checkbox.Indicator className="CheckboxIndicator">
-                      <Check />
-                    </Checkbox.Indicator>
-                  </Checkbox.Root>
-                </div>
-                <span>
-                  Não tenho a arte, quero contratar uma -{" "}
-                  <strong>(adicional de {calcPrice(configs.design)})</strong>
-                </span>
-              </div>
-
               <div className="flex flex-col my-5">
                 <strong className="text-2xl font-bold">
                   {calcPrice(price)}
@@ -325,150 +314,152 @@ const Produto: NextPage<Props> = ({ product }) => {
           </div>
         </div>
 
-        <div className="border-b my-10 dark:border-b-zinc-700" />
+        <div className="rounded-md mt-10 p-5 bg-white shadow  dark:bg-zinc-800">
+          <div className="flex items-center gap-3 text-xl sm:text-2xl md:text-3xl w-fit font-extrabold border-b-2 border-b-sky-700 dark:border-b-sky-300 pr-3 mb-5">
+            <span>DETALHES DO PRODUTO</span>
+          </div>
 
-        <div className="flex items-center gap-3 text-xl sm:text-2xl md:text-3xl w-fit font-extrabold border-b-2 border-b-sky-700 dark:border-b-sky-300 pr-3 mb-10">
-          <span>DETALHES DO PRODUTO</span>
+          <div
+            className="description-product"
+            dangerouslySetInnerHTML={{ __html: product.description.html }}
+          />
+
+          <div
+            className="description-product"
+            dangerouslySetInnerHTML={{ __html: product.information.html }}
+          />
         </div>
 
-        <div
-          className="description-product"
-          dangerouslySetInnerHTML={{ __html: product.description.html }}
-        />
+        <div className="rounded-md mt-10 p-5 bg-white shadow dark:bg-zinc-800">
+          <div className="flex items-center gap-3 text-xl sm:text-2xl md:text-3xl w-fit font-extrabold border-b-2 border-b-sky-700 dark:border-b-sky-300 pr-3 mb-5">
+            <span>COMENTÁRIOS</span>
+          </div>
 
-        <div
-          className="description-product"
-          dangerouslySetInnerHTML={{ __html: product.information.html }}
-        />
-
-        <div className="flex items-center gap-3 text-xl sm:text-2xl md:text-3xl w-fit font-extrabold border-b-2 border-b-sky-700 dark:border-b-sky-300 pr-3 mb-10 mt-10">
-          <span>COMENTÁRIOS</span>
-        </div>
-
-        <div className="grid grid-cols-1 gap-3 divide-y mb-5 dark:divide-zinc-700">
-          {product.reviews.map((rev) => (
-            <div
-              className="grid grid-cols-1 sm:grid-cols-[150px_120px_1fr] gap-5 items-start pt-3"
-              key={rev.id}
-            >
-              <div>
-                <strong className="block">{rev.name}</strong>
-                <span>{formatDate(rev.createdAt)}</span>
-              </div>
-
-              {!rev.rating ? (
-                <div className="flex item-center gap-2">
-                  <Star />
-                  <Star />
-                  <Star />
-                  <Star />
-                  <Star />
+          <div className="grid grid-cols-1 gap-3 divide-y mb-5 dark:divide-zinc-700">
+            {product.reviews.map((rev) => (
+              <div
+                className="grid grid-cols-1 sm:grid-cols-[150px_120px_1fr] gap-5 items-start pt-3"
+                key={rev.id}
+              >
+                <div>
+                  <strong className="block">{rev.name}</strong>
+                  <span>{formatDate(rev.createdAt)}</span>
                 </div>
-              ) : (
-                <>
-                  {rev.rating === 1 && (
-                    <div className="flex item-center gap-2">
-                      <Star
-                        className="text-yellow-500 dark:text-yellow-300"
-                        weight="fill"
-                      />
-                      <Star />
-                      <Star />
-                      <Star />
-                      <Star />
-                    </div>
-                  )}
-                  {rev.rating === 2 && (
-                    <div className="flex item-center gap-2">
-                      <Star
-                        className="text-yellow-500 dark:text-yellow-300"
-                        weight="fill"
-                      />
-                      <Star
-                        className="text-yellow-500 dark:text-yellow-300"
-                        weight="fill"
-                      />
-                      <Star />
-                      <Star />
-                      <Star />
-                    </div>
-                  )}
-                  {rev.rating === 3 && (
-                    <div className="flex item-center gap-2">
-                      <Star
-                        className="text-yellow-500 dark:text-yellow-300"
-                        weight="fill"
-                      />
-                      <Star
-                        className="text-yellow-500 dark:text-yellow-300"
-                        weight="fill"
-                      />
-                      <Star
-                        className="text-yellow-500 dark:text-yellow-300"
-                        weight="fill"
-                      />
-                      <Star />
-                      <Star />
-                    </div>
-                  )}
-                  {rev.rating === 4 && (
-                    <div className="flex item-center gap-2">
-                      <Star
-                        className="text-yellow-500 dark:text-yellow-300"
-                        weight="fill"
-                      />
-                      <Star
-                        className="text-yellow-500 dark:text-yellow-300"
-                        weight="fill"
-                      />
-                      <Star
-                        className="text-yellow-500 dark:text-yellow-300"
-                        weight="fill"
-                      />
-                      <Star
-                        className="text-yellow-500 dark:text-yellow-300"
-                        weight="fill"
-                      />
-                      <Star />
-                    </div>
-                  )}
-                  {rev.rating === 5 && (
-                    <div className="flex item-center gap-2">
-                      <Star
-                        className="text-yellow-500 dark:text-yellow-300"
-                        weight="fill"
-                      />
-                      <Star
-                        className="text-yellow-500 dark:text-yellow-300"
-                        weight="fill"
-                      />
-                      <Star
-                        className="text-yellow-500 dark:text-yellow-300"
-                        weight="fill"
-                      />
-                      <Star
-                        className="text-yellow-500 dark:text-yellow-300"
-                        weight="fill"
-                      />
-                      <Star
-                        className="text-yellow-500 dark:text-yellow-300"
-                        weight="fill"
-                      />
-                    </div>
-                  )}
-                </>
-              )}
-              <div>
-                <strong className="block">{rev.headline}</strong>
-                <span>{rev.content}</span>
-              </div>
-            </div>
-          ))}
-        </div>
 
-        <Button onClick={() => setDialog(true)}>
-          <Pencil /> Adicionar comentário
-        </Button>
+                {!rev.rating ? (
+                  <div className="flex item-center gap-2">
+                    <Star />
+                    <Star />
+                    <Star />
+                    <Star />
+                    <Star />
+                  </div>
+                ) : (
+                  <>
+                    {rev.rating === 1 && (
+                      <div className="flex item-center gap-2">
+                        <Star
+                          className="text-yellow-500 dark:text-yellow-300"
+                          weight="fill"
+                        />
+                        <Star />
+                        <Star />
+                        <Star />
+                        <Star />
+                      </div>
+                    )}
+                    {rev.rating === 2 && (
+                      <div className="flex item-center gap-2">
+                        <Star
+                          className="text-yellow-500 dark:text-yellow-300"
+                          weight="fill"
+                        />
+                        <Star
+                          className="text-yellow-500 dark:text-yellow-300"
+                          weight="fill"
+                        />
+                        <Star />
+                        <Star />
+                        <Star />
+                      </div>
+                    )}
+                    {rev.rating === 3 && (
+                      <div className="flex item-center gap-2">
+                        <Star
+                          className="text-yellow-500 dark:text-yellow-300"
+                          weight="fill"
+                        />
+                        <Star
+                          className="text-yellow-500 dark:text-yellow-300"
+                          weight="fill"
+                        />
+                        <Star
+                          className="text-yellow-500 dark:text-yellow-300"
+                          weight="fill"
+                        />
+                        <Star />
+                        <Star />
+                      </div>
+                    )}
+                    {rev.rating === 4 && (
+                      <div className="flex item-center gap-2">
+                        <Star
+                          className="text-yellow-500 dark:text-yellow-300"
+                          weight="fill"
+                        />
+                        <Star
+                          className="text-yellow-500 dark:text-yellow-300"
+                          weight="fill"
+                        />
+                        <Star
+                          className="text-yellow-500 dark:text-yellow-300"
+                          weight="fill"
+                        />
+                        <Star
+                          className="text-yellow-500 dark:text-yellow-300"
+                          weight="fill"
+                        />
+                        <Star />
+                      </div>
+                    )}
+                    {rev.rating === 5 && (
+                      <div className="flex item-center gap-2">
+                        <Star
+                          className="text-yellow-500 dark:text-yellow-300"
+                          weight="fill"
+                        />
+                        <Star
+                          className="text-yellow-500 dark:text-yellow-300"
+                          weight="fill"
+                        />
+                        <Star
+                          className="text-yellow-500 dark:text-yellow-300"
+                          weight="fill"
+                        />
+                        <Star
+                          className="text-yellow-500 dark:text-yellow-300"
+                          weight="fill"
+                        />
+                        <Star
+                          className="text-yellow-500 dark:text-yellow-300"
+                          weight="fill"
+                        />
+                      </div>
+                    )}
+                  </>
+                )}
+                <div>
+                  <strong className="block">{rev.headline}</strong>
+                  <span>{rev.content}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <Button onClick={() => setDialog(true)}>
+            <Pencil /> Adicionar comentário
+          </Button>
+        </div>
       </div>
 
       <Footer space={true} />

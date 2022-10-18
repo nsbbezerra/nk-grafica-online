@@ -20,7 +20,7 @@ export default function Panel() {
               alt="NK Gráfica online banner"
               layout="responsive"
               width={1920}
-              height={600}
+              height={500}
               objectFit="cover"
             />
           </div>
@@ -32,7 +32,7 @@ export default function Panel() {
               alt="NK Gráfica online banner"
               layout="responsive"
               width={1920}
-              height={600}
+              height={500}
               objectFit="cover"
             />
           </div>

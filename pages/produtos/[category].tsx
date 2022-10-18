@@ -32,7 +32,7 @@ const Products: NextPage<Props> = ({ category, products }) => {
       <Header />
 
       <div className="container mx-auto px-5 xl:px-0 max-w-6xl mt-10">
-        <div className="bg-white dark:bg-zinc-800 flex py-2 px-4 items-center gap-3 rounded-md text-sm md:text-base">
+        <div className="bg-white dark:bg-zinc-800 flex py-2 px-4 items-center gap-3 rounded-md text-sm md:text-base shadow">
           <Link href={"/"} passHref>
             <a className="hover:underline cursor-pointer">
               <House />

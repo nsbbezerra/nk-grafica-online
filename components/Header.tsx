@@ -369,16 +369,16 @@ export default function Header() {
 
   const SocialActions = () => (
     <div className="flex justify-center items-center gap-2 h-10">
-      <a href="#" className="icon-buttom-xs buttom-blue">
+      <a href="#" className="icon-buttom-xs buttom-blue-outline">
         <WhatsappLogo />
       </a>
-      <a href="#" className="icon-buttom-xs buttom-blue">
+      <a href="#" className="icon-buttom-xs buttom-blue-outline">
         <FacebookLogo />
       </a>
-      <a href="#" className="icon-buttom-xs buttom-blue">
+      <a href="#" className="icon-buttom-xs buttom-blue-outline">
         <InstagramLogo />
       </a>
-      <a href="#" className="icon-buttom-xs buttom-blue">
+      <a href="#" className="icon-buttom-xs buttom-blue-outline">
         <LinkedinLogo />
       </a>
       <DarkTheme />
@@ -424,7 +424,7 @@ export default function Header() {
         open={openToast}
         scheme={toast.type}
       />
-      <header className="w-full relative bg-gradient-to-tr from-white to-blue-200 dark:from-transparent dark:to-gray-900">
+      <header className="w-full relative bg-gradient-to-tr from-sky-50 to-blue-300 dark:from-transparent dark:to-gray-900">
         <div className="h-28 md:h-36 container mx-auto max-w-5xl px-10 xl:px-0 flex items-center justify-between gap-3">
           <Link href={"/"} passHref>
             <a className="relative w-48 sm:w-60 md:w-72 cursor-pointer">
@@ -433,10 +433,6 @@ export default function Header() {
           </Link>
 
           <div className="flex flex-col gap-3 items-end">
-            <div className="hidden sm:flex justify-end">
-              <SocialActions />
-            </div>
-
             <div className="flex items-center gap-3 sm:gap-5">
               <div className="hidden lg:flex items-center">
                 <UserActions />
@@ -466,57 +462,62 @@ export default function Header() {
 
       <div className="h-12 sticky top-0 z-10 bg-white bg-opacity-90 backdrop-blur-sm shadow-md dark:bg-zinc-800 dark:bg-opacity-90 dark:backdrop-blur-sm">
         <div className="container mx-auto max-w-6xl px-10 xl:px-0 flex items-center justify-between h-full">
-          <div className="flex items-center gap-4">
-            <div className="Container">
-              <Popover.Root>
-                <Popover.Trigger className="h-12 flex text-sky-700 items-center gap-2 font-bold px-5 hover:bg-sky-700 hover:text-white dark:text-sky-300 dark:hover:bg-sky-300 dark:hover:text-zinc-800 select-none">
-                  <Tag />
-                  Todos os Produtos
-                </Popover.Trigger>
-                <Popover.Anchor />
-                <Popover.Portal>
-                  <Popover.Content className="Content">
-                    <div className="grid grid-cols-1 gap-3 divide-y dark:divide-zinc-700 -pt-2">
-                      {categories.length === 0 ? (
-                        ""
-                      ) : (
-                        <>
-                          {categories.map((cat) => (
-                            <Link
-                              href={`/produtos/${cat.id}`}
-                              passHref
-                              key={cat.id}
-                            >
-                              <a className="grid grid-cols-[30px_1fr] gap-3 pt-3 cursor-pointer relative w-full items-center hover:underline">
-                                <div className="w-[30px] h-[30px] rounded-full overflow-hidden">
-                                  <Image
-                                    src={cat.thumbnail.url}
-                                    alt="NK Gráfica online banner"
-                                    layout="responsive"
-                                    width={600}
-                                    height={600}
-                                    objectFit="cover"
-                                  />
-                                </div>
-                                <div className="block relative">
-                                  <span className="text-base block">
-                                    {cat.name}
-                                  </span>
-                                </div>
-                              </a>
-                            </Link>
-                          ))}
-                        </>
-                      )}
-                    </div>
-                    <Popover.Arrow className="Arrow" />
-                  </Popover.Content>
-                </Popover.Portal>
-              </Popover.Root>
-            </div>
+          <div className="flex items-center justify-between w-full">
+            <div className="flex items-center gap-4">
+              <div className="Container">
+                <Popover.Root>
+                  <Popover.Trigger className="h-12 flex text-sky-700 items-center gap-2 font-bold px-5 hover:bg-sky-700 hover:text-white dark:text-sky-300 dark:hover:bg-sky-300 dark:hover:text-zinc-800 select-none">
+                    <Tag />
+                    Todos os Produtos
+                  </Popover.Trigger>
+                  <Popover.Anchor />
+                  <Popover.Portal>
+                    <Popover.Content className="Content">
+                      <div className="grid grid-cols-1 gap-3 divide-y dark:divide-zinc-700 -pt-2">
+                        {categories.length === 0 ? (
+                          ""
+                        ) : (
+                          <>
+                            {categories.map((cat) => (
+                              <Link
+                                href={`/produtos/${cat.id}`}
+                                passHref
+                                key={cat.id}
+                              >
+                                <a className="grid grid-cols-[30px_1fr] gap-3 pt-3 cursor-pointer relative w-full items-center hover:underline">
+                                  <div className="w-[30px] h-[30px] rounded-full overflow-hidden">
+                                    <Image
+                                      src={cat.thumbnail.url}
+                                      alt="NK Gráfica online banner"
+                                      layout="responsive"
+                                      width={600}
+                                      height={600}
+                                      objectFit="cover"
+                                    />
+                                  </div>
+                                  <div className="block relative">
+                                    <span className="text-base block">
+                                      {cat.name}
+                                    </span>
+                                  </div>
+                                </a>
+                              </Link>
+                            ))}
+                          </>
+                        )}
+                      </div>
+                      <Popover.Arrow className="Arrow" />
+                    </Popover.Content>
+                  </Popover.Portal>
+                </Popover.Root>
+              </div>
 
-            <div className="hidden lg:block">
-              <MenuItems />
+              <div className="hidden lg:block">
+                <MenuItems />
+              </div>
+            </div>
+            <div className="hidden sm:block">
+              <SocialActions />
             </div>
           </div>
         </div>
@@ -542,9 +543,9 @@ export default function Header() {
 
             <MenuItems />
 
-            <div className="my-5" />
-
-            <SocialActions />
+            <div className="w-full flex justify-start mt-5 sm:hidden">
+              <SocialActions />
+            </div>
           </div>
         </div>
       </nav>

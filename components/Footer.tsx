@@ -93,69 +93,39 @@ export default function Footer({ space }: Props) {
               <LinkedinLogo />
             </a>
           </div>
+
+          <div className="w-1/2 mt-5">
+            <Image
+              src={"/img/ssl.png"}
+              alt="NK Gráfica online banner"
+              layout="responsive"
+              width={946}
+              height={250}
+              objectFit="cover"
+            />
+          </div>
         </div>
       </div>
       <div className="container mx-auto max-w-6xl px-10 xl:px-0 grid grid-cols-1 lg:grid-cols-3 gap-10 pt-10">
         <div>
-          <h2 className="text-sky-300 font-bold">FORMAS DE PAGAMENTO</h2>
           <div className="flex items-center gap-3 mt-3">
-            <div className="w-12">
-              <Image
-                src={"/img/elo.svg"}
-                alt="NK Gráfica online banner"
-                layout="responsive"
-                width={780}
-                height={500}
-                objectFit="cover"
-              />
-            </div>
-            <div className="w-12">
-              <Image
-                src={"/img/visa.svg"}
-                alt="NK Gráfica online banner"
-                layout="responsive"
-                width={780}
-                height={500}
-                objectFit="cover"
-              />
-            </div>
-            <div className="w-12">
-              <Image
-                src={"/img/mastercard.svg"}
-                alt="NK Gráfica online banner"
-                layout="responsive"
-                width={780}
-                height={500}
-                objectFit="cover"
-              />
-            </div>
-            <div className="w-12">
-              <Image
-                src={"/img/hipercard.svg"}
-                alt="NK Gráfica online banner"
-                layout="responsive"
-                width={780}
-                height={500}
-                objectFit="cover"
-              />
-            </div>
-            <div className="w-16">
-              <Image
-                src={"/img/boleto.svg"}
-                alt="NK Gráfica online banner"
-                layout="responsive"
-                width={64}
-                height={32}
-                objectFit="cover"
-              />
-            </div>
-            <div className="w-16">
+            <div className="w-36">
               <Image
                 src={"/img/stripe.svg"}
                 alt="NK Gráfica online banner"
                 layout="responsive"
-                width={512}
-                height={214}
+                width={946}
+                height={221}
+                objectFit="cover"
+              />
+            </div>
+            <div className="w-20">
+              <Image
+                src={"/img/melhorenvio.svg"}
+                alt="NK Gráfica online banner"
+                layout="responsive"
+                width={700}
+                height={301}
                 objectFit="cover"
               />
             </div>
