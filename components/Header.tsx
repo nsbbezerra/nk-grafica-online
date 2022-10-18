@@ -404,10 +404,6 @@ export default function Header() {
         <Question />
         Como Comprar?
       </a>
-      <a className="flex items-center lg:h-12 gap-1 hover:underline cursor-pointer px-2 text-red-600 dark:text-red-300 font-extrabold">
-        <Percent />
-        Promoções
-      </a>
     </div>
   );
 

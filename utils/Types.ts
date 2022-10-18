@@ -22,6 +22,31 @@ interface Products {
   limit?: number;
 }
 
+type ReviewsProps = {
+  id: string;
+  headline: string;
+  name: string;
+  rating: number;
+  content: string;
+  createdAt: Date;
+};
+
+interface ProductsInfoProps {
+  id: string;
+  images: ImageProps[];
+  description: RichTextProps;
+  slug: string;
+  name: string;
+  price: number;
+  information: RichTextProps;
+  widths: number[];
+  mode: "square_meter" | "unique";
+  promotional: boolean;
+  promoRate?: number;
+  limit?: number;
+  reviews: ReviewsProps[];
+}
+
 interface ProductProps {
   products?: Products[];
 }
@@ -47,4 +72,10 @@ interface IndexProps {
   categories?: Categories[];
 }
 
-export type { ProductProps, CategoriesProps, IndexProps, Products };
+export type {
+  ProductProps,
+  CategoriesProps,
+  IndexProps,
+  Products,
+  ProductsInfoProps,
+};

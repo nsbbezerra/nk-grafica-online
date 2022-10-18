@@ -78,6 +78,7 @@ export default function MyCart() {
         type: "warning",
       });
       setOpenToast(true);
+      return false;
     }
     let order = {
       client: client?.id,

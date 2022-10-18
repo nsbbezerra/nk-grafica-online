@@ -170,6 +170,10 @@
     @apply fixed w-full max-w-sm mx-auto text-center transform -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-zinc-800 rounded-md sm:max-w-xl md:max-w-xl lg:max-w-4xl left-1/2 top-1/2 z-40 shadow-2xl max-h-[90vh] overflow-auto dark:shadow-black;
   }
 
+  .content-modal-reviews {
+    @apply fixed w-full max-w-sm mx-auto text-center transform -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-zinc-800 rounded-md sm:max-w-xl md:max-w-xl lg:max-w-4xl left-1/2 top-1/2 z-40 shadow-2xl max-h-[90vh] overflow-auto dark:shadow-black;
+  }
+
   .header-modal {
     @apply flex items-center justify-between gap-3 px-4 py-2 border-b font-bold dark:border-b-zinc-700 sticky top-0 bg-white dark:bg-zinc-800;
   }

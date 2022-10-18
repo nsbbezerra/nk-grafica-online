@@ -107,6 +107,14 @@ const FIND_PRODUCT_INFORMATION = gql`
       promotional
       promoRate
       limit
+      reviews {
+        id
+        headline
+        name
+        rating
+        content
+        createdAt
+      }
     }
   }
 `;

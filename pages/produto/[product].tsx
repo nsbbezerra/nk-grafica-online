@@ -2,12 +2,16 @@ import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {
+  Balloon,
   CaretRight,
+  ChatCircle,
   Check,
+  FloppyDisk,
   House,
   Pencil,
   ShoppingCart,
   Star,
+  X,
 } from "phosphor-react";
 import { Fragment, useState, useEffect, useContext } from "react";
 import Footer from "../../components/Footer";
@@ -20,13 +24,14 @@ import {
   FIND_PRODUCTS_PATH,
   FIND_PRODUCT_INFORMATION,
 } from "../../graphql/products";
-import { Products } from "../../utils/Types";
+import { Products, ProductsInfoProps } from "../../utils/Types";
 import CartContext from "../../context/cart/cart";
 import { configs } from "../../configs";
 import Toast from "../../components/layout/Toast";
+import * as Dialog from "@radix-ui/react-dialog";
 
 interface Props {
-  product: Products;
+  product: ProductsInfoProps;
 }
 
 interface ToastInfo {
@@ -49,6 +54,7 @@ const Produto: NextPage<Props> = ({ product }) => {
     type: "info",
   });
   const [openToast, setOpenToast] = useState<boolean>(false);
+  const [dialog, setDialog] = useState<boolean>(false);
 
   function clear() {
     setQuantity(1);
@@ -156,6 +162,15 @@ const Produto: NextPage<Props> = ({ product }) => {
     });
     setOpenToast(true);
     clear();
+  }
+
+  function formatDate(myDate: Date) {
+    const initDate = new Date(myDate);
+    const day = initDate.getDate();
+    const month = initDate.getMonth() + 1;
+    const year = initDate.getFullYear();
+
+    return `${day}/${month}/${year}`;
   }
 
   return (
@@ -331,80 +346,234 @@ const Produto: NextPage<Props> = ({ product }) => {
         </div>
 
         <div className="grid grid-cols-1 gap-3 divide-y mb-5 dark:divide-zinc-700">
-          <div className="grid grid-cols-1 sm:grid-cols-[150px_120px_1fr] gap-5 items-start pt-3">
-            <div>
-              <strong className="block">Daniel</strong>
-              <span>Jan 12, 2022</span>
+          {product.reviews.map((rev) => (
+            <div
+              className="grid grid-cols-1 sm:grid-cols-[150px_120px_1fr] gap-5 items-start pt-3"
+              key={rev.id}
+            >
+              <div>
+                <strong className="block">{rev.name}</strong>
+                <span>{formatDate(rev.createdAt)}</span>
+              </div>
+
+              {!rev.rating ? (
+                <div className="flex item-center gap-2">
+                  <Star />
+                  <Star />
+                  <Star />
+                  <Star />
+                  <Star />
+                </div>
+              ) : (
+                <>
+                  {rev.rating === 1 && (
+                    <div className="flex item-center gap-2">
+                      <Star
+                        className="text-yellow-500 dark:text-yellow-300"
+                        weight="fill"
+                      />
+                      <Star />
+                      <Star />
+                      <Star />
+                      <Star />
+                    </div>
+                  )}
+                  {rev.rating === 2 && (
+                    <div className="flex item-center gap-2">
+                      <Star
+                        className="text-yellow-500 dark:text-yellow-300"
+                        weight="fill"
+                      />
+                      <Star
+                        className="text-yellow-500 dark:text-yellow-300"
+                        weight="fill"
+                      />
+                      <Star />
+                      <Star />
+                      <Star />
+                    </div>
+                  )}
+                  {rev.rating === 3 && (
+                    <div className="flex item-center gap-2">
+                      <Star
+                        className="text-yellow-500 dark:text-yellow-300"
+                        weight="fill"
+                      />
+                      <Star
+                        className="text-yellow-500 dark:text-yellow-300"
+                        weight="fill"
+                      />
+                      <Star
+                        className="text-yellow-500 dark:text-yellow-300"
+                        weight="fill"
+                      />
+                      <Star />
+                      <Star />
+                    </div>
+                  )}
+                  {rev.rating === 4 && (
+                    <div className="flex item-center gap-2">
+                      <Star
+                        className="text-yellow-500 dark:text-yellow-300"
+                        weight="fill"
+                      />
+                      <Star
+                        className="text-yellow-500 dark:text-yellow-300"
+                        weight="fill"
+                      />
+                      <Star
+                        className="text-yellow-500 dark:text-yellow-300"
+                        weight="fill"
+                      />
+                      <Star
+                        className="text-yellow-500 dark:text-yellow-300"
+                        weight="fill"
+                      />
+                      <Star />
+                    </div>
+                  )}
+                  {rev.rating === 5 && (
+                    <div className="flex item-center gap-2">
+                      <Star
+                        className="text-yellow-500 dark:text-yellow-300"
+                        weight="fill"
+                      />
+                      <Star
+                        className="text-yellow-500 dark:text-yellow-300"
+                        weight="fill"
+                      />
+                      <Star
+                        className="text-yellow-500 dark:text-yellow-300"
+                        weight="fill"
+                      />
+                      <Star
+                        className="text-yellow-500 dark:text-yellow-300"
+                        weight="fill"
+                      />
+                      <Star
+                        className="text-yellow-500 dark:text-yellow-300"
+                        weight="fill"
+                      />
+                    </div>
+                  )}
+                </>
+              )}
+              <div>
+                <strong className="block">{rev.headline}</strong>
+                <span>{rev.content}</span>
+              </div>
             </div>
-            <div className="flex item-center gap-2">
-              <Star className="text-yellow-500" />
-              <Star className="text-yellow-500" />
-              <Star className="text-yellow-500" />
-              <Star />
-              <Star />
-            </div>
-            <div>
-              <strong className="block">Daniel</strong>
-              <span>
-                A expressão Lorem ipsum em design gráfico e editoração é um
-                texto padrão em latim utilizado na produção gráfica para
-                preencher os espaços de texto em publicações para testar e
-                ajustar aspectos visuais antes de utilizar conteúdo real
-              </span>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-[150px_120px_1fr] gap-5 items-start pt-3">
-            <div>
-              <strong className="block">Daniel</strong>
-              <span>Jan 12, 2022</span>
-            </div>
-            <div className="flex item-center gap-2">
-              <Star className="text-yellow-500" />
-              <Star className="text-yellow-500" />
-              <Star className="text-yellow-500" />
-              <Star />
-              <Star />
-            </div>
-            <div>
-              <strong className="block">Daniel</strong>
-              <span>
-                A expressão Lorem ipsum em design gráfico e editoração é um
-                texto padrão em latim utilizado na produção gráfica para
-                preencher os espaços de texto em publicações para testar e
-                ajustar aspectos visuais antes de utilizar conteúdo real
-              </span>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-[150px_120px_1fr] gap-5 items-start pt-3">
-            <div>
-              <strong className="block">Daniel</strong>
-              <span>Jan 12, 2022</span>
-            </div>
-            <div className="flex item-center gap-2">
-              <Star className="text-yellow-500" />
-              <Star className="text-yellow-500" />
-              <Star className="text-yellow-500" />
-              <Star />
-              <Star />
-            </div>
-            <div>
-              <strong className="block">Daniel</strong>
-              <span>
-                A expressão Lorem ipsum em design gráfico e editoração é um
-                texto padrão em latim utilizado na produção gráfica para
-                preencher os espaços de texto em publicações para testar e
-                ajustar aspectos visuais antes de utilizar conteúdo real
-              </span>
-            </div>
-          </div>
+          ))}
         </div>
 
-        <Button>
+        <Button onClick={() => setDialog(true)}>
           <Pencil /> Adicionar comentário
         </Button>
       </div>
 
       <Footer space={true} />
+
+      <Dialog.Root open={dialog} onOpenChange={() => setDialog(!dialog)}>
+        <Dialog.Portal>
+          <Dialog.Overlay className="overlay" />
+          <Dialog.Content className="flex items-center justify-center relative">
+            <div className="content-modal-reviews">
+              <Dialog.Title className="header-modal">
+                <div className="flex items-center gap-3 text-lg">
+                  <ChatCircle />
+                  Comentários
+                </div>
+
+                <Dialog.Close
+                  asChild
+                  className="bg-zinc-300 w-6 h-6 flex items-center justify-center rounded-full p-1 cursor-pointer hover:bg-opacity-70 dark:bg-zinc-900"
+                >
+                  <X />
+                </Dialog.Close>
+              </Dialog.Title>
+
+              <form>
+                <div className="p-4">
+                  {/** FORMULÁRIO DE CADASTRO */}
+                  <div className="grid grid-cols-4 gap-2 mb-5">
+                    <div className="flex flex-col items-start col-span-3">
+                      <label className="block">
+                        Nome
+                        <span className="text-red-600 dark:text-red-300">
+                          *
+                        </span>
+                      </label>
+                      <input
+                        autoFocus
+                        type={"email"}
+                        name="email"
+                        required
+                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                      />
+                    </div>
+                    <div className="flex flex-col items-start">
+                      <label className="block">
+                        Nota
+                        <span className="text-red-600 dark:text-red-300">
+                          *
+                        </span>
+                      </label>
+                      <select
+                        required
+                        name="password"
+                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                      >
+                        <option>Péssimo</option>
+                        <option>Ruim</option>
+                        <option>Regular</option>
+                        <option>Bom</option>
+                        <option>Ótimo</option>
+                      </select>
+                    </div>
+
+                    <div className="flex flex-col items-start col-span-4">
+                      <label className="block">
+                        Título
+                        <span className="text-red-600 dark:text-red-300">
+                          *
+                        </span>
+                      </label>
+                      <input
+                        autoFocus
+                        type={"email"}
+                        name="email"
+                        required
+                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                      />
+                    </div>
+
+                    <div className="flex flex-col items-start col-span-4">
+                      <label className="block">
+                        Título
+                        <span className="text-red-600 dark:text-red-300">
+                          *
+                        </span>
+                      </label>
+                      <textarea
+                        autoFocus
+                        name="email"
+                        required
+                        className="border px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full resize-none"
+                        rows={4}
+                      />
+                    </div>
+                  </div>
+
+                  <Button buttonSize="lg" type="submit">
+                    <FloppyDisk />
+                    Salvar
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
     </Fragment>
   );
 };
