@@ -2,10 +2,8 @@ import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  Balloon,
   CaretRight,
   ChatCircle,
-  Check,
   FloppyDisk,
   House,
   Pencil,
@@ -18,7 +16,6 @@ import { Fragment, useState, useEffect, useContext } from "react";
 import Footer from "../../components/Footer";
 import HeadApp from "../../components/Head";
 import Header from "../../components/Header";
-import * as Checkbox from "@radix-ui/react-checkbox";
 import Button from "../../components/layout/Buttom";
 import { clientQuery } from "../../lib/urql";
 import {
@@ -27,9 +24,12 @@ import {
 } from "../../graphql/products";
 import { Products, ProductsInfoProps } from "../../utils/Types";
 import CartContext from "../../context/cart/cart";
-import { configs } from "../../configs";
 import Toast from "../../components/layout/Toast";
 import * as Dialog from "@radix-ui/react-dialog";
+import { useMutation } from "urql";
+import { CREATE_REVIEW, PUBLISH_REVIEW } from "../../graphql/reviews";
+import * as Yup from "yup";
+import { useFormik } from "formik";
 
 interface Props {
   product: ProductsInfoProps;
@@ -45,7 +45,6 @@ const Produto: NextPage<Props> = ({ product }) => {
   const { cart, setCart } = useContext(CartContext);
   const [quantity, setQuantity] = useState<number>(1);
   const [price, setPrice] = useState<number>(0);
-  const [design, setDesign] = useState<Checkbox.CheckedState>(false);
   const [width, setWidth] = useState<string>("0");
   const [height, setHeight] = useState<number>(0);
   const [name, setName] = useState<string>("");
@@ -57,6 +56,24 @@ const Produto: NextPage<Props> = ({ product }) => {
   const [openToast, setOpenToast] = useState<boolean>(false);
   const [dialog, setDialog] = useState<boolean>(false);
 
+  const [createReviewResults, createReview] = useMutation(CREATE_REVIEW);
+  const { fetching: loadingReview } = createReviewResults;
+  const [publishReviewResults, publishReview] = useMutation(PUBLISH_REVIEW);
+
+  const initialValues = {
+    name: "",
+    rating: "3",
+    headline: "",
+    content: "",
+  };
+
+  const validationSchema = Yup.object({
+    name: Yup.string().required("Insira seu nome"),
+    rating: Yup.string().required("Selecione uma nota"),
+    headline: Yup.string().required("Insira um título"),
+    content: Yup.string().required("Insira uma mensagem"),
+  });
+
   function clear() {
     setQuantity(1);
     setWidth("0");
@@ -64,14 +81,6 @@ const Produto: NextPage<Props> = ({ product }) => {
     setName("");
     setPrice(product.price);
   }
-
-  useEffect(() => {
-    if (design === true) {
-      setPrice(price + configs.design);
-    } else if (design === false) {
-      setPrice(price - configs.design);
-    }
-  }, [design]);
 
   useEffect(() => {
     if (product.mode === "unique") {
@@ -144,7 +153,6 @@ const Produto: NextPage<Props> = ({ product }) => {
       ...cart,
       {
         id: product.id,
-        design: design,
         name,
         productName: product.name,
         quantity,
@@ -173,6 +181,57 @@ const Produto: NextPage<Props> = ({ product }) => {
 
     return `${day}/${month}/${year}`;
   }
+
+  const setPublishReview = (id: string) => {
+    let variables = { id: id };
+    publishReview(variables).then((response) => {
+      const { error } = response;
+      if (error) {
+        setToast({
+          title: "Erro",
+          message: error.message,
+          type: "error",
+        });
+        setOpenToast(true);
+      }
+    });
+  };
+
+  const setCreateReview = useFormik({
+    validationSchema: validationSchema,
+    initialValues: initialValues,
+    onSubmit: (values, { resetForm }) => {
+      let variables = {
+        name: values.name,
+        rating: parseInt(values.rating),
+        headline: values.headline,
+        content: values.content,
+        product: product.id,
+      };
+      createReview(variables).then((response) => {
+        const { data, error } = response;
+        if (error) {
+          setToast({
+            title: "Erro",
+            message: error.message,
+            type: "error",
+          });
+          setOpenToast(true);
+        } else if (data) {
+          const id = data.createReview.id;
+          setPublishReview(id);
+          resetForm();
+          setDialog(false);
+          setToast({
+            title: "Sucesso",
+            message: "Seu comentário foi enviado com sucesso",
+            type: "success",
+          });
+          setOpenToast(true);
+        }
+      });
+    },
+  });
 
   return (
     <Fragment>
@@ -292,11 +351,6 @@ const Produto: NextPage<Props> = ({ product }) => {
                 <strong className="text-2xl font-bold">
                   {calcPrice(price)}
                 </strong>
-                {design === true && (
-                  <span className="text-sm text-sky-700 dark:text-sky-300 block">
-                    Contém adicional de arte {calcPrice(configs.design)}
-                  </span>
-                )}
                 {!product.limit ? (
                   ""
                 ) : (
@@ -483,7 +537,7 @@ const Produto: NextPage<Props> = ({ product }) => {
                 </Dialog.Close>
               </Dialog.Title>
 
-              <form>
+              <form onSubmit={setCreateReview.handleSubmit}>
                 <div className="p-4">
                   {/** FORMULÁRIO DE CADASTRO */}
                   <div className="grid grid-cols-4 gap-2 mb-5">
@@ -496,11 +550,21 @@ const Produto: NextPage<Props> = ({ product }) => {
                       </label>
                       <input
                         autoFocus
-                        type={"email"}
-                        name="email"
+                        name="name"
                         required
                         className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                        value={setCreateReview.values.name}
+                        onChange={setCreateReview.handleChange}
                       />
+                      {setCreateReview.touched.name &&
+                      Boolean(setCreateReview.errors.name) ? (
+                        <span className="text-sm text-red-600 dark:text-red-300">
+                          {setCreateReview.touched.name &&
+                            setCreateReview.errors.name}
+                        </span>
+                      ) : (
+                        ""
+                      )}
                     </div>
                     <div className="flex flex-col items-start">
                       <label className="block">
@@ -511,15 +575,26 @@ const Produto: NextPage<Props> = ({ product }) => {
                       </label>
                       <select
                         required
-                        name="password"
+                        name="rating"
                         className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                        value={setCreateReview.values.rating}
+                        onChange={setCreateReview.handleChange}
                       >
-                        <option>Péssimo</option>
-                        <option>Ruim</option>
-                        <option>Regular</option>
-                        <option>Bom</option>
-                        <option>Ótimo</option>
+                        <option value={"1"}>Péssimo</option>
+                        <option value={"2"}>Ruim</option>
+                        <option value={"3"}>Regular</option>
+                        <option value={"4"}>Bom</option>
+                        <option value={"5"}>Ótimo</option>
                       </select>
+                      {setCreateReview.touched.rating &&
+                      Boolean(setCreateReview.errors.rating) ? (
+                        <span className="text-sm text-red-600 dark:text-red-300">
+                          {setCreateReview.touched.rating &&
+                            setCreateReview.errors.rating}
+                        </span>
+                      ) : (
+                        ""
+                      )}
                     </div>
 
                     <div className="flex flex-col items-start col-span-4">
@@ -530,32 +605,55 @@ const Produto: NextPage<Props> = ({ product }) => {
                         </span>
                       </label>
                       <input
-                        autoFocus
-                        type={"email"}
-                        name="email"
+                        name="headline"
                         required
                         className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                        value={setCreateReview.values.headline}
+                        onChange={setCreateReview.handleChange}
                       />
+                      {setCreateReview.touched.headline &&
+                      Boolean(setCreateReview.errors.headline) ? (
+                        <span className="text-sm text-red-600 dark:text-red-300">
+                          {setCreateReview.touched.headline &&
+                            setCreateReview.errors.headline}
+                        </span>
+                      ) : (
+                        ""
+                      )}
                     </div>
 
                     <div className="flex flex-col items-start col-span-4">
                       <label className="block">
-                        Título
+                        Mensagem
                         <span className="text-red-600 dark:text-red-300">
                           *
                         </span>
                       </label>
                       <textarea
-                        autoFocus
-                        name="email"
+                        name="content"
                         required
                         className="border px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full resize-none"
                         rows={4}
+                        value={setCreateReview.values.content}
+                        onChange={setCreateReview.handleChange}
                       />
+                      {setCreateReview.touched.content &&
+                      Boolean(setCreateReview.errors.content) ? (
+                        <span className="text-sm text-red-600 dark:text-red-300">
+                          {setCreateReview.touched.content &&
+                            setCreateReview.errors.content}
+                        </span>
+                      ) : (
+                        ""
+                      )}
                     </div>
                   </div>
 
-                  <Button buttonSize="lg" type="submit">
+                  <Button
+                    buttonSize="lg"
+                    type="submit"
+                    isLoading={loadingReview}
+                  >
                     <FloppyDisk />
                     Salvar
                   </Button>

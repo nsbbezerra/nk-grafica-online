@@ -14,7 +14,6 @@ import HeadApp from "../components/Head";
 import Header from "../components/Header";
 import Button from "../components/layout/Buttom";
 import Toast from "../components/layout/Toast";
-import { configs } from "../configs";
 import CartContext from "../context/cart/cart";
 import { useRouter } from "next/router";
 
@@ -179,13 +178,6 @@ export default function MyCart() {
                       {car.width ? `${car.width}mt x` : ""}
                       {car.height ? `${car.height}mt` : ""}
                     </span>
-
-                    {car.design && (
-                      <div className="text-xs text-sky-700 font-bold dark:text-sky-300">
-                        Contém adicional de arte no valor de{" "}
-                        {calcPrice(configs.design)}
-                      </div>
-                    )}
 
                     <div className="flex justify-between mt-2 gap-3 items-start text-sm">
                       <span>QTD: {car.quantity}</span>

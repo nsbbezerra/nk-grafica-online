@@ -9,7 +9,6 @@ interface Cart {
   total: number;
   width?: number;
   height?: number;
-  design: boolean | string;
   mode: "square_meter" | "unique";
   unity: number;
 }
