@@ -285,7 +285,7 @@ const Produto: NextPage<Props> = ({ product }) => {
               </div>
             )}
 
-            <div className="mt-5">
+            <div className="mt-5 w-full">
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
                 <div className="sm:col-span-3 flex flex-col">
                   <label>
