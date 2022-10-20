@@ -123,6 +123,42 @@ const FIND_PRODUCT_INFORMATION = gql`
   }
 `;
 
+const FIND_ALL_ITEMS = gql`
+  query FindAll {
+    categories(last: 50) {
+      id
+      name
+      products {
+        id
+        name
+        slug
+        price
+        categories {
+          id
+        }
+        description {
+          html
+        }
+        information {
+          html
+        }
+        widths
+        limit
+        promoRate
+        promotional
+        mode
+        better
+        shipping
+        shippingOptions
+        images {
+          id
+          url
+        }
+      }
+    }
+  }
+`;
+
 export {
   FIND_INDEX_PAGE,
   FIND_CATEGORIES_PATH,
@@ -130,4 +166,5 @@ export {
   FIND_PRODUCTS_PATH,
   FIND_PRODUCT_INFORMATION,
   FIND_CATEGORIES,
+  FIND_ALL_ITEMS,
 };

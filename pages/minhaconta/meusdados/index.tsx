@@ -4,7 +4,7 @@ import {
   ArrowClockwise,
   CircleNotch,
   IdentificationCard,
-  ShoppingBagOpen,
+  ShoppingCart,
   User,
 } from "phosphor-react";
 import { Fragment, useContext, useEffect, useState } from "react";
@@ -70,8 +70,8 @@ const MeusDados: NextPage = () => {
 
           <div className="flex flex-col">
             <Link href={`/minhaconta/meusdados?client=${client.id}`} passHref>
-              <a className="flex h-12 items-center gap-3 px-4 border-l-4 border-l-sky-700 cursor-pointer select-none text-sky-700 dark:text-sky-300 dark:border-l-sky-300">
-                <IdentificationCard className="w-[48px] text-lg" />
+              <a className="flex h-12 items-center gap-3 px-3 md:px-4 border-l-4 border-l-sky-700 cursor-pointer select-none text-sky-700 dark:text-sky-300 dark:border-l-sky-300">
+                <IdentificationCard className="flex-shrink-0 text-lg" />
                 <span className="hidden md:block">Meus dados</span>
               </a>
             </Link>
@@ -79,8 +79,8 @@ const MeusDados: NextPage = () => {
               href={`/minhaconta/minhascompras?client=${client.id}`}
               passHref
             >
-              <a className="flex h-12 items-center gap-3 px-4 border-l-4 border-l-transparent hover:border-l-sky-800 cursor-pointer select-none dark:hover:border-l-sky-400">
-                <ShoppingBagOpen className="w-[48px] text-lg" />
+              <a className="flex h-12 items-center gap-3 px-3 md:px-4 border-l-4 border-l-transparent hover:border-l-sky-800 cursor-pointer select-none dark:hover:border-l-sky-400">
+                <ShoppingCart className="flex-shrink-0 text-lg" />
                 <span className="hidden md:block">Minhas compras</span>
               </a>
             </Link>

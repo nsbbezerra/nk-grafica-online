@@ -90,6 +90,10 @@
     @apply grid grid-cols-2 md:grid-cols-4 gap-2 lg:gap-5 mt-5;
   }
 
+  .grid-cards-products {
+    @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-5;
+  }
+
   .Content {
     @apply w-[300px] ml-5 pt-2 pb-4 px-4 mx-auto z-50 transition-all bg-white rounded-md shadow-lg border bg-opacity-95 backdrop-blur-sm dark:bg-zinc-900 dark:bg-opacity-90 dark:backdrop-blur-sm dark:border-zinc-700 relative max-h-[80vh] overflow-auto focus:outline-none;
   }

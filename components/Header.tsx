@@ -36,7 +36,6 @@ import { CREATE_CLIENT, FIND_CLIENT, PUBLISH_CLIENT } from "../graphql/client";
 import Toast from "./layout/Toast";
 import { useQuery } from "urql";
 import { FIND_CATEGORIES } from "../graphql/products";
-import { configs } from "../configs";
 import ClientContext from "../context/client/client";
 
 interface ToastInfo {
@@ -480,7 +479,7 @@ export default function Header() {
                 <Popover.Root>
                   <Popover.Trigger className="h-12 flex text-sky-700 items-center gap-2 font-bold px-5 hover:bg-sky-700 hover:text-white dark:text-sky-300 dark:hover:bg-sky-300 dark:hover:text-zinc-800 select-none">
                     <Tag />
-                    Todos os Produtos
+                    Produtos
                   </Popover.Trigger>
                   <Popover.Anchor />
                   <Popover.Portal>
@@ -490,6 +489,25 @@ export default function Header() {
                           ""
                         ) : (
                           <>
+                            <Link href={`/itens`} passHref>
+                              <a className="grid grid-cols-[30px_1fr] gap-3 pt-3 cursor-pointer relative w-full items-center hover:underline text-sky-700 font-semibold dark:text-sky-300">
+                                <div className="w-[30px] h-[30px] rounded-full overflow-hidden">
+                                  <Image
+                                    src={"/img/cmyk.webp"}
+                                    alt="NK Gráfica online banner"
+                                    layout="responsive"
+                                    width={600}
+                                    height={600}
+                                    objectFit="cover"
+                                  />
+                                </div>
+                                <div className="block relative">
+                                  <span className="text-base block">
+                                    Todos os produtos
+                                  </span>
+                                </div>
+                              </a>
+                            </Link>
                             {categories.map((cat) => (
                               <Link
                                 href={`/produtos/${cat.id}`}

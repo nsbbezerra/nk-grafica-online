@@ -4,7 +4,7 @@ import HeadApp from "../components/Head";
 import Header from "../components/Header";
 import Panel from "../components/Panel";
 import "swiper/css/navigation";
-import { Medal, Trophy } from "phosphor-react";
+import { CaretRight, Medal, Trophy } from "phosphor-react";
 import Card from "../components/layout/Card";
 import Image from "next/image";
 import "swiper/css/pagination";
@@ -13,13 +13,13 @@ import Footer from "../components/Footer";
 import { clientQuery } from "../lib/urql";
 import { FIND_INDEX_PAGE } from "../graphql/products";
 import { IndexProps } from "../utils/Types";
+import Link from "next/link";
 
 const Home: NextPage<IndexProps> = ({ products }) => {
   return (
     <Fragment>
       <HeadApp title="NK Gráfica Online | Impressões digitais e Offset" />
       <Header />
-      <Panel />
 
       <section className="container mx-auto mt-10 lg:pt-5 px-5 xl:px-0 max-w-6xl">
         <div className="flex items-center gap-3 text-xl sm:text-2xl md:text-3xl w-fit font-extrabold border-b-2 border-b-sky-700 dark:border-b-sky-300 pr-3">
@@ -28,6 +28,15 @@ const Home: NextPage<IndexProps> = ({ products }) => {
         </div>
 
         <Card products={products} />
+
+        <div className="flex justify-center mt-10">
+          <Link href={"/itens"} passHref>
+            <a className="flex items-center gap-2 font-semibold text-sky-700 text-lg hover:underline cursor-pointer">
+              <CaretRight />
+              Veja mais produtos
+            </a>
+          </Link>
+        </div>
       </section>
 
       <Footer space={true} />
