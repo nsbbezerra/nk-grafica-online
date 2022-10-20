@@ -42,4 +42,17 @@ const FIND_CLIENT = gql`
   }
 `;
 
-export { CREATE_CLIENT, PUBLISH_CLIENT, FIND_CLIENT };
+const FIND_CLIENT_INFO = gql`
+  query FindClient($client: ID!) {
+    client(where: { id: $client }) {
+      id
+      name
+      document
+      phone
+      email
+      address
+    }
+  }
+`;
+
+export { CREATE_CLIENT, PUBLISH_CLIENT, FIND_CLIENT, FIND_CLIENT_INFO };

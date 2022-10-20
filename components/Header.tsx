@@ -37,6 +37,7 @@ import Toast from "./layout/Toast";
 import { useQuery } from "urql";
 import { FIND_CATEGORIES } from "../graphql/products";
 import { configs } from "../configs";
+import ClientContext from "../context/client/client";
 
 interface ToastInfo {
   title: string;
@@ -53,6 +54,7 @@ export default function Header() {
   const { theme } = useTheme();
   const { categories, setCategories } = useContext(CategoriesContext);
   const { cart: cartApp, setCart: setCartApp } = useContext(CartContext);
+  const { client, setClient } = useContext(ClientContext);
 
   const [open, setOpen] = useState<boolean>(false);
   const [cart, setCart] = useState<boolean>(false);
@@ -61,7 +63,6 @@ export default function Header() {
   const [registerModal, setRegisterModal] = useState<boolean>(false);
   const [loginModal, setLoginModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [client, setClient] = useState<Client | null>(null);
 
   const [toast, setToast] = useState<ToastInfo>({
     title: "",
@@ -95,6 +96,11 @@ export default function Header() {
     if (user) {
       const parsed = JSON.parse(user || "");
       setClient(parsed);
+    } else {
+      setClient({
+        id: "",
+        name: "",
+      });
     }
   }, []);
 
@@ -283,7 +289,10 @@ export default function Header() {
 
   function logout() {
     localStorage.removeItem("client");
-    setClient(null);
+    setClient({
+      id: "",
+      name: "",
+    });
   }
 
   const handleImage = () => {
@@ -314,14 +323,14 @@ export default function Header() {
 
   const UserActions = () => (
     <div className="flex items-center flex-col gap-3 lg:flex-row lg:w-80 z-10">
-      <div className="w-12 h-12 border border-sky-700 rounded-full text-2xl flex items-center justify-center text-sky-700 dark:border-sky-300 dark:text-sky-300 bg-sky-50">
+      <div className="w-12 h-12 border border-sky-700 rounded-full text-2xl flex items-center justify-center text-sky-700 dark:border-sky-300 dark:text-sky-300">
         <User />
       </div>
       <div className="flex flex-col items-center lg:items-start">
         <div className="flex gap-5 items-center w-full">
           <span className="block">Bem vindo!</span>
 
-          {!client ? (
+          {client.id === "" ? (
             ""
           ) : (
             <button
@@ -332,7 +341,7 @@ export default function Header() {
             </button>
           )}
         </div>
-        {!client ? (
+        {client.id === "" ? (
           <div className="flex gap-2">
             <button
               className="text-sky-700 font-bold hover:underline cursor-pointer dark:text-sky-300"
@@ -350,13 +359,16 @@ export default function Header() {
           </div>
         ) : (
           <div className="flex sm:gap-2 sm:flex-row flex-col items-center">
-            <Link href={"/minhaconta/meusdados"} passHref>
+            <Link href={`/minhaconta/meusdados?client=${client.id}`} passHref>
               <a className="text-sky-700 font-bold hover:underline cursor-pointer dark:text-sky-300">
                 Meus dados
               </a>
             </Link>
             <span className="hidden sm:block">-</span>
-            <Link href={"/minhaconta/minhascompras"} passHref>
+            <Link
+              href={`/minhaconta/minhascompras?client=${client.id}`}
+              passHref
+            >
               <a className="text-sky-700 font-bold hover:underline cursor-pointer dark:text-sky-300">
                 Minhas compras
               </a>
@@ -425,15 +437,6 @@ export default function Header() {
         scheme={toast.type}
       />
       <header className="w-full relative bg-gradient-to-tr from-sky-50 to-blue-300 dark:from-transparent dark:to-gray-900">
-        <div className="absolute top-0 -right-2 -left-2 opacity-70 dark:opacity-30 bottom-0">
-          <Image
-            src={"/img/bg_one.svg"}
-            layout="fill"
-            alt="NK Gráfica Online logo"
-            objectFit="cover"
-            objectPosition={"center"}
-          />
-        </div>
         <div className="h-32 md:h-36 container mx-auto max-w-5xl px-10 xl:px-0 flex items-center justify-between gap-3">
           <Link href={"/"} passHref>
             <a className="relative w-48 sm:w-60 md:w-72 cursor-pointer">

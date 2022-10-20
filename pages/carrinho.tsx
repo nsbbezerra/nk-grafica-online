@@ -16,6 +16,7 @@ import Button from "../components/layout/Buttom";
 import Toast from "../components/layout/Toast";
 import CartContext from "../context/cart/cart";
 import { useRouter } from "next/router";
+import ClientContext from "../context/client/client";
 
 type ClientProps = {
   id: string;
@@ -30,10 +31,10 @@ interface ToastInfo {
 
 export default function MyCart() {
   const { push } = useRouter();
+  const { client } = useContext(ClientContext);
   const { cart, setCart } = useContext(CartContext);
   const [total, setTotal] = useState<number>(0);
   const [freight, setFreight] = useState<number>(0);
-  const [client, setClient] = useState<ClientProps | null>(null);
   const [toast, setToast] = useState<ToastInfo>({
     title: "",
     message: "",
@@ -41,14 +42,6 @@ export default function MyCart() {
   });
   const [openToast, setOpenToast] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    const clientInfo = localStorage.getItem("client");
-    if (clientInfo) {
-      let parsed = JSON.parse(clientInfo);
-      setClient(parsed);
-    }
-  });
 
   function removeItemCart(id: string) {
     const result = cart.filter((obj) => obj.id !== id);
@@ -69,7 +62,7 @@ export default function MyCart() {
   };
 
   const setCreateOrder = async () => {
-    if (client === null) {
+    if (client.id === "") {
       setToast({
         title: "Atenção",
         message:

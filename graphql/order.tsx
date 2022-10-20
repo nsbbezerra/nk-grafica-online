@@ -74,10 +74,42 @@ const UPDATE_CHECKOUT_ID = gql`
   }
 `;
 
+const FIND_ORDERS_BY_CLIENT = gql`
+  query FindOrders($client: ID!) {
+    orders(where: { client: { id: $client } }, last: 30) {
+      id
+      total
+      stripeCheckoutId
+      shippingValue
+      payment
+      orderStatus
+      shippingInformation
+      createdAt
+      orderItems {
+        id
+        quantity
+        total
+        width
+        height
+        name
+        product {
+          name
+          id
+          images {
+            id
+            url
+          }
+        }
+      }
+    }
+  }
+`;
+
 export {
   CREATE_ORDER,
   PUBLISH_ORDER,
   CREATE_ORDER_ITEM,
   PUBLISH_ORDER_ITEM,
   UPDATE_CHECKOUT_ID,
+  FIND_ORDERS_BY_CLIENT,
 };
