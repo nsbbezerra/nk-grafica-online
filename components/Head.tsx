@@ -43,6 +43,10 @@ export default function HeadApp({ title }: Props) {
         <meta name="googletboot" content="index,nofollow" />
         <meta httpEquiv="content-language" content="pt-br" />
         <meta content="Global" name="distribution" />
+        <meta
+          name="google-site-verification"
+          content="OMkPe5kLX6vC7xAwcUOIrbygHiBHHE7flQj3CobxRVo"
+        />
       </Head>
     </Fragment>
   );

@@ -2,11 +2,9 @@ import type { GetStaticProps, NextPage } from "next";
 import { Fragment } from "react";
 import HeadApp from "../components/Head";
 import Header from "../components/Header";
-import Panel from "../components/Panel";
 import "swiper/css/navigation";
-import { CaretRight, Medal, Trophy } from "phosphor-react";
+import { CaretRight, Trophy } from "phosphor-react";
 import Card from "../components/layout/Card";
-import Image from "next/image";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import Footer from "../components/Footer";
@@ -29,11 +27,11 @@ const Home: NextPage<IndexProps> = ({ products }) => {
 
         <Card products={products} />
 
-        <div className="flex justify-center mt-10">
+        <div className="flex justify-start mt-10">
           <Link href={"/itens"} passHref>
-            <a className="flex items-center gap-2 font-semibold text-sky-700 text-lg hover:underline cursor-pointer">
-              <CaretRight />
+            <a className="buttom-md buttom-blue-outline">
               Veja mais produtos
+              <CaretRight />
             </a>
           </Link>
         </div>
