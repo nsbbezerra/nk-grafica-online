@@ -55,9 +55,12 @@ export default async function order(
 
     //CRIAR A ORDEM
     const orderParsed = JSON.parse(order);
+    const cart: Cart[] = JSON.parse(items);
+    const orderToStore = { ...orderParsed, items: cart };
     const { data: createOrderData, error: createOrderError } =
-      await clientMutation.mutation(CREATE_ORDER, orderParsed).toPromise();
+      await clientMutation.mutation(CREATE_ORDER, orderToStore).toPromise();
     if (createOrderError) {
+      console.log("CREATE ORDER ERROR", createOrderError);
       res.status(400).json({ message: createOrderError.message });
     }
     const orderId = createOrderData.createOrder.id;
@@ -72,7 +75,7 @@ export default async function order(
     }
 
     //CRIAR E PUBLICAR OS ITEMS
-    const cart: Cart[] = JSON.parse(items);
+
     await cart.map((car) => {
       let variables = {
         name: car.name,
@@ -139,6 +142,7 @@ export default async function order(
       url: checkoutUrl,
     });
   } catch (error) {
+    console.log({ error });
     res
       .status(400)
       .json({ message: "Ocorreu um erro ao processar a requisição" });

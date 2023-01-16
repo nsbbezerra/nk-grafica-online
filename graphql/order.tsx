@@ -6,6 +6,7 @@ const CREATE_ORDER = gql`
     $total: Int!
     $payment: PaymentStatus!
     $orderStatus: OrderStatus!
+    $items: Json!
     $shippingValue: Float!
   ) {
     createOrder(
@@ -15,6 +16,7 @@ const CREATE_ORDER = gql`
         payment: $payment
         orderStatus: $orderStatus
         shippingValue: $shippingValue
+        items: $items
       }
     ) {
       id

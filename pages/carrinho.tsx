@@ -3,8 +3,10 @@ import Image from "next/image";
 import {
   Calculator,
   CurrencyDollar,
+  FloppyDisk,
   Leaf,
   ShoppingCart,
+  SignIn,
   Trash,
 } from "phosphor-react";
 import { Fragment, useContext, useEffect, useState } from "react";
@@ -17,11 +19,7 @@ import Toast from "../components/layout/Toast";
 import CartContext from "../context/cart/cart";
 import { useRouter } from "next/router";
 import ClientContext from "../context/client/client";
-
-type ClientProps = {
-  id: string;
-  name: string;
-};
+import ModalsContext from "../context/modals/modals";
 
 interface ToastInfo {
   title: string;
@@ -43,9 +41,12 @@ export default function MyCart() {
   const [openToast, setOpenToast] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
+  const { setModals } = useContext(ModalsContext);
+
   function removeItemCart(id: string) {
     const result = cart.filter((obj) => obj.id !== id);
     setCart(result);
+    localStorage.setItem("cart", JSON.stringify(result));
   }
 
   useEffect(() => {
@@ -190,6 +191,32 @@ export default function MyCart() {
           )}
         </div>
 
+        {!client.name.length && (
+          <div className="rounded-md bg-white py-2 px-5 shadow flex flex-col dark:bg-zinc-800 mt-5">
+            <span className="font-semibold block w-full">
+              Não encontramos você!
+            </span>
+
+            <div className="grid grid-cols-2 gap-5 w-full my-3">
+              <button
+                className="rounded-md flex flex-col justify-center items-center p-3 gap-2 buttom-blue-outline"
+                onClick={() => setModals({ id: "login", isOpen: true })}
+              >
+                <SignIn className="text-4xl" />
+                <span>Faça login</span>
+              </button>
+
+              <button
+                className="rounded-md flex flex-col justify-center items-center p-3 gap-2 buttom-blue-outline"
+                onClick={() => setModals({ id: "register", isOpen: true })}
+              >
+                <FloppyDisk className="text-4xl" />
+                <span>Cadastre-se</span>
+              </button>
+            </div>
+          </div>
+        )}
+
         <div className="rounded-md bg-white py-2 px-5 shadow flex flex-col sm:flex-row sm:items-center justify-between dark:bg-zinc-800 mt-5">
           <span>Calcular frete</span>
 
@@ -225,7 +252,7 @@ export default function MyCart() {
         <Button
           buttonSize="lg"
           isFullSize
-          isDisabled={cart.length === 0}
+          isDisabled={cart.length === 0 || !client.name.length}
           onClick={() => setCreateOrder()}
           isLoading={loading}
         >

@@ -31,7 +31,7 @@ const CardProducts: FC<ProductProps> = ({ products }) => {
                   <span>Entrega rápida</span>
                 </div>
               )}
-              <div className="w-full">
+              <div className="w-full rounded-md overflow-hidden">
                 <Image
                   src={prod.images[0].url}
                   alt="NK Gráfica online cartão de visita"

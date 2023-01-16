@@ -4,6 +4,7 @@ import Link from "next/link";
 import {
   CaretRight,
   ChatCircle,
+  Check,
   FloppyDisk,
   House,
   Pencil,
@@ -47,7 +48,6 @@ const Produto: NextPage<Props> = ({ product }) => {
   const [price, setPrice] = useState<number>(0);
   const [width, setWidth] = useState<string>("0");
   const [height, setHeight] = useState<number>(0);
-  const [name, setName] = useState<string>("");
   const [toast, setToast] = useState<ToastInfo>({
     title: "",
     message: "",
@@ -55,6 +55,8 @@ const Produto: NextPage<Props> = ({ product }) => {
   });
   const [openToast, setOpenToast] = useState<boolean>(false);
   const [dialog, setDialog] = useState<boolean>(false);
+
+  const [confirmModal, setConfirmModal] = useState<boolean>(false);
 
   const [createReviewResults, createReview] = useMutation(CREATE_REVIEW);
   const { fetching: loadingReview } = createReviewResults;
@@ -78,7 +80,6 @@ const Produto: NextPage<Props> = ({ product }) => {
     setQuantity(1);
     setWidth("0");
     setHeight(0);
-    setName("");
     setPrice(product.price);
   }
 
@@ -116,15 +117,6 @@ const Produto: NextPage<Props> = ({ product }) => {
   };
 
   function addToCart() {
-    if (name === "") {
-      setToast({
-        title: "Atenção",
-        message: "Você precisa inserir uma descrição ao item",
-        type: "info",
-      });
-      setOpenToast(true);
-      return false;
-    }
     if (
       product.mode === "square_meter" &&
       parseInt(width) === 0 &&
@@ -149,27 +141,22 @@ const Produto: NextPage<Props> = ({ product }) => {
       setOpenToast(true);
       return false;
     }
-    setCart([
-      ...cart,
-      {
-        id: product.id,
-        name,
-        productName: product.name,
-        quantity,
-        total: price,
-        thumbnail: product.images[0].url,
-        width: parseFloat(width),
-        height: height,
-        mode: product.mode,
-        unity: product.price,
-      },
-    ]);
-    setToast({
-      title: "Sucesso",
-      message: "Produto adicionado ao carrinho",
-      type: "success",
-    });
-    setOpenToast(true);
+    const newProduct = {
+      id: product.id,
+      name: product.name,
+      productName: product.name,
+      quantity,
+      total: price,
+      thumbnail: product.images[0].url,
+      width: parseFloat(width),
+      height: height,
+      mode: product.mode,
+      unity: product.price,
+    };
+    const updatedCart = [...cart, newProduct];
+    setCart(updatedCart);
+    setConfirmModal(true);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
     clear();
   }
 
@@ -271,7 +258,7 @@ const Produto: NextPage<Props> = ({ product }) => {
             />
           </div>
 
-          <div className="lg:col-span-2 relative">
+          <div className="lg:col-span-2 relative w-full">
             <strong className="text-sky-700 text-3xl block dark:text-sky-300">
               {product.name}
             </strong>
@@ -286,31 +273,7 @@ const Produto: NextPage<Props> = ({ product }) => {
             )}
 
             <div className="mt-5 w-full">
-              <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
-                <div className="sm:col-span-3 flex flex-col">
-                  <label>
-                    Descrição{" "}
-                    <span className="text-red-600 dark:text-red-300">*</span>
-                  </label>
-                  <input
-                    className="border dark:border-zinc-700 dark:bg-zinc-900 h-10 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <label>
-                    Quantidade{" "}
-                    <span className="text-red-600 dark:text-red-300">*</span>
-                  </label>
-                  <input
-                    type={"number"}
-                    className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300"
-                    value={quantity}
-                    onChange={(e) => setQuantity(parseInt(e.target.value))}
-                  />
-                </div>
-              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-3"></div>
 
               {product.mode === "square_meter" && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
@@ -347,23 +310,40 @@ const Produto: NextPage<Props> = ({ product }) => {
                 </div>
               )}
 
-              <div className="flex flex-col my-5">
-                <strong className="text-2xl font-bold">
-                  {calcPrice(price)}
-                </strong>
-                {!product.limit ? (
-                  ""
-                ) : (
-                  <span className="text-sm text-red-600 dark:text-red-300">
-                    Valor mínimo {calcPrice(product.limit || 0)}
-                  </span>
-                )}
-              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-2 sm:gap-3 items-center mt-3">
+                <div className="flex flex-col">
+                  <strong className="text-3xl font-bold">
+                    {calcPrice(price)}
+                  </strong>
+                  {!product.limit ? (
+                    ""
+                  ) : (
+                    <span className="text-sm text-red-600 dark:text-red-300">
+                      Valor mínimo {calcPrice(product.limit || 0)}
+                    </span>
+                  )}
+                </div>
 
-              <Button buttonSize="lg" onClick={() => addToCart()}>
-                <ShoppingCart />
-                Adicionar ao carrinho
-              </Button>
+                <div className="grid grid-cols-1 sm:grid-cols-[100px_1fr] md:grid-cols-[1fr_2fr] items-end gap-3">
+                  <div className="flex flex-col">
+                    <label>
+                      Quantidade{" "}
+                      <span className="text-red-600 dark:text-red-300">*</span>
+                    </label>
+                    <input
+                      type={"number"}
+                      className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300"
+                      value={quantity}
+                      onChange={(e) => setQuantity(parseInt(e.target.value))}
+                    />
+                  </div>
+
+                  <Button onClick={() => addToCart()} isFullSize>
+                    <ShoppingCart />
+                    Adicionar ao carrinho
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -659,6 +639,59 @@ const Produto: NextPage<Props> = ({ product }) => {
                   </Button>
                 </div>
               </form>
+            </div>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
+
+      <Dialog.Root
+        open={confirmModal}
+        onOpenChange={() => setConfirmModal(!confirmModal)}
+      >
+        <Dialog.Portal>
+          <Dialog.Overlay className="overlay" />
+          <Dialog.Content className="flex items-center justify-center relative">
+            <div className="content-modal-login">
+              <Dialog.Title className="header-modal">
+                <div className="flex items-center gap-3 text-lg">
+                  <Check />
+                  Confirmação
+                </div>
+
+                <Dialog.Close
+                  asChild
+                  className="bg-zinc-300 w-6 h-6 flex items-center justify-center rounded-full p-1 cursor-pointer hover:bg-opacity-70 dark:bg-zinc-900"
+                >
+                  <X />
+                </Dialog.Close>
+              </Dialog.Title>
+              <div className="p-4">
+                {/** FORMULÁRIO DE CADASTRO */}
+
+                <p>
+                  Produto adicionado ao carrinho com sucesso, escolha uma opção
+                  abaixo:
+                </p>
+
+                <div className="flex flex-col gap-2 mt-3">
+                  <Button
+                    isFullSize
+                    type="submit"
+                    scheme="info"
+                    variant="outline"
+                    onClick={() => setConfirmModal(false)}
+                  >
+                    <X />
+                    Continuar comprando
+                  </Button>
+                  <Link href={"/carrinho"}>
+                    <Button isFullSize type="submit">
+                      <ShoppingCart />
+                      Ir para o carrinho
+                    </Button>
+                  </Link>
+                </div>
+              </div>
             </div>
           </Dialog.Content>
         </Dialog.Portal>

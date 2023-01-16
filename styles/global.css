@@ -147,11 +147,11 @@
   h4,
   h5,
   h6 {
-    @apply text-2xl;
+    @apply text-xl sm:text-2xl;
   }
 
   .description-product p {
-    @apply my-1 text-justify;
+    @apply my-1 text-justify text-sm sm:text-base;
   }
 
   .description-product ul {
@@ -159,7 +159,7 @@
   }
 
   .description-product li {
-    @apply my-2;
+    @apply my-2 text-sm sm:text-base;
   }
 
   .overlay {

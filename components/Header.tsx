@@ -13,7 +13,6 @@ import {
   Phone,
   Question,
   X,
-  Percent,
   Trash,
   Leaf,
   FloppyDisk,
@@ -37,6 +36,7 @@ import Toast from "./layout/Toast";
 import { useQuery } from "urql";
 import { FIND_CATEGORIES } from "../graphql/products";
 import ClientContext from "../context/client/client";
+import ModalsContext from "../context/modals/modals";
 
 interface ToastInfo {
   title: string;
@@ -54,13 +54,12 @@ export default function Header() {
   const { categories, setCategories } = useContext(CategoriesContext);
   const { cart: cartApp, setCart: setCartApp } = useContext(CartContext);
   const { client, setClient } = useContext(ClientContext);
+  const { modals, setModals } = useContext(ModalsContext);
 
   const [open, setOpen] = useState<boolean>(false);
   const [cart, setCart] = useState<boolean>(false);
   const [total, setTotal] = useState<number>(0);
 
-  const [registerModal, setRegisterModal] = useState<boolean>(false);
-  const [loginModal, setLoginModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
   const [toast, setToast] = useState<ToastInfo>({
@@ -92,6 +91,7 @@ export default function Header() {
 
   useEffect(() => {
     let user = localStorage.getItem("client");
+    let storedCart = localStorage.getItem("cart");
     if (user) {
       const parsed = JSON.parse(user || "");
       setClient(parsed);
@@ -101,11 +101,15 @@ export default function Header() {
         name: "",
       });
     }
+    if (storedCart) {
+      setCartApp(JSON.parse(storedCart));
+    }
   }, []);
 
   function removeItemCart(id: string) {
     const result = cartApp.filter((obj) => obj.id !== id);
     setCartApp(result);
+    localStorage.setItem("cart", JSON.stringify(result));
   }
 
   useEffect(() => {
@@ -179,7 +183,7 @@ export default function Header() {
           });
           setOpenToast(true);
           setLoading(false);
-          setRegisterModal(false);
+          setModals({ id: "register", isOpen: false });
         }
       });
   }
@@ -263,7 +267,7 @@ export default function Header() {
               });
               setOpenToast(true);
               setLoading(false);
-              setLoginModal(false);
+              setModals({ id: "login", isOpen: false });
             } else {
               setToast({
                 title: "Erro",
@@ -344,14 +348,14 @@ export default function Header() {
           <div className="flex gap-2">
             <button
               className="text-sky-700 font-bold hover:underline cursor-pointer dark:text-sky-300"
-              onClick={() => setLoginModal(!loginModal)}
+              onClick={() => setModals({ id: "login", isOpen: true })}
             >
               Entre
             </button>
             <span>ou</span>
             <button
               className="text-sky-700 font-bold hover:underline cursor-pointer dark:text-sky-300"
-              onClick={() => setRegisterModal(!registerModal)}
+              onClick={() => setModals({ id: "register", isOpen: true })}
             >
               Cadastre-se
             </button>
@@ -670,8 +674,8 @@ export default function Header() {
       </div>
 
       <Dialog.Root
-        open={registerModal}
-        onOpenChange={() => setRegisterModal(!registerModal)}
+        open={modals.id === "register" && modals.isOpen}
+        onOpenChange={() => setModals({ id: "register", isOpen: false })}
       >
         <Dialog.Portal>
           <Dialog.Overlay className="overlay" />
@@ -1027,8 +1031,8 @@ export default function Header() {
       </Dialog.Root>
 
       <Dialog.Root
-        open={loginModal}
-        onOpenChange={() => setLoginModal(!loginModal)}
+        open={modals.id === "login" && modals.isOpen}
+        onOpenChange={() => setModals({ id: "login", isOpen: false })}
       >
         <Dialog.Portal>
           <Dialog.Overlay className="overlay" />
