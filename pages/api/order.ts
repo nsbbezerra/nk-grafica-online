@@ -32,18 +32,6 @@ interface Cart {
 const stripe_pk = process.env.STRIPE_KEY || "";
 const stripe = new Stripe(stripe_pk, { apiVersion: "2022-08-01" });
 
-async function publishItemOrder(id: string) {
-  await clientMutation.mutation(PUBLISH_ORDER_ITEM, { id }).toPromise();
-}
-
-async function saveOrderItem(item: any) {
-  const { data } = await clientMutation
-    .mutation(CREATE_ORDER_ITEM, item)
-    .toPromise();
-  const id = data.createOrderItem.id;
-  publishItemOrder(id);
-}
-
 export default async function order(
   req: NextApiRequest,
   res: NextApiResponse<Data>
@@ -74,22 +62,6 @@ export default async function order(
       res.status(400).json({ message: publishOrderError.message });
     }
 
-    //CRIAR E PUBLICAR OS ITEMS
-
-    await cart.map((car) => {
-      let variables = {
-        name: car.name,
-        order: orderId,
-        quantity: car.quantity,
-        total: car.total,
-        width: car.width,
-        height: car.height,
-        design: car.design,
-        product: car.id,
-      };
-      saveOrderItem(variables);
-    });
-
     //CRIAR CHECKOUT
     const line_items = cart.map((car) => {
       return {
@@ -105,6 +77,7 @@ export default async function order(
         },
       };
     });
+
     const session = await stripe.checkout.sessions.create({
       success_url: "https://nkinfo.com.br",
       cancel_url: "https://nkinfo.com.br",

@@ -98,6 +98,7 @@ export default function MyCart() {
       });
       setOpenToast(true);
       setLoading(false);
+      localStorage.removeItem("cart");
       push(data.url);
     } catch (error) {
       setLoading(false);
