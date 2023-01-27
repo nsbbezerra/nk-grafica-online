@@ -89,4 +89,5 @@ export type {
   IndexProps,
   Products,
   ProductsInfoProps,
+  ShippingProps,
 };

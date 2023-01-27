@@ -1,4 +1,5 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import { ShippingProps } from "../../utils/Types";
 
 interface Cart {
   id: string;
@@ -11,6 +12,7 @@ interface Cart {
   height?: number;
   mode: "square_meter" | "unique";
   unity: number;
+  shipping: ShippingProps;
 }
 
 type PropsCartContext = {
@@ -27,6 +29,10 @@ const CartContext = createContext<PropsCartContext>(DEFAULT_VALUE);
 
 const CartContextProvider = ({ children }: any) => {
   const [cart, setCart] = useState(DEFAULT_VALUE.cart);
+
+  useEffect(() => {
+    console.log({ cart });
+  }, [cart]);
 
   return (
     <CartContext.Provider value={{ cart, setCart }}>

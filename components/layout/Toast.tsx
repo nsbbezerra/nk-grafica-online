@@ -28,11 +28,9 @@ export default function Toast({
 
   return (
     <div
-      className={`w-full flex justify-start p-5 fixed transition-all delay-200 ${
+      className={`w-fit flex justify-start p-5 fixed transition-all delay-200 ${
         position === "bottom" ? "bottom-0" : "top-0"
-      } right-0 left-0 z-50 ${
-        open ? "ml-0 opacity-100" : "-ml-[100%] opacity-0"
-      }`}
+      } left-0 z-50 ${open ? "ml-0 opacity-100" : "-ml-[100%] opacity-0"}`}
     >
       <div
         className={`w-[80vw] max-w-sm relative p-5 ${

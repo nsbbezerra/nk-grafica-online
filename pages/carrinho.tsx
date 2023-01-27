@@ -20,6 +20,9 @@ import CartContext from "../context/cart/cart";
 import { useRouter } from "next/router";
 import ClientContext from "../context/client/client";
 import ModalsContext from "../context/modals/modals";
+import cx from "classnames";
+import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
+import Link from "next/link";
 
 interface ToastInfo {
   title: string;
@@ -27,12 +30,27 @@ interface ToastInfo {
   type: "success" | "info" | "warning" | "error";
 }
 
+interface CompaniesProps {
+  id: number;
+  name: string;
+  price: string;
+  currency: string;
+  error?: string;
+  company: { id: number; name: string; picture: string };
+}
+
+interface ShippingCalcProps {
+  id: number;
+  value: string;
+  description: string;
+}
+
 export default function MyCart() {
   const { push } = useRouter();
   const { client } = useContext(ClientContext);
   const { cart, setCart } = useContext(CartContext);
+  const [loadingShipping, setLoadingShipping] = useState<boolean>(false);
   const [total, setTotal] = useState<number>(0);
-  const [freight, setFreight] = useState<number>(0);
   const [toast, setToast] = useState<ToastInfo>({
     title: "",
     message: "",
@@ -40,6 +58,15 @@ export default function MyCart() {
   });
   const [openToast, setOpenToast] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [cep, setCep] = useState<string>("");
+
+  const [companies, setCompanies] = useState<CompaniesProps[]>([]);
+
+  const [shippingCalc, setShippingCalc] = useState<ShippingCalcProps>({
+    id: 0,
+    description: "",
+    value: "0.00",
+  });
 
   const { setModals } = useContext(ModalsContext);
 
@@ -51,12 +78,30 @@ export default function MyCart() {
 
   useEffect(() => {
     const sum = cart.reduce((a, b) => +a + +b.total, 0);
-    setTotal(sum);
+    setTotal(parseInt(String(sum)));
   }, [cart]);
+
+  useEffect(() => {
+    client.name.length && setCep(client.address.cep);
+    setShippingCalc({
+      id: 0,
+      description: "Frete grátis",
+      value: "0.00",
+    });
+  }, [client]);
 
   const calcPrice = (price: number) => {
     let transform = price / 100;
     return transform.toLocaleString("pt-br", {
+      style: "currency",
+      currency: "BRL",
+    });
+  };
+
+  const calcFinalValue = (price: number, shippingPrice: number) => {
+    let transform = price / 100;
+    let sum = transform + shippingPrice;
+    return sum.toLocaleString("pt-br", {
       style: "currency",
       currency: "BRL",
     });
@@ -73,18 +118,43 @@ export default function MyCart() {
       setOpenToast(true);
       return false;
     }
+
+    if (!shippingCalc.description.length) {
+      setToast({
+        title: "Atenção",
+        message: "Escolha um tipo de frete",
+        type: "warning",
+      });
+      setOpenToast(true);
+      return false;
+    }
+
+    if (cep !== client.address.cep) {
+      setToast({
+        title: "Atenção",
+        message:
+          "Há uma divergência no endereço cadastrado com o CEP inserido no cálculo do frete.",
+        type: "warning",
+      });
+      setOpenToast(true);
+      return false;
+    }
+
+    const transformShippingCalc = Number(shippingCalc.value) * 100;
+
     let order = {
       client: client?.id,
-      total: total + freight,
+      total: total + parseInt(String(transformShippingCalc)),
       payment: "waiting",
       orderStatus: "payment",
-      shippingValue: freight,
+      shippingValue: parseInt(String(transformShippingCalc)),
     };
+
     setLoading(true);
     try {
       const shipping = {
-        shippingName: "Envio NK Gráfica",
-        shippingTotal: freight,
+        shippingName: shippingCalc.description,
+        shippingTotal: parseInt(String(transformShippingCalc)),
       };
       const { data } = await axios.post("/api/order", {
         order: JSON.stringify(order),
@@ -120,6 +190,69 @@ export default function MyCart() {
       }
     }
   };
+
+  async function calcShippingValue() {
+    if (!cep.length || cep.includes("_")) {
+      setToast({
+        title: "Atenção",
+        message: "Preencha o CEP corretamente",
+        type: "warning",
+      });
+      setOpenToast(true);
+      return false;
+    }
+
+    setLoadingShipping(true);
+
+    const products = cart.map((product) => {
+      return {
+        id: product.id,
+        width: product.shipping.width,
+        height: product.shipping.height,
+        length: product.shipping.lenght,
+        weight: product.shipping.weight,
+        insurance_value: product.total / 100,
+        quantity: product.quantity,
+      };
+    });
+
+    try {
+      const { data } = await axios.post("/api/shipping", {
+        products,
+        cep: cep.replace(/\.|\-/g, ""),
+      });
+      setCompanies(data.shipping);
+      setLoadingShipping(false);
+    } catch (error) {
+      setLoadingShipping(false);
+      if (axios.isAxiosError(error) && error.message) {
+        const message = error.message;
+        setToast({
+          title: "Atenção",
+          message,
+          type: "error",
+        });
+        setOpenToast(true);
+      }
+    }
+  }
+
+  function handleShippingInformation(id: number) {
+    if (id === 0) {
+      setShippingCalc({
+        id: 0,
+        description: "Frete grátis",
+        value: "0.00",
+      });
+    } else {
+      const result = companies.find((obj) => obj.id === id);
+      setShippingCalc({
+        id: result?.id || 0,
+        description: `${result?.company.name} - ${result?.name}`,
+        value: result?.price || "",
+      });
+    }
+  }
 
   return (
     <Fragment>
@@ -218,22 +351,131 @@ export default function MyCart() {
           </div>
         )}
 
-        <div className="rounded-md bg-white py-2 px-5 shadow flex flex-col sm:flex-row sm:items-center justify-between dark:bg-zinc-800 mt-5">
-          <span>Calcular frete</span>
+        <div className="rounded-md bg-white shadow dark:bg-zinc-800 mt-5 py-2 px-5">
+          <div
+            className={`flex flex-col sm:flex-row sm:items-center justify-between ${
+              companies.length && "border-b pb-2 dark:border-b-zinc-700"
+            }`}
+          >
+            <span className="font-semibold">Calcular frete</span>
 
-          <div className="flex items-center gap-3">
-            <ReactInputMask
-              mask={"99.999-999"}
-              required
-              className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
-              name="cep"
-              placeholder="Digite seu CEP"
-            />
-            <Button variant="outline" isDisabled={cart.length === 0}>
-              <Calculator /> Calcular
-            </Button>
+            <div className="flex items-center gap-3">
+              <ReactInputMask
+                mask={"99.999-999"}
+                required
+                className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                name="cep"
+                placeholder="Digite seu CEP"
+                value={cep}
+                onChange={(e) => setCep(e.target.value)}
+              />
+              <Button
+                variant="outline"
+                isDisabled={cart.length === 0 || cep === client.address.cep}
+                onClick={() => calcShippingValue()}
+                isLoading={loadingShipping}
+                textLoading="Calculando..."
+              >
+                <Calculator /> Calcular
+              </Button>
+            </div>
           </div>
+
+          <RadioGroupPrimitive.Root
+            aria-label="Pokemon starters"
+            value={String(shippingCalc?.id)}
+            onValueChange={(e) => handleShippingInformation(Number(e))}
+          >
+            {cep === "77.710-000" ||
+            cep === "77.704-000" ||
+            cep === "77.714-000" ? (
+              <div className="flex items-center justify-between border-b dark:border-b-zinc-700 last:border-b-0 py-3">
+                <div className="flex items-center">
+                  <RadioGroupPrimitive.Item
+                    id={"0"}
+                    value={"0"}
+                    className={cx(
+                      "peer relative w-5 h-5 rounded-full",
+                      "border bg-zinc-50 dark:bg-zinc-900 text-white"
+                    )}
+                  >
+                    <RadioGroupPrimitive.Indicator className="absolute inset-0 flex items-center justify-center leading-0">
+                      <div className="w-2 h-2 rounded-full bg-sky-700 dark:bg-sky-300" />
+                    </RadioGroupPrimitive.Indicator>
+                  </RadioGroupPrimitive.Item>
+                  <label htmlFor={"free"} className="ml-2 block">
+                    Grátis
+                  </label>
+                </div>
+
+                <span className="font-semibold">R$ 0,00</span>
+              </div>
+            ) : (
+              ""
+            )}
+            {companies.map((company) => (
+              <div
+                key={company.id}
+                className="flex items-center justify-between border-b dark:border-b-zinc-700 last:border-b-0 py-3"
+              >
+                <div className="flex items-center">
+                  <RadioGroupPrimitive.Item
+                    id={String(company.id)}
+                    value={String(company.id)}
+                    className={cx(
+                      "peer relative w-5 h-5 rounded-full",
+                      "border bg-zinc-50 dark:bg-zinc-900 text-white"
+                    )}
+                  >
+                    <RadioGroupPrimitive.Indicator className="absolute inset-0 flex items-center justify-center leading-0">
+                      <div className="w-2 h-2 rounded-full bg-sky-700 dark:bg-sky-300" />
+                    </RadioGroupPrimitive.Indicator>
+                  </RadioGroupPrimitive.Item>
+                  <label htmlFor={String(company.id)} className="ml-2 block">
+                    {company.company.name} - {company.name}
+                  </label>
+                </div>
+
+                <span className="font-semibold">
+                  {company.currency} {company.price}
+                </span>
+              </div>
+            ))}
+          </RadioGroupPrimitive.Root>
         </div>
+
+        {!!client.name.length && (
+          <div className="rounded-md bg-white shadow dark:bg-zinc-800 mt-5 py-2 px-5">
+            <span className="block font-semibold">Endereço de entrega:</span>
+
+            <div className="flex flex-col mt-2 pb-1 text-zinc-700 dark:text-zinc-300">
+              <span>
+                {client.address.street}, Nº {client.address.number}
+              </span>
+              <span>Bairro: {client.address.district}</span>
+              <span>CEP: {client.address.cep}</span>
+              <span>
+                Cidade: {client.address.city} - {client.address.uf}
+              </span>
+
+              {cep !== client.address.cep ? (
+                <div className="bg-red-600 rounded-md px-3 py-2 mt-2 text-white dark:bg-red-300 dark:text-zinc-800">
+                  O CEP para o cálculo do frete está diferente do CEP do seu
+                  endereço cadastrado, se você quer usar um novo endereço clique
+                  no botão abaixo.
+                </div>
+              ) : (
+                ""
+              )}
+
+              <Link href={`/minhaconta/meusdados?client=${client.id}`} passHref>
+                <a className="text-sky-700 mt-2 dark:text-sky-300 hover:underline">
+                  Alterar endereço
+                </a>
+              </Link>
+            </div>
+          </div>
+        )}
 
         <div className="mt-5 rounded-md bg-white py-2 px-5 shadow grid grid-cols-1 divide-y dark:divide-zinc-700 dark:bg-zinc-800 mb-5">
           <div className="flex items-center justify-between py-3">
@@ -242,11 +484,16 @@ export default function MyCart() {
           </div>
           <div className="flex items-center justify-between py-3">
             <span>Valor da Entrega</span>
-            <span>{calcPrice(freight)}</span>
+            <span>
+              {Number(shippingCalc?.value).toLocaleString("pt-br", {
+                style: "currency",
+                currency: "BRL",
+              })}
+            </span>
           </div>
           <div className="flex items-center justify-between py-3 font-bold text-xl">
             <span>Total a Pagar</span>
-            <span>{calcPrice(total + freight)}</span>
+            <span>{calcFinalValue(total, Number(shippingCalc?.value))}</span>
           </div>
         </div>
 

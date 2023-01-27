@@ -2,9 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import {
   CREATE_ORDER,
-  CREATE_ORDER_ITEM,
   PUBLISH_ORDER,
-  PUBLISH_ORDER_ITEM,
   UPDATE_CHECKOUT_ID,
 } from "../../graphql/order";
 import { clientMutation } from "../../lib/urql";
@@ -32,6 +30,8 @@ interface Cart {
 const stripe_pk = process.env.STRIPE_KEY || "";
 const stripe = new Stripe(stripe_pk, { apiVersion: "2022-08-01" });
 
+const APP_BASE_URL = process.env.APP_BASE_URL || "";
+
 export default async function order(
   req: NextApiRequest,
   res: NextApiResponse<Data>
@@ -48,7 +48,6 @@ export default async function order(
     const { data: createOrderData, error: createOrderError } =
       await clientMutation.mutation(CREATE_ORDER, orderToStore).toPromise();
     if (createOrderError) {
-      console.log("CREATE ORDER ERROR", createOrderError);
       res.status(400).json({ message: createOrderError.message });
     }
     const orderId = createOrderData.createOrder.id;
@@ -65,7 +64,7 @@ export default async function order(
     //CRIAR CHECKOUT
     const line_items = cart.map((car) => {
       return {
-        quantity: car.quantity,
+        quantity: 1,
         price_data: {
           product_data: {
             images: [car.thumbnail],
@@ -73,14 +72,14 @@ export default async function order(
             description: car.name,
           },
           currency: "BRL",
-          unit_amount: car.unity,
+          unit_amount: car.total,
         },
       };
     });
 
     const session = await stripe.checkout.sessions.create({
-      success_url: "https://nkinfo.com.br",
-      cancel_url: "https://nkinfo.com.br",
+      success_url: `${APP_BASE_URL}/sucesso?pedido=${orderId}`,
+      cancel_url: `${APP_BASE_URL}/pagamento?pedido=${orderId}`,
       mode: "payment",
       line_items,
       payment_method_types: ["boleto", "card"],

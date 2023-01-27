@@ -38,6 +38,7 @@ const FIND_CLIENT = gql`
       password
       id
       name
+      address
     }
   }
 `;

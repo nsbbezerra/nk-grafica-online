@@ -12,6 +12,8 @@ const nextConfig = {
       "vps36066.publiccloud.com.br",
       "storage.googleapis.com",
       "media.graphassets.com",
+      "sandbox.melhorenvio.com.br",
+      "melhorenvio.com.br",
     ],
   },
 };

@@ -99,6 +99,14 @@ export default function Header() {
       setClient({
         id: "",
         name: "",
+        address: {
+          cep: "",
+          city: "",
+          district: "",
+          number: "",
+          street: "",
+          uf: "",
+        },
       });
     }
     if (storedCart) {
@@ -257,7 +265,11 @@ export default function Header() {
           } else if (data) {
             let { password } = data.client;
             if (password === values.password) {
-              let client = { id: data.client.id, name: data.client.name };
+              let client = {
+                id: data.client.id,
+                name: data.client.name,
+                address: data.client.address,
+              };
               localStorage.setItem("client", JSON.stringify(client));
               setClient(client);
               setToast({
@@ -295,6 +307,14 @@ export default function Header() {
     setClient({
       id: "",
       name: "",
+      address: {
+        cep: "",
+        city: "",
+        district: "",
+        number: "",
+        street: "",
+        uf: "",
+      },
     });
   }
 

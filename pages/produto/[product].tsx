@@ -146,12 +146,13 @@ const Produto: NextPage<Props> = ({ product }) => {
       name: product.name,
       productName: product.name,
       quantity,
-      total: price,
+      total: parseInt(String(price)),
       thumbnail: product.images[0].url,
       width: parseFloat(width),
       height: height,
       mode: product.mode,
       unity: product.price,
+      shipping: product.shipping,
     };
     const updatedCart = [...cart, newProduct];
     setCart(updatedCart);
