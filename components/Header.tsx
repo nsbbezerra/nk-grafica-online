@@ -650,10 +650,6 @@ export default function Header() {
                           </span>
                         </div>
                         <span className="text-sm">{car.name}</span>
-                        <span className="text-sm">
-                          {car.width ? `${car.width}mt x` : ""}
-                          {car.height ? `${car.height}mt` : ""}
-                        </span>
 
                         <div className="flex justify-between mt-2 gap-3 items-start text-sm">
                           <span>QTD: {car.quantity}</span>

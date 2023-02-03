@@ -8,9 +8,6 @@ interface Cart {
   productName: string;
   quantity: number;
   total: number;
-  width?: number;
-  height?: number;
-  mode: "square_meter" | "unique";
   unity: number;
   shipping: ShippingProps;
 }

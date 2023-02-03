@@ -22,11 +22,9 @@ interface Products {
   name: string;
   price: number;
   information: RichTextProps;
-  widths: number[];
-  mode: "square_meter" | "unique";
   promotional: boolean;
   promoRate?: number;
-  limit?: number;
+  destak: boolean;
   shipping: ShippingProps;
   shippingOptions: "fast" | "slow";
 }
@@ -48,11 +46,9 @@ interface ProductsInfoProps {
   name: string;
   price: number;
   information: RichTextProps;
-  widths: number[];
-  mode: "square_meter" | "unique";
   promotional: boolean;
   promoRate?: number;
-  limit?: number;
+  destak: boolean;
   reviews: ReviewsProps[];
   shipping: ShippingProps;
   shippingOptions: "fast" | "slow";

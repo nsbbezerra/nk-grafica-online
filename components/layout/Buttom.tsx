@@ -3,7 +3,7 @@ import { CircleNotch } from "phosphor-react";
 
 interface Props {
   buttonSize?: "xs" | "sm" | "md" | "lg";
-  scheme?: "success" | "info" | "warning" | "error";
+  scheme?: "success" | "info" | "warning" | "error" | "gray";
   isFullSize?: boolean;
   icon?: ReactNode;
   isLoading?: boolean;
@@ -34,6 +34,10 @@ export default function Button({
       ? "buttom-blue"
       : "" || (scheme === "info" && variant === "outline")
       ? "buttom-blue-outline"
+      : "" || (scheme === "gray" && variant === "outline")
+      ? "buttom-gray-outline"
+      : "" || (scheme === "gray" && variant === "solid")
+      ? "buttom-gray"
       : "" || (scheme === "success" && variant === "solid")
       ? "buttom-green"
       : "" || (scheme === "success" && variant === "outline")
@@ -55,6 +59,10 @@ export default function Button({
       ? "buttom-blue"
       : "" || (scheme === "info" && variant === "outline")
       ? "buttom-blue-outline"
+      : "" || (scheme === "gray" && variant === "outline")
+      ? "buttom-gray-outline"
+      : "" || (scheme === "gray" && variant === "solid")
+      ? "buttom-gray"
       : "" || (scheme === "success" && variant === "solid")
       ? "buttom-green"
       : "" || (scheme === "success" && variant === "outline")
@@ -76,6 +84,10 @@ export default function Button({
       ? "buttom-blue"
       : "" || (scheme === "info" && variant === "outline")
       ? "buttom-blue-outline"
+      : "" || (scheme === "gray" && variant === "outline")
+      ? "buttom-gray-outline"
+      : "" || (scheme === "gray" && variant === "solid")
+      ? "buttom-gray"
       : "" || (scheme === "success" && variant === "solid")
       ? "buttom-green"
       : "" || (scheme === "success" && variant === "outline")
@@ -97,6 +109,10 @@ export default function Button({
       ? "buttom-blue"
       : "" || (scheme === "info" && variant === "outline")
       ? "buttom-blue-outline"
+      : "" || (scheme === "gray" && variant === "outline")
+      ? "buttom-gray-outline"
+      : "" || (scheme === "gray" && variant === "solid")
+      ? "buttom-gray"
       : "" || (scheme === "success" && variant === "solid")
       ? "buttom-green"
       : "" || (scheme === "success" && variant === "outline")

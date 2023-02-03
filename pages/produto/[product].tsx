@@ -84,18 +84,9 @@ const Produto: NextPage<Props> = ({ product }) => {
   }
 
   useEffect(() => {
-    if (product.mode === "unique") {
-      setPrice(quantity * product.price);
-      if (quantity < 1 || isNaN(quantity)) {
-        setPrice(product.price);
-      }
-    } else if (product.mode === "square_meter") {
-      if (width === "0") {
-        setPrice(product.price);
-      } else {
-        let square_meter = parseFloat(width) * height;
-        setPrice(quantity * square_meter * product.price);
-      }
+    setPrice(quantity * product.price);
+    if (quantity < 1 || isNaN(quantity)) {
+      setPrice(product.price);
     }
   }, [quantity]);
 
@@ -117,20 +108,6 @@ const Produto: NextPage<Props> = ({ product }) => {
   };
 
   function addToCart() {
-    if (
-      product.mode === "square_meter" &&
-      parseInt(width) === 0 &&
-      height === 0
-    ) {
-      setToast({
-        title: "Atenção",
-        message:
-          "Você precisa especificar as dimensões do item, Largura e Comprimento",
-        type: "info",
-      });
-      setOpenToast(true);
-      return false;
-    }
     const finder = cart.find((obj) => obj.id === product.id);
     if (finder) {
       setToast({
@@ -148,9 +125,6 @@ const Produto: NextPage<Props> = ({ product }) => {
       quantity,
       total: parseInt(String(price)),
       thumbnail: product.images[0].url,
-      width: parseFloat(width),
-      height: height,
-      mode: product.mode,
       unity: product.price,
       shipping: product.shipping,
     };
@@ -260,69 +234,28 @@ const Produto: NextPage<Props> = ({ product }) => {
           </div>
 
           <div className="lg:col-span-2 relative w-full">
-            <strong className="text-sky-700 text-3xl block dark:text-sky-300">
-              {product.name}
+            <strong className="text-sky-700 text-3xl dark:text-sky-300">
+              {product.name}{" "}
             </strong>
-            <span className="text-zinc-600 dark:text-zinc-300">
-              {product.slug}
-            </span>
             {product.shippingOptions === "fast" && (
-              <div className="flex items-center gap-2 bg-sky-100 rounded-md py-1 px-2 text-sky-700 font-semibold w-fit z-[5] dark:bg-zinc-600 dark:text-white shadow mt-3">
+              <div className="flex items-center gap-2 bg-sky-100 rounded-md py-1 px-2 text-sky-700 font-semibold w-fit z-[5] dark:bg-zinc-600 dark:text-white shadow mt-3 text-sm">
                 <Truck weight="fill" className="text-lg" />
                 <span>Entrega rápida</span>
               </div>
             )}
+            <div
+              className="description-product"
+              dangerouslySetInnerHTML={{ __html: product.information.html }}
+            />
 
             <div className="mt-5 w-full">
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-3"></div>
-
-              {product.mode === "square_meter" && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
-                  <div className="flex flex-col">
-                    <label>
-                      Largura (Metros){" "}
-                      <span className="text-red-600 dark:text-red-300">*</span>
-                    </label>
-                    <select
-                      className="border bg-white dark:border-zinc-700 dark:bg-zinc-900 h-10 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300"
-                      value={width}
-                      onChange={(e) => setWidth(e.target.value)}
-                    >
-                      <option value={"0"}>Selecione uma opção</option>
-                      {product.widths.map((wd) => (
-                        <option key={wd} value={wd}>
-                          {wd}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="flex flex-col">
-                    <label>
-                      Comprimento (Metros){" "}
-                      <span className="text-red-600 dark:text-red-300">*</span>
-                    </label>
-                    <input
-                      type={"number"}
-                      className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300"
-                      value={height}
-                      onChange={(e) => setHeight(parseFloat(e.target.value))}
-                    />
-                  </div>
-                </div>
-              )}
 
               <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-2 sm:gap-3 items-center mt-3">
                 <div className="flex flex-col">
                   <strong className="text-3xl font-bold">
                     {calcPrice(price)}
                   </strong>
-                  {!product.limit ? (
-                    ""
-                  ) : (
-                    <span className="text-sm text-red-600 dark:text-red-300">
-                      Valor mínimo {calcPrice(product.limit || 0)}
-                    </span>
-                  )}
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-[100px_1fr] md:grid-cols-[1fr_2fr] items-end gap-3">
@@ -350,7 +283,7 @@ const Produto: NextPage<Props> = ({ product }) => {
         </div>
 
         <div className="rounded-md mt-10 p-5 bg-white shadow  dark:bg-zinc-800">
-          <div className="flex items-center gap-3 text-xl sm:text-2xl md:text-3xl w-fit font-extrabold border-b-2 border-b-sky-700 dark:border-b-sky-300 pr-3 mb-5">
+          <div className="flex items-center gap-3 text-xl sm:text-2xl w-fit font-extrabold border-b-2 border-b-sky-700 dark:border-b-sky-300 pr-3 mb-5">
             <span>DETALHES DO PRODUTO</span>
           </div>
 
@@ -358,15 +291,10 @@ const Produto: NextPage<Props> = ({ product }) => {
             className="description-product"
             dangerouslySetInnerHTML={{ __html: product.description.html }}
           />
-
-          <div
-            className="description-product"
-            dangerouslySetInnerHTML={{ __html: product.information.html }}
-          />
         </div>
 
         <div className="rounded-md mt-10 p-5 bg-white shadow dark:bg-zinc-800">
-          <div className="flex items-center gap-3 text-xl sm:text-2xl md:text-3xl w-fit font-extrabold border-b-2 border-b-sky-700 dark:border-b-sky-300 pr-3 mb-5">
+          <div className="flex items-center gap-3 text-xl sm:text-2xl w-fit font-extrabold border-b-2 border-b-sky-700 dark:border-b-sky-300 pr-3 mb-5">
             <span>COMENTÁRIOS</span>
           </div>
 
@@ -678,7 +606,7 @@ const Produto: NextPage<Props> = ({ product }) => {
                   <Button
                     isFullSize
                     type="submit"
-                    scheme="info"
+                    scheme="gray"
                     variant="outline"
                     onClick={() => setConfirmModal(false)}
                   >

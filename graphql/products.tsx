@@ -2,7 +2,7 @@ import { gql } from "urql";
 
 const FIND_INDEX_PAGE = gql`
   query FindProducts {
-    products(where: { better: true }, last: 8) {
+    products(where: { destak: true }, last: 24) {
       id
       images {
         id
@@ -14,11 +14,10 @@ const FIND_INDEX_PAGE = gql`
       slug
       name
       price
+      shippingOptions
       information {
         html
       }
-      widths
-      mode
       promotional
       promoRate
     }
@@ -62,12 +61,8 @@ const FIND_PRODUCTS_BY_CATEGORY = gql`
         information {
           html
         }
-        widths
-        limit
         promoRate
         promotional
-        mode
-        better
         shipping
         shippingOptions
         images {
@@ -104,11 +99,8 @@ const FIND_PRODUCT_INFORMATION = gql`
       information {
         html
       }
-      widths
-      mode
       promotional
       promoRate
-      limit
       shipping
       shippingOptions
       reviews {
@@ -142,12 +134,8 @@ const FIND_ALL_ITEMS = gql`
         information {
           html
         }
-        widths
-        limit
         promoRate
         promotional
-        mode
-        better
         shipping
         shippingOptions
         images {
