@@ -39,6 +39,8 @@ const FIND_CLIENT = gql`
       id
       name
       address
+      email
+      phone
     }
   }
 `;
@@ -56,4 +58,31 @@ const FIND_CLIENT_INFO = gql`
   }
 `;
 
-export { CREATE_CLIENT, PUBLISH_CLIENT, FIND_CLIENT, FIND_CLIENT_INFO };
+const UPDATE_CLIENT = gql`
+  mutation Update(
+    $id: ID!
+    $name: String!
+    $phone: String!
+    $email: String!
+    $address: Json!
+  ) {
+    updateClient(
+      where: { id: $id }
+      data: { email: $email, phone: $phone, address: $address, name: $name }
+    ) {
+      id
+      name
+      phone
+      email
+      address
+    }
+  }
+`;
+
+export {
+  CREATE_CLIENT,
+  PUBLISH_CLIENT,
+  FIND_CLIENT,
+  FIND_CLIENT_INFO,
+  UPDATE_CLIENT,
+};

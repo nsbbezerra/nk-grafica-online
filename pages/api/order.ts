@@ -52,15 +52,6 @@ export default async function order(
     }
     const orderId = createOrderData.createOrder.id;
 
-    //PUBLICAR A ORDEM
-    const { error: publishOrderError } = await clientMutation
-      .mutation(PUBLISH_ORDER, { id: orderId })
-      .toPromise();
-
-    if (publishOrderError) {
-      res.status(400).json({ message: publishOrderError.message });
-    }
-
     //CRIAR CHECKOUT
     const line_items = cart.map((car) => {
       return {
@@ -97,9 +88,21 @@ export default async function order(
       ],
     });
 
-    const { error: checkoutError } = await clientMutation
-      .mutation(UPDATE_CHECKOUT_ID, { id: orderId, checkout: session.id })
-      .toPromise();
+    const { data: checkoutOrderData, error: checkoutError } =
+      await clientMutation
+        .mutation(UPDATE_CHECKOUT_ID, { id: orderId, checkout: session.id })
+        .toPromise();
+
+    if (checkoutOrderData) {
+      //PUBLICAR A ORDEM
+      const { error: publishOrderError } = await clientMutation
+        .mutation(PUBLISH_ORDER, { id: orderId })
+        .toPromise();
+
+      if (publishOrderError) {
+        res.status(400).json({ message: publishOrderError.message });
+      }
+    }
 
     if (checkoutError) {
       res.status(400).json({ message: checkoutError.message });
@@ -114,7 +117,6 @@ export default async function order(
       url: checkoutUrl,
     });
   } catch (error) {
-    console.log({ error });
     res
       .status(400)
       .json({ message: "Ocorreu um erro ao processar a requisição" });

@@ -148,6 +148,7 @@ export default function MyCart() {
       payment: "waiting",
       orderStatus: "payment",
       shippingValue: parseInt(String(transformShippingCalc)),
+      shippingId: shippingCalc.description,
     };
 
     setLoading(true);
@@ -367,7 +368,7 @@ export default function MyCart() {
               />
               <Button
                 variant="outline"
-                isDisabled={cart.length === 0 || cep === client.address.cep}
+                isDisabled={cart.length === 0}
                 onClick={() => calcShippingValue()}
                 isLoading={loadingShipping}
                 textLoading="Calculando..."

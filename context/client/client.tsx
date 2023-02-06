@@ -3,6 +3,8 @@ import { createContext, Dispatch, SetStateAction, useState } from "react";
 interface Client {
   id: string;
   name: string;
+  email: string;
+  phone: string;
   address: {
     cep: string;
     uf: string;
@@ -22,6 +24,8 @@ const DEFAULT_VALUE: PropsClientContext = {
   client: {
     id: "",
     name: "",
+    email: "",
+    phone: "",
     address: {
       cep: "",
       city: "",

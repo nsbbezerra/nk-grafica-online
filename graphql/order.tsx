@@ -8,6 +8,7 @@ const CREATE_ORDER = gql`
     $orderStatus: OrderStatus!
     $items: Json!
     $shippingValue: Float!
+    $shippingId: String!
   ) {
     createOrder(
       data: {
@@ -17,6 +18,7 @@ const CREATE_ORDER = gql`
         orderStatus: $orderStatus
         shippingValue: $shippingValue
         items: $items
+        shippingId: $shippingId
       }
     ) {
       id
@@ -76,9 +78,21 @@ const UPDATE_CHECKOUT_ID = gql`
   }
 `;
 
+const UPDATE_INTENT_ID = gql`
+  mutation UpdateOrder($id: ID!, $checkout: String!) {
+    updateOrder(where: { id: $id }, data: { paymentIntentId: $checkout }) {
+      id
+    }
+  }
+`;
+
 const FIND_ORDERS_BY_CLIENT = gql`
   query FindOrders($client: ID!) {
-    orders(where: { client: { id: $client } }, last: 30) {
+    orders(
+      where: { client: { id: $client } }
+      first: 20
+      orderBy: createdAt_DESC
+    ) {
       id
       total
       stripeCheckoutId
@@ -87,22 +101,17 @@ const FIND_ORDERS_BY_CLIENT = gql`
       orderStatus
       shippingInformation
       createdAt
-      orderItems {
-        id
-        quantity
-        total
-        width
-        height
-        name
-        product {
-          name
-          id
-          images {
-            id
-            url
-          }
-        }
-      }
+      items
+      paymentIntentId
+      shippingId
+    }
+  }
+`;
+
+const CANCEL_ORDER = gql`
+  mutation CancelOrder($id: ID!) {
+    updateOrder(where: { id: $id }, data: { orderStatus: "canceled" }) {
+      id
     }
   }
 `;
@@ -114,4 +123,6 @@ export {
   PUBLISH_ORDER_ITEM,
   UPDATE_CHECKOUT_ID,
   FIND_ORDERS_BY_CLIENT,
+  CANCEL_ORDER,
+  UPDATE_INTENT_ID,
 };

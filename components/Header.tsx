@@ -44,11 +44,6 @@ interface ToastInfo {
   type: "success" | "info" | "warning" | "error";
 }
 
-interface Client {
-  id: string;
-  name: string;
-}
-
 export default function Header() {
   const { theme } = useTheme();
   const { categories, setCategories } = useContext(CategoriesContext);
@@ -98,6 +93,8 @@ export default function Header() {
     } else {
       setClient({
         id: "",
+        email: "",
+        phone: "",
         name: "",
         address: {
           cep: "",
@@ -268,6 +265,8 @@ export default function Header() {
               let client = {
                 id: data.client.id,
                 name: data.client.name,
+                phone: data.client.phone,
+                email: data.client.email,
                 address: data.client.address,
               };
               localStorage.setItem("client", JSON.stringify(client));
@@ -307,6 +306,8 @@ export default function Header() {
     setClient({
       id: "",
       name: "",
+      email: "",
+      phone: "",
       address: {
         cep: "",
         city: "",
@@ -495,7 +496,7 @@ export default function Header() {
         </div>
       </header>
 
-      <div className="h-12 sticky top-0 z-10 bg-white bg-opacity-90 backdrop-blur-sm shadow-md dark:bg-zinc-800 dark:bg-opacity-90 dark:backdrop-blur-sm">
+      <div className="h-12 sticky top-0 z-20 bg-white bg-opacity-90 backdrop-blur-sm shadow-md dark:bg-zinc-800 dark:bg-opacity-90 dark:backdrop-blur-sm">
         <div className="container mx-auto max-w-6xl px-10 xl:px-0 flex items-center justify-between h-full">
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center gap-4">

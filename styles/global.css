@@ -186,6 +186,38 @@
     @apply flex items-center justify-between gap-3 px-4 py-2 border-b font-bold dark:border-b-zinc-700 sticky top-0 bg-white dark:bg-zinc-800;
   }
 
+  .steps-container {
+    @apply flex flex-col sm:flex-row gap-2 sm:gap-5 justify-between items-start py-3 w-full max-w-4xl;
+  }
+  .steps {
+    @apply flex items-center sm:flex-col sm:justify-center sm:text-center w-full sm:w-[150px] relative;
+  }
+  .step-active {
+    @apply bg-sky-700 text-white dark:bg-sky-300 dark:text-zinc-800;
+  }
+  .step-inactive {
+    @apply border border-sky-600 text-sky-600 bg-white dark:border-sky-300 dark:text-sky-300 dark:bg-zinc-700;
+  }
+  .step {
+    @apply w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full font-bold z-10;
+  }
+  .steps::after {
+    content: " ";
+    @apply h-[70px] border-l absolute top-4 border-sky-700 left-4 sm:border-l-0 sm:h-[1px] sm:bg-sky-700 sm:w-full sm:left-[60%] sm:top-5 sm:m-auto lg:w-[120%] xl:w-[150%] dark:border-sky-300 dark:sm:bg-sky-300;
+  }
+  .steps:last-child::after {
+    display: none !important;
+  }
+  .step-title {
+    @apply font-normal text-sm mt-2;
+  }
+  .step-description {
+    @apply font-light text-zinc-700 text-sm;
+  }
+  .step-content {
+    @apply flex flex-col ml-5 sm:ml-0;
+  }
+
   .overlay {
     -webkit-animation: fadeIn 0.3s linear;
     -moz-animation: fadeIn 0.3s linear;
