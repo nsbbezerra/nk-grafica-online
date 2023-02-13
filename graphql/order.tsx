@@ -5,7 +5,7 @@ const CREATE_ORDER = gql`
     $client: ID!
     $total: Int!
     $payment: PaymentStatus!
-    $orderStatus: OrderStatus!
+    $orderStatus: String!
     $items: Json!
     $shippingValue: Float!
     $shippingId: String!

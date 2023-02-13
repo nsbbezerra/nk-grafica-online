@@ -348,6 +348,10 @@ const MinhasCompras: NextPage = () => {
                                       ord.paymentIntentId
                                     )
                                   }
+                                  isDisabled={
+                                    !ord.stripeCheckoutId ||
+                                    !ord.paymentIntentId
+                                  }
                                 >
                                   <CurrencyDollar /> Pagamento
                                 </Button>
@@ -392,7 +396,14 @@ const MinhasCompras: NextPage = () => {
                                   Rastreie seu pedido
                                 </dt>
                                 <dd className="mt-1 text-sm sm:col-span-2 sm:mt-0">
-                                  {formateDate(new Date(ord.createdAt))}
+                                  <Link href={ord.shippingInformation} passHref>
+                                    <a
+                                      target={"_blank"}
+                                      className="text-sky-700 dark:text-sky-300 hover:underline"
+                                    >
+                                      Clique aqui para rastrear
+                                    </a>
+                                  </Link>
                                 </dd>
                               </div>
                             </dl>

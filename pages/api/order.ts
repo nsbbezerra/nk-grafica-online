@@ -47,6 +47,7 @@ export default async function order(
     const orderToStore = { ...orderParsed, items: cart };
     const { data: createOrderData, error: createOrderError } =
       await clientMutation.mutation(CREATE_ORDER, orderToStore).toPromise();
+
     if (createOrderError) {
       res.status(400).json({ message: createOrderError.message });
     }
@@ -70,7 +71,7 @@ export default async function order(
 
     const session = await stripe.checkout.sessions.create({
       success_url: `${APP_BASE_URL}/sucesso?pedido=${orderId}`,
-      cancel_url: `${APP_BASE_URL}/pagamento?pedido=${orderId}`,
+      cancel_url: `${APP_BASE_URL}/erro?pedido=${orderId}`,
       mode: "payment",
       line_items,
       payment_method_types: ["boleto", "card"],
