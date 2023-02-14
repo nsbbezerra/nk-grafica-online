@@ -22,13 +22,13 @@ interface Props {
 export default function Footer({ space }: Props) {
   return (
     <footer
-      className={`bg-gray-900 dark:bg-zinc-900 py-10 ${
+      className={`bg-secondary-900 dark:bg-zinc-900 py-10 ${
         space ? "mt-10" : "mt-0"
       }`}
     >
       <div className="container mx-auto max-w-6xl px-10 xl:px-0 grid grid-cols-1 md:grid-cols-3 gap-10 pb-10 border-b border-b-zinc-700">
         <div>
-          <div className="flex items-center gap-3 text-xl font-extrabold text-sky-300">
+          <div className="flex items-center gap-3 text-xl font-extrabold text-primary-300">
             <Phone />
 
             <span>CANAIS DE ATENDIMENTO</span>
@@ -55,7 +55,7 @@ export default function Footer({ space }: Props) {
         </div>
 
         <div>
-          <div className="flex items-center gap-3 text-xl font-extrabold text-sky-300">
+          <div className="flex items-center gap-3 text-xl font-extrabold text-primary-300">
             <Link />
 
             <span>LINKS ÚTEIS</span>
@@ -76,7 +76,7 @@ export default function Footer({ space }: Props) {
           </div>
         </div>
         <div>
-          <div className="flex items-center gap-3 text-xl font-extrabold text-sky-300">
+          <div className="flex items-center gap-3 text-xl font-extrabold text-primary-300">
             <DeviceMobileCamera />
 
             <span>SOCIAL</span>

@@ -242,14 +242,14 @@ const MinhasCompras: NextPage = () => {
 
       <div className="w-full grid grid-cols-[48px_1fr] md:grid-cols-[250px_1fr] overflow-hidden">
         <div className="w-full bg-white dark:bg-zinc-800 h-full shadow-lg">
-          <div className="flex items-center gap-3 text-xl py-5 px-4 font-bold my-5 text-sky-700 dark:text-sky-300">
+          <div className="flex items-center gap-3 text-xl py-5 px-4 font-bold my-5 text-primary-500 dark:text-primary-300">
             <User className="w-[48px]" />
             <span className="hidden md:block">Minha conta</span>
           </div>
 
           <div className="flex flex-col">
             <Link href={`/minhaconta/meusdados?client=${client.id}`} passHref>
-              <a className="flex h-12 items-center gap-3 px-3 md:px-4 border-l-4 border-l-transparent hover:border-l-sky-800 cursor-pointer select-none dark:hover:border-l-sky-400">
+              <a className="flex h-12 items-center gap-3 px-3 md:px-4 border-l-4 border-l-transparent hover:border-l-primary-600 cursor-pointer select-none dark:hover:border-l-primary-200">
                 <IdentificationCard className="text-lg flex-shrink-0" />
                 <span className="hidden md:block">Meus dados</span>
               </a>
@@ -258,7 +258,7 @@ const MinhasCompras: NextPage = () => {
               href={`/minhaconta/minhascompras?client=${client.id}`}
               passHref
             >
-              <a className="flex h-12 items-center gap-3 px-3 md:px-4 border-l-4 border-l-sky-700 cursor-pointer select-none text-sky-700 dark:text-sky-300 dark:border-l-sky-300">
+              <a className="flex h-12 items-center gap-3 px-3 md:px-4 border-l-4 border-l-primary-500 cursor-pointer select-none text-primary-500 dark:text-primary-300 dark:border-l-primary-200">
                 <ShoppingCart className="text-lg flex-shrink-0" />
                 <span className="hidden md:block">Minhas compras</span>
               </a>
@@ -267,7 +267,7 @@ const MinhasCompras: NextPage = () => {
         </div>
         <div className="w-full py-10">
           <div className="container mx-auto px-5 xl:px-10 max-w-5xl">
-            <div className="flex items-center gap-3 text-xl sm:text-2xl md:text-3xl w-fit font-extrabold border-b-2 border-b-sky-700 dark:border-b-sky-300 pr-3 mb-10">
+            <div className="flex items-center gap-3 text-xl sm:text-2xl md:text-3xl w-fit font-extrabold border-b-2 border-b-primary-500 dark:border-b-primary-300 pr-3 mb-10">
               <span>Minhas compras</span>
             </div>
 
@@ -307,7 +307,7 @@ const MinhasCompras: NextPage = () => {
                                 <div className="flex items-start justify-between gap-3 w-full">
                                   <div>
                                     <Link href={`/produto/${item.id}`}>
-                                      <a className="block hover:underline cursor-pointer text-sm text-sky-600 dark:text-sky-300">
+                                      <a className="block hover:underline cursor-pointer text-sm text-primary-500 dark:text-primary-300">
                                         {item.name}
                                       </a>
                                     </Link>
@@ -330,7 +330,7 @@ const MinhasCompras: NextPage = () => {
                               <>
                                 <Button
                                   isFullSize
-                                  buttonSize="xs"
+                                  buttonSize="sm"
                                   scheme="error"
                                   onClick={() => handleCancelOrder(ord.id)}
                                 >
@@ -338,7 +338,7 @@ const MinhasCompras: NextPage = () => {
                                 </Button>
                                 <Button
                                   isFullSize
-                                  buttonSize="xs"
+                                  buttonSize="sm"
                                   variant="outline"
                                   isLoading={ord.id === orderId && isLoading}
                                   onClick={() =>
@@ -366,7 +366,7 @@ const MinhasCompras: NextPage = () => {
                               <span>Frete</span>
                               <span>{calcPrice(ord.shippingValue)}</span>
                             </div>
-                            <div className="flex items-center justify-between text-sm font-semibold text-sky-700 dark:text-sky-300">
+                            <div className="flex items-center justify-between text-sm font-semibold text-primary-500 dark:text-primary-300">
                               <span>Total</span>
                               <span>
                                 {calcPrice(ord.total + ord.shippingValue)}
@@ -399,7 +399,7 @@ const MinhasCompras: NextPage = () => {
                                   <Link href={ord.shippingInformation} passHref>
                                     <a
                                       target={"_blank"}
-                                      className="text-sky-700 dark:text-sky-300 hover:underline"
+                                      className="text-primary-500 dark:text-primary-300 hover:underline"
                                     >
                                       Clique aqui para rastrear
                                     </a>

@@ -172,14 +172,14 @@ const MeusDados: NextPage = () => {
 
       <div className="w-full grid grid-cols-[48px_1fr] md:grid-cols-[250px_1fr] overflow-hidden">
         <div className="w-full bg-white dark:bg-zinc-900 h-full shadow-lg">
-          <div className="flex items-center gap-3 text-xl py-5 px-4 font-bold my-5 text-sky-700 dark:text-sky-300">
+          <div className="flex items-center gap-3 text-xl py-5 px-4 font-bold my-5 text-primary-500 dark:text-primary-300">
             <User className="w-[48px]" />
             <span className="hidden md:block">Minha conta</span>
           </div>
 
           <div className="flex flex-col">
             <Link href={`/minhaconta/meusdados?client=${client.id}`} passHref>
-              <a className="flex h-12 items-center gap-3 px-3 md:px-4 border-l-4 border-l-sky-700 cursor-pointer select-none text-sky-700 dark:text-sky-300 dark:border-l-sky-300">
+              <a className="flex h-12 items-center gap-3 px-3 md:px-4 border-l-4 border-l-primary-500 cursor-pointer select-none text-primary-500 dark:text-primary-300 dark:border-l-primary-300">
                 <IdentificationCard className="flex-shrink-0 text-lg" />
                 <span className="hidden md:block">Meus dados</span>
               </a>
@@ -188,7 +188,7 @@ const MeusDados: NextPage = () => {
               href={`/minhaconta/minhascompras?client=${client.id}`}
               passHref
             >
-              <a className="flex h-12 items-center gap-3 px-3 md:px-4 border-l-4 border-l-transparent hover:border-l-sky-800 cursor-pointer select-none dark:hover:border-l-sky-400">
+              <a className="flex h-12 items-center gap-3 px-3 md:px-4 border-l-4 border-l-transparent hover:border-l-primary-600 cursor-pointer select-none dark:hover:border-l-primary-200">
                 <ShoppingCart className="flex-shrink-0 text-lg" />
                 <span className="hidden md:block">Minhas compras</span>
               </a>
@@ -197,7 +197,7 @@ const MeusDados: NextPage = () => {
         </div>
         <div className="w-full py-10">
           <div className="container mx-auto px-5 xl:px-10 max-w-3xl">
-            <div className="flex items-center gap-3 text-xl sm:text-2xl md:text-3xl w-fit font-extrabold border-b-2 border-b-sky-700 dark:border-b-sky-300 pr-3 mb-10">
+            <div className="flex items-center gap-3 text-xl sm:text-2xl md:text-3xl w-fit font-extrabold border-b-2 border-b-primary-500 dark:border-b-primary-300 pr-3 mb-10">
               <span>Meus dados</span>
             </div>
 
@@ -219,7 +219,7 @@ const MeusDados: NextPage = () => {
                           required
                           value={name}
                           onChange={(e) => setName(e.target.value)}
-                          className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                          className="inputs"
                         />
                       </dd>
                     </div>
@@ -238,7 +238,7 @@ const MeusDados: NextPage = () => {
                           name="phone"
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
-                          className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                          className="inputs"
                         />
                       </dd>
                     </div>
@@ -251,7 +251,7 @@ const MeusDados: NextPage = () => {
                           required
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                          className="inputs"
                         />
                       </dd>
                     </div>
@@ -266,7 +266,7 @@ const MeusDados: NextPage = () => {
                                 type={"text"}
                                 name="street"
                                 required
-                                className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                                className="inputs"
                                 value={street}
                                 onChange={(e) => setStreet(e.target.value)}
                               />
@@ -277,7 +277,7 @@ const MeusDados: NextPage = () => {
                                 type={"text"}
                                 name="street"
                                 required
-                                className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                                className="inputs"
                                 value={number}
                                 onChange={(e) => setNumber(e.target.value)}
                               />
@@ -291,7 +291,7 @@ const MeusDados: NextPage = () => {
                               required
                               value={district}
                               onChange={(e) => setDistrict(e.target.value)}
-                              className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                              className="inputs"
                             />
                           </div>
 
@@ -301,7 +301,7 @@ const MeusDados: NextPage = () => {
                               <ReactInputMask
                                 mask={"99.999-999"}
                                 required
-                                className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                                className="inputs"
                                 name="cep"
                                 value={cep}
                                 onChange={(e) => setCep(e.target.value)}
@@ -314,7 +314,7 @@ const MeusDados: NextPage = () => {
                                 type={"text"}
                                 name="street"
                                 required
-                                className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                                className="inputs"
                                 value={city}
                                 onChange={(e) => setCity(e.target.value)}
                               />
@@ -323,7 +323,7 @@ const MeusDados: NextPage = () => {
                             <div>
                               <label className="block">UF</label>
                               <select
-                                className="border bg-white dark:border-zinc-700 dark:bg-zinc-900 h-10 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                                className="border bg-white dark:border-zinc-700 dark:bg-zinc-900 h-10 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-300 w-full"
                                 name="uf"
                                 value={uf}
                                 onChange={(e) => setUf(e.target.value)}

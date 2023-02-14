@@ -41,9 +41,9 @@ const Items: NextPage<Props> = ({ categories }) => {
       {categories.map((cat) => (
         <button
           key={cat.id}
-          className={`flex items-center px-4 py-2 border-l-transparent gap-3 cursor-pointer hover:border-l-sky-600 hover:text-sky-600 dark:hover:border-l-sky-200 dark:hover:text-sky-200 ${
+          className={`flex items-center px-4 py-2 border-l-transparent gap-3 cursor-pointer hover:border-l-primary-500 hover:text-primary-500 dark:hover:border-l-primary-200 dark:hover:text-primary-200 ${
             cat.id === category?.id &&
-            "text-sky-700 dark:text-sky-300 border-l-sky-700 dark:border-l-sky-300 font-semibold"
+            "text-primary-500 dark:text-primary-300 border-l-primary-500 dark:border-l-primary-300 font-semibold"
           }`}
           onClick={() => setCategoryId(cat.id)}
         >
@@ -75,7 +75,7 @@ const Items: NextPage<Props> = ({ categories }) => {
         <div className="mt-10 grid grid-cols-1 md:grid-cols-[270px_1fr] gap-5">
           <div className="w-fit relative md:hidden">
             <Popover.Root>
-              <Popover.Trigger className="h-12 flex text-white bg-sky-700 rounded-md w-fit items-center gap-2 font-bold px-5 hover:bg-sky-800 hover:text-white dark:text-zinc-900 dark:hover:bg-sky-400 dark:bg-sky-300 select-none">
+              <Popover.Trigger className="h-10 flex text-white bg-secondary-500 rounded-md w-fit items-center gap-2 font-bold px-5 hover:bg-primary-600 hover:text-white dark:text-zinc-900 dark:hover:bg-primary-400 dark:bg-primary-300 select-none">
                 <Tag />
                 Categorias
               </Popover.Trigger>
@@ -92,7 +92,7 @@ const Items: NextPage<Props> = ({ categories }) => {
           </div>
 
           <div className="hidden md:block rounded-md bg-white dark:bg-zinc-800 shadow overflow-hidden h-fit">
-            <div className="flex items-center gap-3 bg-sky-50 px-4 py-2 text-sky-700 font-bold dark:bg-sky-200 dark:text-zinc-900 select-none text-lg">
+            <div className="flex items-center gap-3 bg-secondary-500 px-4 py-2 text-white font-bold dark:bg-secondary-100 dark:text-zinc-900 select-none text-lg">
               <Tag />
               Categorias
             </div>

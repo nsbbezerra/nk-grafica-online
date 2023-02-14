@@ -234,11 +234,11 @@ const Produto: NextPage<Props> = ({ product }) => {
           </div>
 
           <div className="lg:col-span-2 relative w-full">
-            <strong className="text-sky-700 text-3xl dark:text-sky-300">
+            <strong className="text-primary-500 text-3xl dark:text-primary-300">
               {product.name}{" "}
             </strong>
             {product.shippingOptions === "fast" && (
-              <div className="flex items-center gap-2 bg-sky-100 rounded-md py-1 px-2 text-sky-700 font-semibold w-fit z-[5] dark:bg-zinc-600 dark:text-white shadow mt-3 text-sm">
+              <div className="flex items-center gap-2 bg-primary-100 rounded-md py-1 px-2 text-primary-500 font-semibold w-fit z-[5] dark:bg-zinc-600 dark:text-white shadow mt-3 text-sm">
                 <Truck weight="fill" className="text-lg" />
                 <span>Entrega rápida</span>
               </div>
@@ -266,7 +266,7 @@ const Produto: NextPage<Props> = ({ product }) => {
                     </label>
                     <input
                       type={"number"}
-                      className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300"
+                      className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-300"
                       value={quantity}
                       onChange={(e) => setQuantity(parseInt(e.target.value))}
                     />
@@ -283,7 +283,7 @@ const Produto: NextPage<Props> = ({ product }) => {
         </div>
 
         <div className="rounded-md mt-10 p-5 bg-white shadow  dark:bg-zinc-800">
-          <div className="flex items-center gap-3 text-xl sm:text-2xl w-fit font-extrabold border-b-2 border-b-sky-700 dark:border-b-sky-300 pr-3 mb-5">
+          <div className="flex items-center gap-3 text-xl sm:text-2xl w-fit font-extrabold border-b-2 border-b-primary-500 dark:border-b-primary-300 pr-3 mb-5">
             <span>DETALHES DO PRODUTO</span>
           </div>
 
@@ -294,7 +294,7 @@ const Produto: NextPage<Props> = ({ product }) => {
         </div>
 
         <div className="rounded-md mt-10 p-5 bg-white shadow dark:bg-zinc-800">
-          <div className="flex items-center gap-3 text-xl sm:text-2xl w-fit font-extrabold border-b-2 border-b-sky-700 dark:border-b-sky-300 pr-3 mb-5">
+          <div className="flex items-center gap-3 text-xl sm:text-2xl w-fit font-extrabold border-b-2 border-b-primary-500 dark:border-b-primary-300 pr-3 mb-5">
             <span>COMENTÁRIOS</span>
           </div>
 
@@ -461,7 +461,7 @@ const Produto: NextPage<Props> = ({ product }) => {
                         autoFocus
                         name="name"
                         required
-                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                        className="inputs"
                         value={setCreateReview.values.name}
                         onChange={setCreateReview.handleChange}
                       />
@@ -485,7 +485,7 @@ const Produto: NextPage<Props> = ({ product }) => {
                       <select
                         required
                         name="rating"
-                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                        className="inputs"
                         value={setCreateReview.values.rating}
                         onChange={setCreateReview.handleChange}
                       >
@@ -516,7 +516,7 @@ const Produto: NextPage<Props> = ({ product }) => {
                       <input
                         name="headline"
                         required
-                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                        className="inputs"
                         value={setCreateReview.values.headline}
                         onChange={setCreateReview.handleChange}
                       />
@@ -541,7 +541,7 @@ const Produto: NextPage<Props> = ({ product }) => {
                       <textarea
                         name="content"
                         required
-                        className="border px-3 py-2 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full resize-none"
+                        className="textarea"
                         rows={4}
                         value={setCreateReview.values.content}
                         onChange={setCreateReview.handleChange}

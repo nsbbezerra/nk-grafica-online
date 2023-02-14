@@ -26,7 +26,7 @@ const CardProducts: FC<ProductProps> = ({ products }) => {
           {products?.map((prod) => (
             <div className="card" key={prod.id}>
               {prod.shippingOptions === "fast" && (
-                <div className="flex items-center gap-2 bg-sky-100 text-sm rounded-md py-1 px-2 text-sky-700 font-semibold w-fit absolute z-[5] dark:bg-zinc-600 dark:text-white right-3 top-3 shadow">
+                <div className="flex items-center gap-2 bg-primary-100 text-sm rounded-md py-1 px-2 text-primary-500 font-semibold w-fit absolute z-[5] dark:bg-zinc-600 dark:text-white right-3 top-3 shadow">
                   <Truck weight="fill" className="text-base" />
                   <span>Entrega rápida</span>
                 </div>
@@ -53,7 +53,7 @@ const CardProducts: FC<ProductProps> = ({ products }) => {
                 />
 
                 <div className="flex items-center gap-2 py-3 justify-between">
-                  <span className="md:text-xl lg:text-2xl font-extrabold text-sky-700 dark:text-sky-300">
+                  <span className="md:text-xl lg:text-2xl font-extrabold text-primary-500 dark:text-primary-300">
                     {calcPrice(prod.price)}
                   </span>
                 </div>

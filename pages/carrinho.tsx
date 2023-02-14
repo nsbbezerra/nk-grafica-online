@@ -267,8 +267,8 @@ export default function MyCart() {
       <HeadApp title="NK Gráfica Online | Impressões digitais e Offset" />
       <Header />
       <div className="container max-w-3xl mx-auto px-5 xl:px-0 pt-10">
-        <div className="flex items-center gap-3 text-xl sm:text-2xl md:text-3xl w-fit font-extrabold border-b-2 border-b-sky-700 dark:border-b-sky-300 pr-3">
-          <ShoppingCart className="text-sky-700 dark:text-sky-300" />
+        <div className="flex items-center gap-3 text-xl sm:text-2xl md:text-3xl w-fit font-extrabold border-b-2 border-b-primary-500 dark:border-b-primary-300 pr-3">
+          <ShoppingCart className="text-primary-500 dark:text-primary-300" />
           <span>Meu carrinho</span>
         </div>
 
@@ -360,7 +360,7 @@ export default function MyCart() {
               <ReactInputMask
                 mask={"99.999-999"}
                 required
-                className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                className="inputs"
                 name="cep"
                 placeholder="Digite seu CEP"
                 value={cep}
@@ -397,7 +397,7 @@ export default function MyCart() {
                     )}
                   >
                     <RadioGroupPrimitive.Indicator className="absolute inset-0 flex items-center justify-center leading-0">
-                      <div className="w-2 h-2 rounded-full bg-sky-700 dark:bg-sky-300" />
+                      <div className="w-2 h-2 rounded-full bg-primary-500 dark:bg-primary-300" />
                     </RadioGroupPrimitive.Indicator>
                   </RadioGroupPrimitive.Item>
                   <label htmlFor={"free"} className="ml-2 block">
@@ -425,7 +425,7 @@ export default function MyCart() {
                     )}
                   >
                     <RadioGroupPrimitive.Indicator className="absolute inset-0 flex items-center justify-center leading-0">
-                      <div className="w-2 h-2 rounded-full bg-sky-700 dark:bg-sky-300" />
+                      <div className="w-2 h-2 rounded-full bg-primary-500 dark:bg-primary-300" />
                     </RadioGroupPrimitive.Indicator>
                   </RadioGroupPrimitive.Item>
                   <label htmlFor={String(company.id)} className="ml-2 block">
@@ -466,7 +466,7 @@ export default function MyCart() {
               )}
 
               <Link href={`/minhaconta/meusdados?client=${client.id}`} passHref>
-                <a className="text-sky-700 mt-2 dark:text-sky-300 hover:underline">
+                <a className="text-primary-500 mt-2 dark:text-primary-300 hover:underline">
                   Alterar endereço
                 </a>
               </Link>

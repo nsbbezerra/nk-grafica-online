@@ -347,7 +347,7 @@ export default function Header() {
 
   const UserActions = () => (
     <div className="flex items-center flex-col gap-3 lg:flex-row lg:w-80 z-10">
-      <div className="w-12 h-12 border border-sky-700 rounded-full text-2xl flex items-center justify-center text-sky-700 dark:border-sky-300 dark:text-sky-300">
+      <div className="w-12 h-12 border border-primary-500 rounded-full text-2xl flex items-center justify-center text-primary-500 dark:border-primary-300 dark:text-primary-300">
         <User />
       </div>
       <div className="flex flex-col items-center lg:items-start">
@@ -358,7 +358,7 @@ export default function Header() {
             ""
           ) : (
             <button
-              className="text-sky-700 font-bold hover:underline cursor-pointer dark:text-sky-300"
+              className="text-primary-500 font-bold hover:underline cursor-pointer dark:text-primary-300"
               onClick={() => logout()}
             >
               Sair
@@ -368,14 +368,14 @@ export default function Header() {
         {client.id === "" ? (
           <div className="flex gap-2">
             <button
-              className="text-sky-700 font-bold hover:underline cursor-pointer dark:text-sky-300"
+              className="text-primary-500 font-bold hover:underline cursor-pointer dark:text-primary-300"
               onClick={() => setModals({ id: "login", isOpen: true })}
             >
               Entre
             </button>
             <span>ou</span>
             <button
-              className="text-sky-700 font-bold hover:underline cursor-pointer dark:text-sky-300"
+              className="text-primary-500 font-bold hover:underline cursor-pointer dark:text-primary-300"
               onClick={() => setModals({ id: "register", isOpen: true })}
             >
               Cadastre-se
@@ -384,7 +384,7 @@ export default function Header() {
         ) : (
           <div className="flex sm:gap-2 sm:flex-row flex-col items-center">
             <Link href={`/minhaconta/meusdados?client=${client.id}`} passHref>
-              <a className="text-sky-700 font-bold hover:underline cursor-pointer dark:text-sky-300">
+              <a className="text-primary-500 font-bold hover:underline cursor-pointer dark:text-primary-300">
                 Meus dados
               </a>
             </Link>
@@ -393,7 +393,7 @@ export default function Header() {
               href={`/minhaconta/minhascompras?client=${client.id}`}
               passHref
             >
-              <a className="text-sky-700 font-bold hover:underline cursor-pointer dark:text-sky-300">
+              <a className="text-primary-500 font-bold hover:underline cursor-pointer dark:text-primary-300">
                 Minhas compras
               </a>
             </Link>
@@ -475,13 +475,13 @@ export default function Header() {
               </div>
               <div className="relative">
                 <button
-                  className="w-12 h-12 border border-sky-700 rounded-full text-2xl flex items-center justify-center text-sky-700 hover:bg-sky-50 dark:hover:bg-sky-200 dark:hover:text-zinc-800 dark:border-sky-300 dark:text-sky-300"
+                  className="w-12 h-12 border border-primary-500 rounded-full text-2xl flex items-center justify-center text-primary-500 hover:bg-sky-50 dark:hover:bg-sky-200 dark:hover:text-zinc-800 dark:border-primary-300 dark:text-primary-300"
                   onClick={() => setCart(!cart)}
                 >
                   <ShoppingCart />
                 </button>
 
-                <span className="bg-sky-700 dark:bg-sky-300 text-white dark:text-zinc-800 w-5 h-5 rounded-full text-xs flex items-center justify-center absolute -right-2 top-0">
+                <span className="bg-primary-500 dark:bg-primary-300 text-white dark:text-zinc-800 w-5 h-5 rounded-full text-xs flex items-center justify-center absolute -right-2 top-0">
                   {cartApp.length}
                 </span>
               </div>
@@ -502,7 +502,7 @@ export default function Header() {
             <div className="flex items-center gap-4">
               <div className="Container">
                 <Popover.Root>
-                  <Popover.Trigger className="h-12 flex text-sky-700 items-center gap-2 font-bold px-5 hover:bg-sky-700 hover:text-white dark:text-sky-300 dark:hover:bg-sky-300 dark:hover:text-zinc-800 select-none">
+                  <Popover.Trigger className="h-12 flex text-primary-500 items-center gap-2 font-bold px-5 hover:bg-primary-500 hover:text-white dark:text-primary-300 dark:hover:bg-primary-300 dark:hover:text-zinc-800 select-none">
                     <Tag />
                     Produtos
                   </Popover.Trigger>
@@ -515,7 +515,7 @@ export default function Header() {
                         ) : (
                           <>
                             <Link href={`/itens`} passHref>
-                              <a className="grid grid-cols-[30px_1fr] gap-3 pt-3 cursor-pointer relative w-full items-center hover:underline text-sky-700 font-semibold dark:text-sky-300">
+                              <a className="grid grid-cols-[30px_1fr] gap-3 pt-3 cursor-pointer relative w-full items-center hover:underline text-primary-500 font-semibold dark:text-primary-300">
                                 <div className="w-[30px] h-[30px] rounded-full overflow-hidden">
                                   <Image
                                     src={"/img/cmyk.webp"}
@@ -594,7 +594,7 @@ export default function Header() {
           <div className="p-3">
             <UserActions />
 
-            <div className="w-full border-b mt-5 mb-5 border-b-sky-700 dark:border-b-sky-300" />
+            <div className="w-full border-b mt-5 mb-5 border-b-primary-500 dark:border-b-primary-300" />
 
             <MenuItems />
 
@@ -727,7 +727,7 @@ export default function Header() {
                         type={"text"}
                         name="name"
                         required
-                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-300 w-full"
                         value={registerFormik.values.name}
                         onChange={registerFormik.handleChange}
                       />
@@ -754,7 +754,7 @@ export default function Header() {
                         value={registerFormik.values.document}
                         onChange={registerFormik.handleChange}
                         mask={"999.999.999-99"}
-                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-300 w-full"
                       />
                       {registerFormik.touched.document &&
                       Boolean(registerFormik.errors.document) ? (
@@ -780,7 +780,7 @@ export default function Header() {
                         mask={"(99) 99999-9999"}
                         required
                         name="phone"
-                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-300 w-full"
                         value={registerFormik.values.phone}
                         onChange={registerFormik.handleChange}
                       />
@@ -806,7 +806,7 @@ export default function Header() {
                         type={"email"}
                         required
                         name="email"
-                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-300 w-full"
                         value={registerFormik.values.email}
                         onChange={registerFormik.handleChange}
                       />
@@ -832,7 +832,7 @@ export default function Header() {
                         required
                         name="password"
                         type={"password"}
-                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-300 w-full"
                         value={registerFormik.values.password}
                         onChange={registerFormik.handleChange}
                       />
@@ -860,7 +860,7 @@ export default function Header() {
                         type={"text"}
                         required
                         name="street"
-                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-300 w-full"
                         value={registerFormik.values.street}
                         onChange={registerFormik.handleChange}
                       />
@@ -882,7 +882,7 @@ export default function Header() {
                         </span>
                       </label>
                       <input
-                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-300 w-full"
                         value={registerFormik.values.number}
                         onChange={registerFormik.handleChange}
                         name="number"
@@ -904,7 +904,7 @@ export default function Header() {
                       <label className="block">Complemento</label>
                       <input
                         type={"email"}
-                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-300 w-full"
                         value={registerFormik.values.comp}
                         onChange={registerFormik.handleChange}
                         name="comp"
@@ -920,7 +920,7 @@ export default function Header() {
                       </label>
                       <input
                         required
-                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-300 w-full"
                         value={registerFormik.values.district}
                         onChange={registerFormik.handleChange}
                         name="district"
@@ -943,7 +943,7 @@ export default function Header() {
                       <ReactInputMask
                         mask={"99.999-999"}
                         required
-                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-300 w-full"
                         value={registerFormik.values.cep}
                         onChange={registerFormik.handleChange}
                         name="cep"
@@ -967,7 +967,7 @@ export default function Header() {
                       </label>
                       <input
                         required
-                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-300 w-full"
                         value={registerFormik.values.city}
                         onChange={registerFormik.handleChange}
                         name="city"
@@ -990,7 +990,7 @@ export default function Header() {
                         </span>
                       </label>
                       <select
-                        className="border bg-white dark:border-zinc-700 dark:bg-zinc-900 h-10 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                        className="border bg-white dark:border-zinc-700 dark:bg-zinc-900 h-10 px-3 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-300 w-full"
                         value={registerFormik.values.uf}
                         onChange={registerFormik.handleChange}
                         name="uf"
@@ -1085,7 +1085,7 @@ export default function Header() {
                         type={"email"}
                         name="email"
                         required
-                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-300 w-full"
                         value={loginFormik.values.email}
                         onChange={loginFormik.handleChange}
                       />
@@ -1110,7 +1110,7 @@ export default function Header() {
                         type={"password"}
                         required
                         name="password"
-                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-700 dark:focus:ring-sky-300 w-full"
+                        className="border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-300 w-full"
                         value={loginFormik.values.password}
                         onChange={loginFormik.handleChange}
                       />
