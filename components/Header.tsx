@@ -542,7 +542,7 @@ export default function Header() {
                                 <a className="grid grid-cols-[30px_1fr] gap-3 pt-3 cursor-pointer relative w-full items-center hover:underline">
                                   <div className="w-[30px] h-[30px] rounded-full overflow-hidden">
                                     <Image
-                                      src={cat.thumbnail.url}
+                                      src={cat.thumbnail.url || ""}
                                       alt="NK Gráfica online banner"
                                       layout="responsive"
                                       width={600}

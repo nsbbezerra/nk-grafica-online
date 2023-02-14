@@ -102,6 +102,10 @@
     @apply w-[300px] ml-5 pt-2 pb-4 px-4 mx-auto z-50 transition-all bg-white rounded-md shadow-lg border bg-opacity-95 backdrop-blur-sm dark:bg-zinc-900 dark:bg-opacity-90 dark:backdrop-blur-sm dark:border-zinc-700 relative max-h-[80vh] overflow-auto focus:outline-none;
   }
 
+  .Content-dashboard {
+    @apply w-[200px] -ml-10 pb-3 px-4 mx-auto z-50 transition-all bg-white rounded-md shadow-lg border bg-opacity-95 backdrop-blur-sm dark:bg-zinc-900 dark:bg-opacity-90 dark:backdrop-blur-sm dark:border-zinc-700 relative max-h-[80vh] overflow-auto focus:outline-none;
+  }
+
   .Content[data-state="open"] {
     animation: slideUpAndFade 0.1s linear;
   }
@@ -176,6 +180,14 @@
 
   .content-modal-register {
     @apply fixed w-full max-w-sm mx-auto text-center transform -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-zinc-800 rounded-md sm:max-w-xl md:max-w-xl lg:max-w-4xl left-1/2 top-1/2 z-40 shadow-2xl max-h-[90vh] overflow-auto dark:shadow-black;
+  }
+
+  .content-modal-dashboard {
+    @apply fixed top-0 right-0 left-0 bottom-0 z-40 bg-transparent flex justify-center items-center outline-none;
+  }
+
+  .dialog-content-dashboard {
+    @apply fixed top-0 right-0 left-0 bottom-0 z-40 bg-transparent flex justify-center items-start outline-none;
   }
 
   .content-modal-reviews {

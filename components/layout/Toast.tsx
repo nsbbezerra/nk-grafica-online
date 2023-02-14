@@ -39,7 +39,7 @@ export default function Toast({
           (scheme === "success" &&
             "bg-green-700 text-white bg-opacity-95 backdrop-blur-sm dark:bg-opacity-95 dark:bg-green-300 dark:backdrop-blur-sm dark:text-zinc-800") ||
           (scheme === "warning" &&
-            "bg-yellow-500 text-white bg-opacity-95 backdrop-blur-sm dark:bg-opacity-95 dark:bg-yellow-300 dark:backdrop-blur-sm dark:text-zinc-800") ||
+            "bg-yellow-600 text-white bg-opacity-95 backdrop-blur-sm dark:bg-opacity-95 dark:bg-yellow-300 dark:backdrop-blur-sm dark:text-zinc-800") ||
           (scheme === "error" &&
             "bg-red-600 text-white bg-opacity-95 backdrop-blur-sm dark:bg-opacity-95 dark:bg-red-300 dark:backdrop-blur-sm dark:text-zinc-800")
         } shadow-xl rounded-md`}

@@ -4,6 +4,7 @@ import { useTheme } from "next-themes";
 import DarkTheme from "../DarkTheme";
 import Button from "./Buttom";
 import {
+  FloppyDisk,
   House,
   ImageSquare,
   List,
@@ -14,6 +15,7 @@ import {
   X,
 } from "phosphor-react";
 import Link from "next/link";
+import * as Popover from "@radix-ui/react-popover";
 
 export default function DashboardHeader() {
   const { theme } = useTheme();
@@ -57,7 +59,13 @@ export default function DashboardHeader() {
       <Link href={"/painel/dashboard"}>
         <Button buttonSize="sm" variant="outline" isFullSize={isMenuOpen}>
           <House />
-          Dashboard
+          Início
+        </Button>
+      </Link>
+      <Link href={"/painel/dashboard/clientes"}>
+        <Button buttonSize="sm" variant="outline" isFullSize={isMenuOpen}>
+          <Users />
+          Clientes
         </Button>
       </Link>
       <Link href={"/painel/dashboard/imagens"}>
@@ -66,18 +74,81 @@ export default function DashboardHeader() {
           Imagens
         </Button>
       </Link>
-      <Button buttonSize="sm" variant="outline" isFullSize={isMenuOpen}>
-        <Users />
-        Clientes
-      </Button>
-      <Button buttonSize="sm" variant="outline" isFullSize={isMenuOpen}>
-        <TagSimple />
-        Categorias
-      </Button>
-      <Button buttonSize="sm" variant="outline" isFullSize={isMenuOpen}>
-        <Tag />
-        Produtos
-      </Button>
+      <Popover.Root>
+        <Popover.Trigger className="w-full -mb-3 lg:mb-0 lg:-mr-3 buttom-blue-outline buttom-sm">
+          <FloppyDisk />
+          Cadastros
+        </Popover.Trigger>
+        <Popover.Anchor />
+        <Popover.Portal>
+          <div className="relative">
+            <Popover.Content className="Content-dashboard -mt-2 lg:mt-5">
+              <div className="grid grid-cols-1 gap-3 divide-y dark:divide-zinc-700">
+                <Link href={`/painel/dashboard/categorias/cadastro`} passHref>
+                  <a className="pt-3 cursor-pointer relative w-full items-center hover:underline text-primary-500 font-semibold dark:text-primary-300 flex gap-2">
+                    <TagSimple />
+                    <span className="text-base block">Categorias</span>
+                  </a>
+                </Link>
+
+                <Link
+                  href={`/painel/dashboard/subcategorias/cadastro`}
+                  passHref
+                >
+                  <a className="pt-3 cursor-pointer relative w-full items-center hover:underline text-primary-500 font-semibold dark:text-primary-300 flex gap-2">
+                    <TagSimple />
+                    <span className="text-base block">Sub-categorias</span>
+                  </a>
+                </Link>
+
+                <Link href={`/painel/dashboard/produtos/cadastro`} passHref>
+                  <a className="pt-3 cursor-pointer relative w-full items-center hover:underline text-primary-500 font-semibold dark:text-primary-300 flex gap-2">
+                    <TagSimple />
+                    <span className="text-base block">Produtos</span>
+                  </a>
+                </Link>
+              </div>
+              <Popover.Arrow className="Arrow" />
+            </Popover.Content>
+          </div>
+        </Popover.Portal>
+      </Popover.Root>
+      <Popover.Root>
+        <Popover.Trigger className="w-full -mb-3 lg:mb-0 lg:-mr-3 buttom-blue-outline buttom-sm">
+          <List />
+          Listagem
+        </Popover.Trigger>
+        <Popover.Anchor />
+        <Popover.Portal>
+          <div>
+            <Popover.Content className="Content-dashboard -mt-2 lg:mt-5">
+              <div className="grid grid-cols-1 gap-3 divide-y dark:divide-zinc-700">
+                <Link href={`/painel/dashboard/categorias/lista`} passHref>
+                  <a className="pt-3 cursor-pointer relative w-full items-center hover:underline text-primary-500 font-semibold dark:text-primary-300 flex gap-2">
+                    <TagSimple />
+                    <span className="text-base block">Categorias</span>
+                  </a>
+                </Link>
+
+                <Link href={`/painel/dashboard/subcategorias/lista`} passHref>
+                  <a className="pt-3 cursor-pointer relative w-full items-center hover:underline text-primary-500 font-semibold dark:text-primary-300 flex gap-2">
+                    <TagSimple />
+                    <span className="text-base block">Sub-categorias</span>
+                  </a>
+                </Link>
+
+                <Link href={`/painel/dashboard/produtos/lista`} passHref>
+                  <a className="pt-3 cursor-pointer relative w-full items-center hover:underline text-primary-500 font-semibold dark:text-primary-300 flex gap-2">
+                    <TagSimple />
+                    <span className="text-base block">Produtos</span>
+                  </a>
+                </Link>
+              </div>
+              <Popover.Arrow className="Arrow" />
+            </Popover.Content>
+          </div>
+        </Popover.Portal>
+      </Popover.Root>
       <Button buttonSize="sm" variant="outline" isFullSize={isMenuOpen}>
         <ShoppingCart />
         Vendas
