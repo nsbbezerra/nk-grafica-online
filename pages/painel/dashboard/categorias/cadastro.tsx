@@ -1,13 +1,6 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import Image from "next/image";
-import {
-  Check,
-  FloppyDisk,
-  ImageSquare,
-  Pencil,
-  TagSimple,
-  X,
-} from "phosphor-react";
+import { FloppyDisk, ImageSquare, Pencil, TagSimple, X } from "phosphor-react";
 import { Fragment, useEffect, useState } from "react";
 import { useMutation, useQuery } from "urql";
 import HeadApp from "../../../../components/Head";
@@ -253,7 +246,7 @@ export default function CategoriesRegister() {
                   <X />
                 </Dialog.Close>
               </Dialog.Title>
-              <div className="p-4 grid grid-cols-4 gap-3">
+              <div className="p-4 grid grid-cols-3 sm:grid-cols-4 sm:gap-2 md:grid-cols-6 gap-1 md:gap-3">
                 {images.map((image) => (
                   <div
                     key={image.id}
@@ -267,7 +260,10 @@ export default function CategoriesRegister() {
                       height={image.height}
                     />
                     <div className="absolute top-0 bottom-0 right-0 left-0 bg-black bg-opacity-50 flex justify-center items-center p-5 opacity-0 hover:opacity-100 delay-75">
-                      <Button onClick={() => handleSelectImage(image.id)}>
+                      <Button
+                        onClick={() => handleSelectImage(image.id)}
+                        buttonSize="sm"
+                      >
                         Selecionar
                       </Button>
                     </div>

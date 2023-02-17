@@ -260,10 +260,26 @@
   }
 
   .inputs {
-    @apply border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-300 w-full;
+    @apply border h-10 px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-300 w-full bg-white;
   }
 
   .textarea {
     @apply border px-3 dark:border-zinc-700 dark:bg-zinc-900 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-300 w-full resize-none;
+  }
+
+  .jodit-editor ul {
+    @apply list-inside list-disc !important;
+  }
+
+  .jodit-editor ol {
+    @apply list-inside list-decimal !important;
+  }
+
+  .jodit-editor {
+    @apply dark:border-zinc-700 rounded-md overflow-hidden !important;
+  }
+
+  .jodit-editor-class {
+    @apply dark:bg-zinc-900 dark:border-zinc-700 !important;
   }
 }

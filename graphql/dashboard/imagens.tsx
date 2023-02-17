@@ -2,7 +2,7 @@ import { gql } from "urql";
 
 const FIND_DASHBOARD_IMAGES = gql`
   query Images {
-    assets {
+    assets(last: 100) {
       id
       url
       width
