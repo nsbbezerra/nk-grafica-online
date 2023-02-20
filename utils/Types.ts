@@ -1,7 +1,3 @@
-type RichTextProps = {
-  html: string;
-};
-
 type ImageProps = {
   id: string;
   url: string;
@@ -14,19 +10,30 @@ type ShippingProps = {
   weight: number;
 };
 
+interface ProductOptionsProps {
+  id: string;
+  size: string;
+  colors?: string;
+  active: boolean;
+}
+
 interface Products {
   id: string;
-  images: ImageProps[];
-  description: RichTextProps;
+  thumbnail: { id: string; url: string };
+  category: { id: string; name: string };
+  collection: { id: string; name: string };
+  description: string;
   slug: string;
   name: string;
   price: number;
-  information: RichTextProps;
+  information: string;
   promotional: boolean;
   promoRate?: number;
   destak: boolean;
   shipping: ShippingProps;
   shippingOptions: "fast" | "slow";
+  reviews: ReviewsProps[];
+  productOptions: ProductOptionsProps[];
 }
 
 type ReviewsProps = {
@@ -41,11 +48,11 @@ type ReviewsProps = {
 interface ProductsInfoProps {
   id: string;
   images: ImageProps[];
-  description: RichTextProps;
+  description: string;
   slug: string;
   name: string;
   price: number;
-  information: RichTextProps;
+  information: string;
   promotional: boolean;
   promoRate?: number;
   destak: boolean;
@@ -86,6 +93,7 @@ export type {
   Products,
   ProductsInfoProps,
   ShippingProps,
+  ProductOptionsProps,
 };
 
 const calcDiscount = (price: number, discount: number) => {

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-accordion": "^1.1.0",
     "@radix-ui/react-checkbox": "^1.0.1",
     "@radix-ui/react-dialog": "^1.0.0",
     "@radix-ui/react-popover": "^1.0.0",
@@ -24,7 +25,7 @@
     "next-themes": "^0.2.1",
     "phosphor-react": "^1.4.1",
     "react": "18.2.0",
-    "react-color": "^2.19.3",
+    "react-color-palette": "^6.2.0",
     "react-dom": "18.2.0",
     "react-input-mask": "^2.0.4",
     "react-simple-star-rating": "^5.1.3",

@@ -444,8 +444,7 @@ export default function Header() {
   );
 
   const calcPrice = (price: number) => {
-    let transform = price / 100;
-    return transform.toLocaleString("pt-br", {
+    return price.toLocaleString("pt-br", {
       style: "currency",
       currency: "BRL",
     });
@@ -650,7 +649,9 @@ export default function Header() {
                             {calcPrice(car.total)}
                           </span>
                         </div>
-                        <span className="text-sm">{car.name}</span>
+                        <span className="text-sm">
+                          Tamanho: {car.options?.size}
+                        </span>
 
                         <div className="flex justify-between mt-2 gap-3 items-start text-sm">
                           <span>QTD: {car.quantity}</span>

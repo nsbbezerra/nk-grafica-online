@@ -7,8 +7,7 @@ import { ProductProps } from "../../utils/Types";
 
 const CardProducts: FC<ProductProps> = ({ products }) => {
   const calcPrice = (price: number) => {
-    let transform = price / 100;
-    return transform.toLocaleString("pt-br", {
+    return price.toLocaleString("pt-br", {
       style: "currency",
       currency: "BRL",
     });
@@ -33,7 +32,7 @@ const CardProducts: FC<ProductProps> = ({ products }) => {
               )}
               <div className="w-full rounded-md overflow-hidden">
                 <Image
-                  src={prod.images[0].url}
+                  src={prod.thumbnail.url}
                   alt="NK Gráfica online cartão de visita"
                   width={300}
                   height={300}
@@ -47,10 +46,7 @@ const CardProducts: FC<ProductProps> = ({ products }) => {
                   {prod.name}
                 </span>
 
-                <div
-                  className="inner-html"
-                  dangerouslySetInnerHTML={{ __html: prod.information.html }}
-                />
+                <span>{prod.description}</span>
 
                 <div className="flex items-center gap-2 py-3 justify-between">
                   <span className="md:text-xl lg:text-2xl font-extrabold text-primary-500 dark:text-primary-300">
@@ -58,11 +54,13 @@ const CardProducts: FC<ProductProps> = ({ products }) => {
                   </span>
                 </div>
 
-                <Link href={`/produto/${prod.id}`} passHref>
-                  <Button isFullSize>
-                    <ShoppingCart />
-                    Comprar
-                  </Button>
+                <Link href={`/produto/${prod.slug}`} passHref>
+                  <a className="w-full block">
+                    <Button isFullSize>
+                      <ShoppingCart />
+                      Comprar
+                    </Button>
+                  </a>
                 </Link>
               </div>
             </div>

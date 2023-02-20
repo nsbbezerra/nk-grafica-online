@@ -22,11 +22,15 @@ import DashboardHeader from "../../../../components/layout/DashHeader";
 import Toast from "../../../../components/layout/Toast";
 import { configs } from "../../../../configs";
 import {
+  ACTIVE_PRODUCT_OPT,
+  CREATE_PRODUCT_OPT,
   FIND_PRODUCTS_BY_NAME,
   FIND_PRODUCTS_LOCK,
   FIND_PRODUCTS_PAG,
   FIND_PRODUCTS_PROMOTIONAL,
+  FIND_PRODUCT_OPT,
   PUBLISH_PRODUCT,
+  PUBLISH_PRODUCT_OPT,
   UPDATE_PRODUCT_IMAGE,
   UPDATE_PRODUCT_INFORMATION,
 } from "../../../../graphql/dashboard/products";
@@ -38,7 +42,8 @@ import { clientQuery } from "../../../../lib/urql";
 import { FIND_DASHBOARD_IMAGES } from "../../../../graphql/dashboard/imagens";
 import { JoditEditor } from "../../../../lib/jodit";
 import { useTheme } from "next-themes";
-import { SketchPicker } from "react-color";
+import "react-color-palette/lib/css/styles.css";
+import { ColorPicker, useColor } from "react-color-palette";
 
 interface ToastInfo {
   title: string;
@@ -81,7 +86,8 @@ interface ImagesPorps {
 interface ProductOptionsProps {
   id: string;
   size: string;
-  color?: string;
+  colors?: string;
+  active: boolean;
 }
 
 export default function ListProducts() {
@@ -106,7 +112,7 @@ export default function ListProducts() {
   );
 
   const [size, setSize] = useState<string>("");
-  const [color, setColor] = useState<string>("");
+  const [color, setColor] = useColor("hex", "#FFF");
 
   const [search, setSearch] = useState<string>("all");
   const [text, setText] = useState<string>("");
@@ -142,9 +148,65 @@ export default function ListProducts() {
 
   const { fetching: updateImageFetching } = updateImageResults;
 
+  const [productsOptResult, productsOpt] = useMutation(CREATE_PRODUCT_OPT);
+
+  const { fetching: productOptFetching } = productsOptResult;
+
+  const [publishProductsOptResults, publishProductsOpt] =
+    useMutation(PUBLISH_PRODUCT_OPT);
+
+  const { error: productsOptError } = publishProductsOptResults;
+
+  const [updateProductOptResult, updateProductOpt] =
+    useMutation(ACTIVE_PRODUCT_OPT);
+
+  const { fetching: updateProductOptFetching } = updateProductOptResult;
+
   async function setPublishProduct(id: string) {
     await publishProduct({ id });
     search === "name" ? findProductsByName() : findProducts();
+  }
+
+  async function setPublishProductOpt(id: string) {
+    await publishProductsOpt({ id });
+    clientQuery
+      .query(FIND_PRODUCT_OPT, { id: productId })
+      .toPromise()
+      .then((response) => {
+        setProductOptions(response.data.productOptions);
+        setSearchProducts();
+        setPublishProduct(productId);
+      })
+      .catch((error) => {
+        setToast({
+          message: error.message,
+          title: "Erro",
+          type: "error",
+        });
+        setOpenToast(true);
+      });
+  }
+
+  function setUpdateProductOpt(id: string, active: boolean) {
+    updateProductOpt({ id, active })
+      .then((response) => {
+        const { data } = response;
+        setPublishProductOpt(data.updateProductOption.id);
+        setToast({
+          message: "Sucesso na atualização",
+          title: "Sucesso",
+          type: "success",
+        });
+        setOpenToast(true);
+      })
+      .catch((error) => {
+        setToast({
+          message: error.message,
+          title: "Erro",
+          type: "error",
+        });
+        setOpenToast(true);
+      });
   }
 
   async function findProductsByName() {
@@ -267,11 +329,19 @@ export default function ListProducts() {
       });
       setOpenToast(true);
     }
+    if (productsOptError) {
+      setToast({
+        message: productsOptError.message,
+        title: "Erro",
+        type: "error",
+      });
+      setOpenToast(true);
+    }
     if (findData) {
       setProducts(findData.products);
       setPageInfo(findData.productsConnection.pageInfo);
     }
-  }, [data, error, findData, findError, publishError]);
+  }, [data, error, findData, findError, publishError, productsOptError]);
 
   function handlePreviousPage() {
     setPage(page - configs.paginate);
@@ -304,6 +374,42 @@ export default function ListProducts() {
           setOpenToast(true);
           setModalImages(false);
         }
+      })
+      .catch((error) => {
+        setToast({
+          message: error.message,
+          title: "Erro",
+          type: "error",
+        });
+        setOpenToast(true);
+      });
+  }
+
+  function setCreateProductOpt() {
+    if (!size.length) {
+      setToast({
+        message: "Opção é obrigatório",
+        title: "Atenção",
+        type: "warning",
+      });
+      setOpenToast(true);
+      return;
+    }
+    productsOpt({
+      size,
+      colors: color.hex,
+      id: productId,
+    })
+      .then((response) => {
+        const { data } = response;
+        setPublishProductOpt(data.createProductOption.id);
+        setToast({
+          message: "Opção salva com sucesso",
+          title: "Sucesso",
+          type: "success",
+        });
+        setOpenToast(true);
+        setSize("");
       })
       .catch((error) => {
         setToast({
@@ -962,7 +1068,7 @@ export default function ListProducts() {
         <Dialog.Portal>
           <Dialog.Overlay className="overlay" />
           <Dialog.Content className="dialog-content-dashboard overflow-auto p-2">
-            <div className="rounded-md bg-white dark:bg-zinc-800 shadow-2xl w-full max-w-2xl overflow-hidden">
+            <div className="rounded-md bg-white dark:bg-zinc-800 shadow-2xl w-full max-w-3xl overflow-hidden">
               <Dialog.Title className="header-modal bg-transparent">
                 <div className="flex items-center gap-3 text-lg">
                   <Option />
@@ -976,8 +1082,8 @@ export default function ListProducts() {
                   <X />
                 </Dialog.Close>
               </Dialog.Title>
-              <div className="p-4 grid grid-cols-1 sm:grid-cols-[220px_1fr] gap-3 justify-items-center sm:justify-items-start">
-                <div className="grid grid-cols-1 gap-3 max-w-[220px]">
+              <div className="p-4 grid grid-cols-1 sm:grid-cols-[240px_1fr] gap-3 justify-items-center sm:justify-items-start">
+                <div className="grid grid-cols-1 gap-3 max-w-[240px]">
                   <div>
                     <label>Opção *</label>
                     <input
@@ -988,12 +1094,20 @@ export default function ListProducts() {
                   </div>
                   <div>
                     <label>Cor</label>
-                    <SketchPicker
-                      className="bg-zinc-700"
-                      onChange={(e) => setColor(e.hex)}
+                    <ColorPicker
+                      dark={theme === "dark" ? true : false}
+                      onChange={setColor}
+                      color={color}
+                      width={240}
+                      hideHSV
+                      hideRGB
                     />
                   </div>
-                  <Button isFullSize>
+                  <Button
+                    isFullSize
+                    isLoading={productOptFetching}
+                    onClick={() => setCreateProductOpt()}
+                  >
                     <FloppyDisk /> Salvar
                   </Button>
                 </div>
@@ -1007,13 +1121,28 @@ export default function ListProducts() {
                         {opt.size}
                       </div>
                       <div
-                        className={`border dark:border-zinc-700 flex justify-center items-center w-full h-10 rounded-md bg-[${
-                          opt.color || "transparent"
-                        }]`}
+                        className={`border dark:border-zinc-700 flex justify-center items-center w-full h-10 rounded-md`}
+                        style={{ backgroundColor: opt.colors }}
                       />
-                      <Button isFullSize>
-                        <Trash />
-                      </Button>
+                      <div className="flex items-center gap-2">
+                        <CheckboxPrimitive.Root
+                          id="c1"
+                          className={clsx(
+                            "flex h-[20px] w-[20px] items-center justify-center rounded border dark:border-zinc-600 flex-shrink-0",
+                            "radix-state-checked:bg-purple-600 radix-state-unchecked:bg-gray-100 dark:radix-state-unchecked:bg-gray-900",
+                            "focus:outline-none focus:ring-1 focus:ring-primary-500 dark:focus:ring-primary-300"
+                          )}
+                          checked={opt.active}
+                          onCheckedChange={(e) => {
+                            setUpdateProductOpt(opt.id, e as boolean);
+                          }}
+                        >
+                          <CheckboxPrimitive.Indicator>
+                            <Check className="h-4 w-4 self-center text-zinc-700 dark:text-zinc-100" />
+                          </CheckboxPrimitive.Indicator>
+                        </CheckboxPrimitive.Root>
+                        <label>Ativo?</label>
+                      </div>
                     </div>
                   ))}
                 </div>

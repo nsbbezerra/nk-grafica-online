@@ -23,7 +23,7 @@ import {
   FIND_PRODUCTS_PATH,
   FIND_PRODUCT_INFORMATION,
 } from "../../graphql/products";
-import { Products, ProductsInfoProps } from "../../utils/Types";
+import { calcDiscount, ProductOptionsProps, Products } from "../../utils/Types";
 import CartContext from "../../context/cart/cart";
 import Toast from "../../components/layout/Toast";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -33,7 +33,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 
 interface Props {
-  product: ProductsInfoProps;
+  product: Products;
 }
 
 interface ToastInfo {
@@ -61,6 +61,7 @@ const Produto: NextPage<Props> = ({ product }) => {
   const [createReviewResults, createReview] = useMutation(CREATE_REVIEW);
   const { fetching: loadingReview } = createReviewResults;
   const [publishReviewResults, publishReview] = useMutation(PUBLISH_REVIEW);
+  const [options, setOptions] = useState<ProductOptionsProps | null>(null);
 
   const initialValues = {
     name: "",
@@ -100,8 +101,7 @@ const Produto: NextPage<Props> = ({ product }) => {
   }, [width, height]);
 
   const calcPrice = (price: number) => {
-    let transform = price / 100;
-    return transform.toLocaleString("pt-br", {
+    return price.toLocaleString("pt-br", {
       style: "currency",
       currency: "BRL",
     });
@@ -118,30 +118,34 @@ const Produto: NextPage<Props> = ({ product }) => {
       setOpenToast(true);
       return false;
     }
+    if (product.productOptions.length && !options) {
+      setToast({
+        title: "Atenção",
+        message: "Selecione uma opção para seu produto",
+        type: "info",
+      });
+      setOpenToast(true);
+      return false;
+    }
     const newProduct = {
       id: product.id,
       name: product.name,
       productName: product.name,
       quantity,
       total: parseInt(String(price)),
-      thumbnail: product.images[0].url,
+      thumbnail: product.thumbnail.url,
       unity: product.price,
       shipping: product.shipping,
+      options: {
+        size: options?.size || "",
+        colors: options?.colors || "",
+      },
     };
     const updatedCart = [...cart, newProduct];
     setCart(updatedCart);
     setConfirmModal(true);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
     clear();
-  }
-
-  function formatDate(myDate: Date) {
-    const initDate = new Date(myDate);
-    const day = initDate.getDate();
-    const month = initDate.getMonth() + 1;
-    const year = initDate.getFullYear();
-
-    return `${day}/${month}/${year}`;
   }
 
   const setPublishReview = (id: string) => {
@@ -195,6 +199,15 @@ const Produto: NextPage<Props> = ({ product }) => {
     },
   });
 
+  function formatDate(myDate: Date) {
+    const initDate = new Date(myDate);
+    const day = initDate.getDate();
+    const month = initDate.getMonth() + 1;
+    const year = initDate.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  }
+
   return (
     <Fragment>
       <Toast
@@ -224,7 +237,7 @@ const Produto: NextPage<Props> = ({ product }) => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mt-10 justify-items-center">
           <div className="w-full overflow-hidden rounded-md h-fit max-w-sm shadow bg-white dark:bg-zinc-800">
             <Image
-              src={product.images[0].url}
+              src={product.thumbnail.url}
               alt={`NK Gráfica online ${product.name}`}
               width={300}
               height={300}
@@ -233,7 +246,7 @@ const Produto: NextPage<Props> = ({ product }) => {
             />
           </div>
 
-          <div className="lg:col-span-2 relative w-full">
+          <div className="lg:col-span-2 relative w-full h-full flex flex-col justify-center">
             <strong className="text-primary-500 text-3xl dark:text-primary-300">
               {product.name}{" "}
             </strong>
@@ -243,22 +256,70 @@ const Produto: NextPage<Props> = ({ product }) => {
                 <span>Entrega rápida</span>
               </div>
             )}
-            <div
-              className="description-product"
-              dangerouslySetInnerHTML={{ __html: product.information.html }}
-            />
+            <span className="block">{product.description}</span>
 
-            <div className="mt-5 w-full">
-              <div className="grid grid-cols-1 sm:grid-cols-4 gap-3"></div>
+            <div className="w-full flex flex-wrap mt-3 gap-3">
+              {product.productOptions.map((opt) => (
+                <button
+                  key={opt.id}
+                  className={`h-10 shadow flex items-center px-5  rounded-md  select-none cursor-pointer ${
+                    options && options.id === opt.id
+                      ? "bg-primary-500 text-white dark:bg-primary-300 dark:text-zinc-800"
+                      : "bg-white dark:bg-zinc-800 hover:bg-primary-500 hover:text-white dark:hover:bg-primary-300 dark:hover:text-zinc-800"
+                  }`}
+                  onClick={() =>
+                    setOptions({
+                      active: opt.active,
+                      id: opt.id,
+                      size: opt.size,
+                      colors: opt.colors,
+                    })
+                  }
+                >
+                  {opt.size}
+                </button>
+              ))}
+            </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr] gap-2 sm:gap-3 items-center mt-3">
-                <div className="flex flex-col">
-                  <strong className="text-3xl font-bold">
-                    {calcPrice(price)}
-                  </strong>
+            <div className="mt-3 w-full">
+              <div className="grid grid-cols-1 divide-y dark:divide-zinc-700 bg-white dark:bg-zinc-800 rounded-md p-3 shadow">
+                <div className="flex gap-3 relative pb-2">
+                  {product.promotional && product.promoRate ? (
+                    <>
+                      <strong className="text-lg text-zinc-500 line-through">
+                        {calcPrice(product.price)}
+                      </strong>
+                      <strong className="text-3xl font-bold">
+                        {calcDiscount(product.price, product.promoRate)}
+                      </strong>
+                      <span className="bg-secondary-500 dark:bg-secondary-300 px-2 py-1 text-white dark:text-zinc-800 rounded-md block h-fit text-xs">
+                        -{product.promoRate}%
+                      </span>
+                    </>
+                  ) : (
+                    <strong className="text-3xl font-bold">
+                      {calcPrice(product.price)}
+                    </strong>
+                  )}
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-[100px_1fr] md:grid-cols-[1fr_2fr] items-end gap-3">
+                <div className="flex gap-3 relative pt-3 font-light">
+                  {product.promotional && product.promoRate ? (
+                    <>
+                      <strong className="text-lg text-zinc-500">
+                        {calcDiscount(price, product.promoRate)}
+                      </strong>
+                    </>
+                  ) : (
+                    <strong className="text-lg text-zinc-500">
+                      {calcPrice(price)}
+                    </strong>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-[1fr_1fr] gap-2 sm:gap-3 items-center mt-3">
+                <div className="grid grid-cols-1 sm:grid-cols-[100px_1fr] items-end gap-3">
                   <div className="flex flex-col">
                     <label>
                       Quantidade{" "}
@@ -289,7 +350,7 @@ const Produto: NextPage<Props> = ({ product }) => {
 
           <div
             className="description-product"
-            dangerouslySetInnerHTML={{ __html: product.description.html }}
+            dangerouslySetInnerHTML={{ __html: product.information }}
           />
         </div>
 
@@ -635,7 +696,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const response = await clientQuery.query(FIND_PRODUCTS_PATH, {}).toPromise();
   const data: Products[] = response.data.products;
   const paths = data.map((prod) => {
-    return { params: { product: prod.id } };
+    return { params: { product: prod.slug } };
   });
 
   return {
@@ -652,8 +713,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   return {
     props: {
-      product: data.product || {},
+      product: data.products[0] || {},
     },
-    revalidate: 60,
+    revalidate: 30,
   };
 };

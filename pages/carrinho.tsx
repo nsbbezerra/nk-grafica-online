@@ -91,16 +91,14 @@ export default function MyCart() {
   }, [client]);
 
   const calcPrice = (price: number) => {
-    let transform = price / 100;
-    return transform.toLocaleString("pt-br", {
+    return price.toLocaleString("pt-br", {
       style: "currency",
       currency: "BRL",
     });
   };
 
   const calcFinalValue = (price: number, shippingPrice: number) => {
-    let transform = price / 100;
-    let sum = transform + shippingPrice;
+    let sum = price + shippingPrice;
     return sum.toLocaleString("pt-br", {
       style: "currency",
       currency: "BRL",
@@ -140,7 +138,7 @@ export default function MyCart() {
       return false;
     }
 
-    const transformShippingCalc = Number(shippingCalc.value) * 100;
+    const transformShippingCalc = parseFloat(shippingCalc.value);
 
     let order = {
       client: client?.id,
@@ -151,7 +149,11 @@ export default function MyCart() {
       shippingId: shippingCalc.description,
     };
 
-    setLoading(true);
+    console.log(order);
+
+    return;
+
+    /* setLoading(true);
     try {
       const shipping = {
         shippingName: shippingCalc.description,
@@ -189,7 +191,7 @@ export default function MyCart() {
         });
         setOpenToast(true);
       }
-    }
+    } */
   };
 
   async function calcShippingValue() {

@@ -10,6 +10,7 @@ interface Cart {
   total: number;
   unity: number;
   shipping: ShippingProps;
+  options?: { size: string; colors: string };
 }
 
 type PropsCartContext = {

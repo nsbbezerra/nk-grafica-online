@@ -22,12 +22,12 @@ const Home: NextPage<IndexProps> = ({ products }) => {
       <section className="container mx-auto mt-10 lg:pt-5 px-5 xl:px-0 max-w-6xl">
         <div className="flex items-center gap-3 text-xl sm:text-2xl md:text-3xl w-fit font-extrabold border-b-2 border-b-primary-500 dark:border-b-primary-300 pr-3">
           <Trophy className="text-primborder-b-primary-500 dark:text-primaryborder-b-primary-300" />
-          <span>Os mais vendidos</span>
+          <span>Nossos destaques</span>
         </div>
 
         <Card products={products} />
 
-        <div className="flex justify-start mt-10">
+        <div className="flex justify-center mt-10">
           <Link href={"/itens"} passHref>
             <a className="buttom-md buttom-blue-outline">
               Veja mais produtos

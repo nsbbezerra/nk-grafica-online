@@ -134,6 +134,7 @@ const FIND_PRODUCTS_PAG = gql`
         id
         size
         colors
+        active
       }
     }
   }
@@ -172,6 +173,7 @@ const FIND_PRODUCTS_BY_NAME = gql`
         id
         size
         colors
+        active
       }
     }
   }
@@ -210,6 +212,7 @@ const FIND_PRODUCTS_PROMOTIONAL = gql`
         id
         size
         colors
+        active
       }
     }
   }
@@ -248,6 +251,7 @@ const FIND_PRODUCTS_LOCK = gql`
         id
         size
         colors
+        active
       }
     }
   }
@@ -256,6 +260,14 @@ const FIND_PRODUCTS_LOCK = gql`
 const PUBLISH_PRODUCT = gql`
   mutation PublishProduct($id: ID!) {
     publishProduct(where: { id: $id }, to: PUBLISHED) {
+      id
+    }
+  }
+`;
+
+const PUBLISH_PRODUCT_OPT = gql`
+  mutation PublishProduct($id: ID!) {
+    publishProductOption(where: { id: $id }, to: PUBLISHED) {
       id
     }
   }
@@ -272,6 +284,40 @@ const UPDATE_PRODUCT_IMAGE = gql`
   }
 `;
 
+const CREATE_PRODUCT_OPT = gql`
+  mutation CreateProductOpt($size: String!, $colors: String!, $id: ID!) {
+    createProductOption(
+      data: {
+        size: $size
+        colors: $colors
+        products: { connect: { id: $id } }
+        active: true
+      }
+    ) {
+      id
+    }
+  }
+`;
+
+const FIND_PRODUCT_OPT = gql`
+  query FindProductOpt($id: ID!) {
+    productOptions(where: { products_some: { id: $id } }, last: 20) {
+      id
+      size
+      colors
+      active
+    }
+  }
+`;
+
+const ACTIVE_PRODUCT_OPT = gql`
+  mutation UpdateProductOpt($id: ID!, $active: Boolean!) {
+    updateProductOption(where: { id: $id }, data: { active: $active }) {
+      id
+    }
+  }
+`;
+
 export {
   FIND_CATEGORIES_AND_SUBCATEGORIES,
   PUBLISH_PRODUCT,
@@ -282,4 +328,8 @@ export {
   UPDATE_PRODUCT_INFORMATION,
   FIND_PRODUCTS_PROMOTIONAL,
   FIND_PRODUCTS_LOCK,
+  CREATE_PRODUCT_OPT,
+  PUBLISH_PRODUCT_OPT,
+  FIND_PRODUCT_OPT,
+  ACTIVE_PRODUCT_OPT,
 };
