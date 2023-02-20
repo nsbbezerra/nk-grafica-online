@@ -22,6 +22,7 @@ const CREATE_SUBCATEGORY = gql`
         slug: $slug
         description: $description
         category: { connect: { id: $id } }
+        active: true
       }
     ) {
       id

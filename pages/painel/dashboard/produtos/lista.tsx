@@ -3,10 +3,15 @@ import {
   ArrowFatLineLeft,
   ArrowFatLineRight,
   Check,
+  Circle,
   CircleNotch,
+  FloppyDisk,
   ImageSquare,
+  MagnifyingGlass,
+  Option,
   Pencil,
   Tag,
+  Trash,
   X,
 } from "phosphor-react";
 import { Fragment, useEffect, useState } from "react";
@@ -18,16 +23,22 @@ import Toast from "../../../../components/layout/Toast";
 import { configs } from "../../../../configs";
 import {
   FIND_PRODUCTS_BY_NAME,
+  FIND_PRODUCTS_LOCK,
   FIND_PRODUCTS_PAG,
+  FIND_PRODUCTS_PROMOTIONAL,
   PUBLISH_PRODUCT,
   UPDATE_PRODUCT_IMAGE,
+  UPDATE_PRODUCT_INFORMATION,
 } from "../../../../graphql/dashboard/products";
-import { ShippingProps } from "../../../../utils/Types";
+import { calcDiscount, ShippingProps } from "../../../../utils/Types";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import clsx from "clsx";
 import Image from "next/image";
 import { clientQuery } from "../../../../lib/urql";
 import { FIND_DASHBOARD_IMAGES } from "../../../../graphql/dashboard/imagens";
+import { JoditEditor } from "../../../../lib/jodit";
+import { useTheme } from "next-themes";
+import { SketchPicker } from "react-color";
 
 interface ToastInfo {
   title: string;
@@ -57,6 +68,7 @@ interface ProductProps {
   collection: { id: string; name: string };
   promotional: boolean;
   promoRate?: number;
+  productOptions: ProductOptionsProps[];
 }
 
 interface ImagesPorps {
@@ -66,7 +78,14 @@ interface ImagesPorps {
   height: number;
 }
 
+interface ProductOptionsProps {
+  id: string;
+  size: string;
+  color?: string;
+}
+
 export default function ListProducts() {
+  const { theme } = useTheme();
   const [toast, setToast] = useState<ToastInfo>({
     title: "",
     message: "",
@@ -80,12 +99,22 @@ export default function ListProducts() {
 
   const [images, setImages] = useState<ImagesPorps[]>([]);
   const [modalImages, setModalImages] = useState<boolean>(false);
+  const [modalEdit, setModalEdit] = useState<boolean>(false);
+  const [modalSizes, setModalSizes] = useState<boolean>(false);
+  const [productOptions, setProductOptions] = useState<ProductOptionsProps[]>(
+    []
+  );
+
+  const [size, setSize] = useState<string>("");
+  const [color, setColor] = useState<string>("");
 
   const [search, setSearch] = useState<string>("all");
   const [text, setText] = useState<string>("");
 
   const [productId, setProductId] = useState<string>("");
   const [imageId, setImageId] = useState<string>("");
+  const [product, setProduct] = useState<ProductProps>({} as ProductProps);
+  const [shipping, setShipping] = useState<ShippingProps>({} as ShippingProps);
 
   useEffect(() => {
     setText("");
@@ -104,6 +133,12 @@ export default function ListProducts() {
   const { error: publishError } = publishProductResults;
 
   const [updateImageResults, updateImage] = useMutation(UPDATE_PRODUCT_IMAGE);
+
+  const [updateProductResults, updateProduct] = useMutation(
+    UPDATE_PRODUCT_INFORMATION
+  );
+
+  const { fetching: updateProductFetching } = updateProductResults;
 
   const { fetching: updateImageFetching } = updateImageResults;
 
@@ -145,9 +180,53 @@ export default function ListProducts() {
     setIsLoading(false);
   }
 
+  async function findProductsByLock() {
+    setIsLoading(true);
+    const { data, error } = await clientQuery
+      .query(FIND_PRODUCTS_LOCK, {}, { requestPolicy: "network-only" })
+      .toPromise();
+
+    if (data) {
+      setProducts(data.products);
+    }
+    if (error) {
+      setToast({
+        message: error.message,
+        title: "Erro",
+        type: "error",
+      });
+      setOpenToast(true);
+    }
+    setIsLoading(false);
+  }
+
+  async function findProductsPromo() {
+    setIsLoading(true);
+    const { data, error } = await clientQuery
+      .query(FIND_PRODUCTS_PROMOTIONAL, {}, { requestPolicy: "network-only" })
+      .toPromise();
+
+    if (data) {
+      setProducts(data.products);
+    }
+    if (error) {
+      setToast({
+        message: error.message,
+        title: "Erro",
+        type: "error",
+      });
+      setOpenToast(true);
+    }
+    setIsLoading(false);
+  }
+
   function setSearchProducts() {
     if (search === "name") {
       findProductsByName();
+    } else if (search === "lock") {
+      findProductsByLock();
+    } else if (search === "promo") {
+      findProductsPromo();
     } else {
       findProducts();
     }
@@ -236,6 +315,101 @@ export default function ListProducts() {
       });
   }
 
+  function handleSearchProduct(id: string) {
+    const result = products.find((obj) => obj.id === id);
+    if (result) {
+      setProduct(result as ProductProps);
+      setShipping(result.shipping as ShippingProps);
+      setModalEdit(true);
+    }
+  }
+
+  function setUpdateProduct() {
+    if (!product.name.length || !product.name) {
+      setToast({
+        message: "O nome é obrigatório",
+        title: "Atenção",
+        type: "warning",
+      });
+      setOpenToast(true);
+      return;
+    }
+    if (!product.price) {
+      setToast({
+        message: "O preço é obrigatório",
+        title: "Atenção",
+        type: "warning",
+      });
+      setOpenToast(true);
+      return;
+    }
+    if (!product.shippingOptions.length || !product.shippingOptions) {
+      setToast({
+        message: "A entrega é obrigatória",
+        title: "Atenção",
+        type: "warning",
+      });
+      setOpenToast(true);
+      return;
+    }
+    if (!String(product?.description).length || !product.description) {
+      setToast({
+        message: "A descrição é obrigatória",
+        title: "Atenção",
+        type: "warning",
+      });
+      setOpenToast(true);
+      return;
+    }
+
+    if (JSON.stringify(product) !== "{}") {
+      updateProduct({
+        name: product.name,
+        slug: product.name
+          .normalize("NFD")
+          .replaceAll(/[^\w\s]/gi, "")
+          .replaceAll(" ", "-")
+          .toLowerCase(),
+        price: product.price,
+        information: product.information,
+        shipping,
+        destak: product.destak,
+        description: product.description,
+        shippingOptions: product.shippingOptions,
+        active: product.active,
+        promotional: product.promotional,
+        promoRate: !product.promoRate ? 0 : product.promoRate,
+        id: product.id,
+      })
+        .then((response) => {
+          const { data } = response;
+          setPublishProduct(data.updateProduct.id);
+          setToast({
+            message: "Informações alteradas com sucesso.",
+            title: "Sucesso",
+            type: "success",
+          });
+          setOpenToast(true);
+          setModalEdit(false);
+        })
+        .catch((error) => {
+          setToast({
+            message: error.message,
+            title: "Erro",
+            type: "error",
+          });
+          setOpenToast(true);
+        });
+    }
+  }
+
+  function handleSizes(id: string) {
+    const result = products.find((obj) => obj.id === id);
+    setProductOptions(result?.productOptions || []);
+    setProductId(id);
+    setModalSizes(true);
+  }
+
   return (
     <Fragment>
       <Toast
@@ -265,10 +439,12 @@ export default function ListProducts() {
               <option value={""}>Selecione uma busca</option>
               <option value={"all"}>Busca todos</option>
               <option value={"name"}>Busca por nome</option>
+              <option value={"lock"}>Bloqueados</option>
+              <option value={"promo"}>Promocionais</option>
             </select>
             <input
               className="inputs"
-              disabled={search === "all"}
+              disabled={search === "name" ? false : true}
               value={text}
               onChange={(e) => setText(e.target.value)}
             />
@@ -277,6 +453,7 @@ export default function ListProducts() {
               onClick={() => setSearchProducts()}
               isLoading={isLoading}
             >
+              <MagnifyingGlass />
               Buscar
             </Button>
           </div>
@@ -314,9 +491,7 @@ export default function ListProducts() {
                   <th className="text-right py-3 border-b dark:border-b-zinc-700 min-w-[100px]">
                     PREÇO
                   </th>
-                  <th className="text-right py-3 border-b dark:border-b-zinc-700 min-w-[100px]">
-                    PREÇO
-                  </th>
+                  <th className="text-right py-3 border-b dark:border-b-zinc-700 min-w-[150px]"></th>
                 </tr>
               </thead>
               <tbody>
@@ -339,53 +514,50 @@ export default function ListProducts() {
                         </div>
                       </div>
                     </td>
-                    <td className="py-2 border-b dark:border-b-zinc-700">
-                      <CheckboxPrimitive.Root
-                        id="c1"
-                        className={clsx(
-                          "flex h-5 w-5 items-center justify-center rounded border dark:border-zinc-600",
-                          "radix-state-checked:bg-purple-600 radix-state-unchecked:bg-gray-100 dark:radix-state-unchecked:bg-gray-900",
-                          "focus:outline-none focus:ring-1 focus:ring-primary-500 dark:focus:ring-primary-300"
+                    <td className="py-2 border-b dark:border-b-zinc-700 text-center">
+                      <div className="flex justify-center">
+                        {cli.active ? (
+                          <Circle
+                            weight="fill"
+                            className="text-green-600 dark:text-green-300"
+                          />
+                        ) : (
+                          <Circle
+                            weight="fill"
+                            className="text-red-600 dark:text-red-300"
+                          />
                         )}
-                        onCheckedChange={() => {}}
-                        checked={cli.active}
-                      >
-                        <CheckboxPrimitive.Indicator>
-                          <Check className="h-4 w-4 self-center text-zinc-700 dark:text-zinc-100" />
-                        </CheckboxPrimitive.Indicator>
-                      </CheckboxPrimitive.Root>
+                      </div>
                     </td>
                     <td className="py-2 border-b dark:border-b-zinc-700">
-                      <CheckboxPrimitive.Root
-                        id="c1"
-                        className={clsx(
-                          "flex h-5 w-5 items-center justify-center rounded border dark:border-zinc-600",
-                          "radix-state-checked:bg-purple-600 radix-state-unchecked:bg-gray-100 dark:radix-state-unchecked:bg-gray-900",
-                          "focus:outline-none focus:ring-1 focus:ring-primary-500 dark:focus:ring-primary-300"
+                      <div className="flex justify-center">
+                        {cli.destak ? (
+                          <Circle
+                            weight="fill"
+                            className="text-green-600 dark:text-green-300"
+                          />
+                        ) : (
+                          <Circle
+                            weight="fill"
+                            className="text-red-600 dark:text-red-300"
+                          />
                         )}
-                        onCheckedChange={() => {}}
-                        checked={cli.destak}
-                      >
-                        <CheckboxPrimitive.Indicator>
-                          <Check className="h-4 w-4 self-center text-zinc-700 dark:text-zinc-100" />
-                        </CheckboxPrimitive.Indicator>
-                      </CheckboxPrimitive.Root>
+                      </div>
                     </td>
                     <td className="py-2 border-b dark:border-b-zinc-700">
-                      <CheckboxPrimitive.Root
-                        id="c1"
-                        className={clsx(
-                          "flex h-5 w-5 items-center justify-center rounded border dark:border-zinc-600",
-                          "radix-state-checked:bg-purple-600 radix-state-unchecked:bg-gray-100 dark:radix-state-unchecked:bg-gray-900",
-                          "focus:outline-none focus:ring-1 focus:ring-primary-500 dark:focus:ring-primary-300"
+                      <div className="flex justify-center">
+                        {cli.promotional ? (
+                          <Circle
+                            weight="fill"
+                            className="text-green-600 dark:text-green-300"
+                          />
+                        ) : (
+                          <Circle
+                            weight="fill"
+                            className="text-red-600 dark:text-red-300"
+                          />
                         )}
-                        onCheckedChange={() => {}}
-                        checked={cli.promotional}
-                      >
-                        <CheckboxPrimitive.Indicator>
-                          <Check className="h-4 w-4 self-center text-zinc-700 dark:text-zinc-100" />
-                        </CheckboxPrimitive.Indicator>
-                      </CheckboxPrimitive.Root>
+                      </div>
                     </td>
                     <td className="py-2 border-b dark:border-b-zinc-700">
                       {cli.name || ""}
@@ -397,23 +569,57 @@ export default function ListProducts() {
                       {cli.collection.name || ""}
                     </td>
                     <td className="text-right py-2 border-b dark:border-b-zinc-700">
-                      {cli.price.toLocaleString("pt-br", {
-                        style: "currency",
-                        currency: "BRL",
-                      }) || ""}
+                      <div className="flex justify-end items-center gap-1">
+                        {cli.promotional && cli.promoRate ? (
+                          <>
+                            <span className="text-sm text-zinc-400 line-through">
+                              {cli.price.toLocaleString("pt-br", {
+                                style: "currency",
+                                currency: "BRL",
+                              }) || ""}
+                            </span>
+                            <span>
+                              {calcDiscount(cli.price, cli.promoRate)}
+                            </span>
+                          </>
+                        ) : (
+                          <span>
+                            {cli.price.toLocaleString("pt-br", {
+                              style: "currency",
+                              currency: "BRL",
+                            }) || ""}
+                          </span>
+                        )}
+                      </div>
                     </td>
                     <td className="py-2 border-b dark:border-b-zinc-700">
-                      <Button isFullSize variant="outline" buttonSize="xs">
-                        <Pencil />
-                        Editar
-                      </Button>
+                      <div className="flex gap-2 items-center">
+                        <Button
+                          isFullSize
+                          variant="outline"
+                          buttonSize="xs"
+                          onClick={() => handleSearchProduct(cli.id)}
+                        >
+                          <Pencil />
+                          Editar
+                        </Button>
+                        <Button
+                          isFullSize
+                          variant="outline"
+                          buttonSize="xs"
+                          onClick={() => handleSizes(cli.id)}
+                        >
+                          <Option />
+                          Opções
+                        </Button>
+                      </div>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
 
-            {search !== "name" && (
+            {search === "all" && (
               <div className="w-full p-2 flex justify-center items-center bg gap-3 mt-2">
                 <Button
                   variant="outline"
@@ -484,6 +690,333 @@ export default function ListProducts() {
                     </div>
                   </div>
                 ))}
+              </div>
+            </div>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
+
+      <Dialog.Root open={modalEdit} onOpenChange={() => setModalEdit(false)}>
+        <Dialog.Portal>
+          <Dialog.Overlay className="overlay" />
+          <Dialog.Content className="dialog-content-dashboard overflow-auto p-2">
+            <div className="rounded-md bg-white dark:bg-zinc-800 shadow-2xl w-full max-w-4xl overflow-hidden">
+              <Dialog.Title className="header-modal bg-transparent">
+                <div className="flex items-center gap-3 text-lg">
+                  <Pencil />
+                  Editar informações
+                </div>
+
+                <Dialog.Close
+                  asChild
+                  className="bg-zinc-300 w-6 h-6 flex items-center justify-center rounded-full p-1 cursor-pointer hover:bg-opacity-70 dark:bg-zinc-900"
+                >
+                  <X />
+                </Dialog.Close>
+              </Dialog.Title>
+              <div className="p-4 flex flex-col gap-3 w-full">
+                <div className="grid grid-cols-1 md:grid-cols-[3fr_1fr_1fr] gap-3">
+                  <div>
+                    <label>Nome *</label>
+                    <input
+                      className="inputs"
+                      value={product.name || ""}
+                      onChange={(e) =>
+                        setProduct((old) => ({ ...old, name: e.target.value }))
+                      }
+                    />
+                  </div>
+                  <div>
+                    <label>Preço *</label>
+                    <input
+                      className="inputs"
+                      type="number"
+                      value={product.price || ""}
+                      onChange={(e) =>
+                        setProduct((old) => ({
+                          ...old,
+                          price: Number(e.target.value),
+                        }))
+                      }
+                    />
+                  </div>
+                  <div>
+                    <label>Entrega *</label>
+                    <select
+                      className="inputs"
+                      placeholder="Selecione uma opção"
+                      value={product.shippingOptions || ""}
+                      onChange={(e) =>
+                        setProduct((old) => ({
+                          ...old,
+                          shippingOptions: e.target.value,
+                        }))
+                      }
+                    >
+                      <option value="">Selecione uma opção</option>
+                      <option value={"slow"}>Normal</option>
+                      <option value={"fast"}>Rápida</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label>Descrição</label>
+                  <textarea
+                    className="textarea"
+                    rows={3}
+                    value={product.description || ""}
+                    onChange={(e) =>
+                      setProduct((old) => ({
+                        ...old,
+                        description: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+                <div className="-mt-2">
+                  <label>Informações</label>
+                  <JoditEditor
+                    value={product.information || ""}
+                    config={{
+                      theme,
+                      statusbar: false,
+                      language: "pt-br",
+                      buttonsXS: configs.joditButtons,
+                      buttonsSM: configs.joditButtons,
+                      buttonsMD: configs.joditButtons,
+                      buttons: configs.joditButtons,
+                      showTooltip: false,
+                      defaultMode: 1,
+                      className: "jodit-editor",
+                      editorClassName: "jodit-editor-class",
+                    }}
+                    onBlur={(e) =>
+                      setProduct((old) => ({ ...old, information: e }))
+                    }
+                    className="jodit-toolbar"
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+                  <div>
+                    <label>Largura (CM) *</label>
+                    <input
+                      className="inputs"
+                      type="number"
+                      value={shipping.width || 0}
+                      onChange={(e) =>
+                        setShipping((old) => ({
+                          ...old,
+                          width: Number(e.target.value),
+                        }))
+                      }
+                    />
+                  </div>
+                  <div>
+                    <label>Altura (CM) *</label>
+                    <input
+                      className="inputs"
+                      type="number"
+                      value={shipping.height || 0}
+                      onChange={(e) =>
+                        setShipping((old) => ({
+                          ...old,
+                          height: Number(e.target.value),
+                        }))
+                      }
+                    />
+                  </div>
+                  <div>
+                    <label>Comprimento (CM) *</label>
+                    <input
+                      className="inputs"
+                      type="number"
+                      value={shipping.lenght || 0}
+                      onChange={(e) =>
+                        setShipping((old) => ({
+                          ...old,
+                          lenght: Number(e.target.value),
+                        }))
+                      }
+                    />
+                  </div>
+                  <div>
+                    <label>Peso (KG) *</label>
+                    <input
+                      className="inputs"
+                      type="number"
+                      value={shipping.weight || 0}
+                      onChange={(e) =>
+                        setShipping((old) => ({
+                          ...old,
+                          weight: Number(e.target.value),
+                        }))
+                      }
+                    />
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <CheckboxPrimitive.Root
+                    id="c1"
+                    className={clsx(
+                      "flex h-[20px] w-[20px] items-center justify-center rounded border dark:border-zinc-600 flex-shrink-0",
+                      "radix-state-checked:bg-purple-600 radix-state-unchecked:bg-gray-100 dark:radix-state-unchecked:bg-gray-900",
+                      "focus:outline-none focus:ring-1 focus:ring-primary-500 dark:focus:ring-primary-300"
+                    )}
+                    checked={product.active}
+                    onCheckedChange={(e) =>
+                      setProduct((old) => ({ ...old, active: e as boolean }))
+                    }
+                  >
+                    <CheckboxPrimitive.Indicator>
+                      <Check className="h-4 w-4 self-center text-zinc-700 dark:text-zinc-100" />
+                    </CheckboxPrimitive.Indicator>
+                  </CheckboxPrimitive.Root>
+                  <label
+                    htmlFor="c1"
+                    className="select-none text-red-600 dark:text-red-300"
+                  >
+                    Este item está ativo? (Caso não esteja ativo não aparecerá
+                    na loja)
+                  </label>
+                </div>
+                <div className="flex items-center gap-3">
+                  <CheckboxPrimitive.Root
+                    id="c1"
+                    className={clsx(
+                      "flex h-[20px] w-[20px] items-center justify-center rounded border dark:border-zinc-600 flex-shrink-0",
+                      "radix-state-checked:bg-purple-600 radix-state-unchecked:bg-gray-100 dark:radix-state-unchecked:bg-gray-900",
+                      "focus:outline-none focus:ring-1 focus:ring-primary-500 dark:focus:ring-primary-300"
+                    )}
+                    checked={product.destak}
+                    onCheckedChange={(e) =>
+                      setProduct((old) => ({ ...old, destak: e as boolean }))
+                    }
+                  >
+                    <CheckboxPrimitive.Indicator>
+                      <Check className="h-4 w-4 self-center text-zinc-700 dark:text-zinc-100" />
+                    </CheckboxPrimitive.Indicator>
+                  </CheckboxPrimitive.Root>
+                  <label
+                    htmlFor="c1"
+                    className="select-none text-red-600 dark:text-red-300"
+                  >
+                    Deseja que este item apareça na tela inicial do site?
+                  </label>
+                </div>
+                <div className="flex items-center gap-3">
+                  <CheckboxPrimitive.Root
+                    id="c1"
+                    className={clsx(
+                      "flex h-[20px] w-[20px] items-center justify-center rounded border dark:border-zinc-600 flex-shrink-0",
+                      "radix-state-checked:bg-purple-600 radix-state-unchecked:bg-gray-100 dark:radix-state-unchecked:bg-gray-900",
+                      "focus:outline-none focus:ring-1 focus:ring-primary-500 dark:focus:ring-primary-300"
+                    )}
+                    checked={product.promotional}
+                    onCheckedChange={(e) =>
+                      setProduct((old) => ({
+                        ...old,
+                        promotional: e as boolean,
+                      }))
+                    }
+                  >
+                    <CheckboxPrimitive.Indicator>
+                      <Check className="h-4 w-4 self-center text-zinc-700 dark:text-zinc-100" />
+                    </CheckboxPrimitive.Indicator>
+                  </CheckboxPrimitive.Root>
+                  <label
+                    htmlFor="c1"
+                    className="select-none text-red-600 dark:text-red-300"
+                  >
+                    Este item está em promoção?
+                  </label>
+                  <label htmlFor="c1" className="select-none">
+                    | Desconto (%):
+                  </label>
+                  <input
+                    className="inputs w-20 sm:w-32"
+                    placeholder="Desconto (%)"
+                    value={product.promoRate || 0}
+                    onChange={(e) =>
+                      setProduct((old) => ({
+                        ...old,
+                        promoRate: Number(e.target.value),
+                      }))
+                    }
+                  />
+                </div>
+
+                <Button
+                  isLoading={updateProductFetching}
+                  onClick={() => setUpdateProduct()}
+                >
+                  <FloppyDisk /> Salvar
+                </Button>
+              </div>
+            </div>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
+
+      <Dialog.Root open={modalSizes} onOpenChange={() => setModalSizes(false)}>
+        <Dialog.Portal>
+          <Dialog.Overlay className="overlay" />
+          <Dialog.Content className="dialog-content-dashboard overflow-auto p-2">
+            <div className="rounded-md bg-white dark:bg-zinc-800 shadow-2xl w-full max-w-2xl overflow-hidden">
+              <Dialog.Title className="header-modal bg-transparent">
+                <div className="flex items-center gap-3 text-lg">
+                  <Option />
+                  Opções de Produtos
+                </div>
+
+                <Dialog.Close
+                  asChild
+                  className="bg-zinc-300 w-6 h-6 flex items-center justify-center rounded-full p-1 cursor-pointer hover:bg-opacity-70 dark:bg-zinc-900"
+                >
+                  <X />
+                </Dialog.Close>
+              </Dialog.Title>
+              <div className="p-4 grid grid-cols-1 sm:grid-cols-[220px_1fr] gap-3 justify-items-center sm:justify-items-start">
+                <div className="grid grid-cols-1 gap-3 max-w-[220px]">
+                  <div>
+                    <label>Opção *</label>
+                    <input
+                      className="inputs"
+                      value={size}
+                      onChange={(e) => setSize(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label>Cor</label>
+                    <SketchPicker
+                      className="bg-zinc-700"
+                      onChange={(e) => setColor(e.hex)}
+                    />
+                  </div>
+                  <Button isFullSize>
+                    <FloppyDisk /> Salvar
+                  </Button>
+                </div>
+                <div className="w-full grid grid-cols-1 gap-3 sm:pl-3 h-fit">
+                  {productOptions.map((opt) => (
+                    <div
+                      className="rounded-md border dark:border-zinc-700 p-2 h-fit grid grid-cols-[2fr_2fr_1fr] gap-3"
+                      key={opt.id}
+                    >
+                      <div className="border dark:border-zinc-700 flex justify-center items-center w-full h-10 dark:bg-zinc-700 bg-zinc-300 rounded-md">
+                        {opt.size}
+                      </div>
+                      <div
+                        className={`border dark:border-zinc-700 flex justify-center items-center w-full h-10 rounded-md bg-[${
+                          opt.color || "transparent"
+                        }]`}
+                      />
+                      <Button isFullSize>
+                        <Trash />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </Dialog.Content>

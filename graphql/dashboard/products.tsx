@@ -26,7 +26,7 @@ const SAVE_PRODUCT = gql`
   mutation SaveProduct(
     $name: String!
     $slug: String!
-    $price: Int!
+    $price: Float!
     $imageId: ID!
     $information: String!
     $shipping: Json!
@@ -51,6 +51,42 @@ const SAVE_PRODUCT = gql`
         collection: { connect: { id: $subCategoryId } }
         promotional: false
         active: true
+      }
+    ) {
+      id
+    }
+  }
+`;
+
+const UPDATE_PRODUCT_INFORMATION = gql`
+  mutation UpdateProduct(
+    $name: String!
+    $slug: String!
+    $price: Float!
+    $information: String!
+    $shipping: Json!
+    $destak: Boolean!
+    $description: String!
+    $shippingOptions: String!
+    $active: Boolean!
+    $promotional: Boolean!
+    $promoRate: Int!
+    $id: ID!
+  ) {
+    updateProduct(
+      where: { id: $id }
+      data: {
+        name: $name
+        description: $description
+        price: $price
+        shippingOptions: $shippingOptions
+        slug: $slug
+        shipping: $shipping
+        information: $information
+        promotional: $promotional
+        promoRate: $promoRate
+        destak: $destak
+        active: $active
       }
     ) {
       id
@@ -94,6 +130,11 @@ const FIND_PRODUCTS_PAG = gql`
       }
       promotional
       promoRate
+      productOptions(where: { active: true }) {
+        id
+        size
+        colors
+      }
     }
   }
 `;
@@ -127,6 +168,87 @@ const FIND_PRODUCTS_BY_NAME = gql`
       }
       promotional
       promoRate
+      productOptions(where: { active: true }) {
+        id
+        size
+        colors
+      }
+    }
+  }
+`;
+
+const FIND_PRODUCTS_PROMOTIONAL = gql`
+  query FindProductsPromo {
+    products(where: { promotional: true }, last: 100) {
+      id
+      name
+      information
+      active
+      destak
+      description
+      thumbnail {
+        id
+        url
+        width
+        height
+      }
+      slug
+      price
+      shipping
+      shippingOptions
+      category {
+        id
+        name
+      }
+      collection {
+        id
+        name
+      }
+      promotional
+      promoRate
+      productOptions(where: { active: true }) {
+        id
+        size
+        colors
+      }
+    }
+  }
+`;
+
+const FIND_PRODUCTS_LOCK = gql`
+  query FindProductsLock {
+    products(where: { active: false }, last: 100) {
+      id
+      name
+      information
+      active
+      destak
+      description
+      thumbnail {
+        id
+        url
+        width
+        height
+      }
+      slug
+      price
+      shipping
+      shippingOptions
+      category {
+        id
+        name
+      }
+      collection {
+        id
+        name
+      }
+      promotional
+      promoRate
+      productOptions(where: { active: true }) {
+        id
+        size
+        colors
+      }
     }
   }
 `;
@@ -157,4 +279,7 @@ export {
   FIND_PRODUCTS_PAG,
   FIND_PRODUCTS_BY_NAME,
   UPDATE_PRODUCT_IMAGE,
+  UPDATE_PRODUCT_INFORMATION,
+  FIND_PRODUCTS_PROMOTIONAL,
+  FIND_PRODUCTS_LOCK,
 };

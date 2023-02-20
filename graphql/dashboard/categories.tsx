@@ -13,6 +13,7 @@ const CREATE_CATEGORY = gql`
         slug: $slug
         description: $description
         thumbnail: { connect: { id: $imageId } }
+        active: true
       }
     ) {
       id
